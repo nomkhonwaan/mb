@@ -1,0 +1,3 @@
+rootProject.name = 'mb'
+
+include('mb-server')

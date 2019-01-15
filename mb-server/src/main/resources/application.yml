@@ -1,0 +1,11 @@
+graphiql:
+  mapping: /
+
+security:
+  oauth2:
+    resource:
+      user-info-uri: https://nomkhonwaan.auth0.com/userinfo
+
+spring:
+  data:
+    mongodb.uri: ${MONGODB_URI:mongodb://localhost/nomkhonwaan_com}
