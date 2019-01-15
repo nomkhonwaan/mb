@@ -55,9 +55,12 @@ jobs:
           at: ./mb-server
       - run: |
           curl \
+            -v \
             -L \
             -o cf-cli_amd64.deb \
             https://cli.run.pivotal.io/stable?release=debian64&source=github
+
+          ls -la
 
           sleep 1m
           #sudo dpkg -i cf-cli_amd64.deb
@@ -68,8 +71,7 @@ jobs:
           #cf target -o Nomkhonwaan
           #cf push -f ./mb-server/manifest.yml -p ./mb-server/build/libs/*.jar
           ls -la 
-          ls -la ./mb-server
-          ls -la ./mb-server/build
+          ls -la ./mb-server/build/libs
 
 workflows:
   version: 2
