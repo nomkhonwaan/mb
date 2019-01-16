@@ -6,15 +6,20 @@ import com.nomkhonwaan.mb.server.blog.Category
 import com.nomkhonwaan.mb.server.blog.Post
 import com.nomkhonwaan.mb.server.blog.PostRepository
 import com.nomkhonwaan.mb.server.blog.Status
-import com.nomkhonwaan.mb.server.fixture.*
+import com.nomkhonwaan.mb.server.fixture.categories
+import com.nomkhonwaan.mb.server.fixture.filterBy
+import com.nomkhonwaan.mb.server.fixture.posts
+import com.nomkhonwaan.mb.server.fixture.users
 import org.bson.types.ObjectId
 import org.commonmark.node.Node
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 import org.junit.jupiter.api.Assertions
+import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import org.springframework.data.domain.Sort
@@ -146,15 +151,59 @@ object PostServiceImplSpec : Spek({
     describe("create()") {
         it("should create a new post filterBy DRAFT status") {
             // Given
+            val postId: String = ObjectId.get().toHexString()
             val author: User = users[0]
-            val expectedResult = Post(status = Status.DRAFT, author = author, categories = listOf())
-            `when`(postRepository.save(expectedResult)).thenReturn(expectedResult)
+            val expectedResult = Post(
+                    id = postId,
+                    title = "",
+                    slug = "-${postId}",
+                    status = Status.DRAFT,
+                    author = author,
+                    categories = listOf()
+            )
+            val post: ArgumentCaptor<Post> = ArgumentCaptor.forClass(Post::class.java)
 
             // When
             val result: Post = postService.create(author)
 
             // Then
-            Assertions.assertEquals(result, expectedResult)
+            try {
+                verify(postRepository).save(post.capture())
+            } finally {
+                println(post.allValues)
+            }
+
+
+//            val postId: String = ObjectId.get().toHexString()
+//            val author: User = users[0]
+//            val post: ArgumentCaptor<Post> = ArgumentCaptor.forClass(Post::class.java)
+//
+////            // Given
+//            val expectedResult = Post(
+//                    id = postId,
+//                    title = "",
+//                    slug = "-$postId",
+//                    status = Status.DRAFT,
+//                    author = author,
+//                    categories = listOf()
+//            )
+////
+//////            `when`<Post>(postService.updateTitle(Mockito.any(), "")).thenReturn(expectedResult)
+//////            `when`<Post>(postRepository.save(Mockito.any())).thenReturn(expectedResult)
+////
+////            // When
+//            try {
+//                val result: Post = postService.create(author)
+//            } catch(err: Exception) {
+//                err.printStackTrace()
+//            }
+//
+//            verify(postRepository).save(expectedResult)
+//
+//
+////
+////            // Then
+////            Assertions.assertEquals(result, expectedResult)
         }
     }
 

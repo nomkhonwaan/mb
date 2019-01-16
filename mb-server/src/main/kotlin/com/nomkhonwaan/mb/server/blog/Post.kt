@@ -10,7 +10,7 @@ import java.time.ZonedDateTime
 
 @Document(collection = "posts")
 data class Post(
-        @Id val id: String? = null,
+        @Id val id: String,
         var title: String? = null,
         var slug: String? = null,
         var publishedAt: ZonedDateTime? = null,
