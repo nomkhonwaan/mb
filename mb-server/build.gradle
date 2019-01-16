@@ -20,7 +20,14 @@ repositories {
     jcenter()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom('com.amazonaws:aws-java-sdk-bom:1.11.475')
+    }
+}
+
 dependencies {
+    implementation('com.amazonaws:aws-java-sdk-s3')
     implementation('com.atlassian.commonmark:commonmark:0.12.1')
     implementation('com.github.slugify:slugify:2.3')
     implementation('com.graphql-java:graphql-java-tools:5.2.0')
