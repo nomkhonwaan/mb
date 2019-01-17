@@ -29,7 +29,7 @@ class PostServiceImpl(private val postRepository: PostRepository) : PostService 
         }
     }
 
-    override fun findAll(category: Category, status: Status): List<Post?>? {
+    override fun findAll(category: Category, status: Status): List<Post?> {
         return if (status == Status.PUBLISHED) {
             postRepository.findAllByCategoryIdAndStatus(category.id, status, sortBy("publishedAt"))
         } else {

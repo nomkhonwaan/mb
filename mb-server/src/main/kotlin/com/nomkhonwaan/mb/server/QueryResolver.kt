@@ -36,7 +36,7 @@ class QueryResolver(
      */
     fun latestDraftPosts(): List<Post?> {
         return whenAuthorized {
-            postService.findAll(it, Status.DRAFT) ?: listOf()
+            postService.findAll(it, Status.DRAFT)
         }
     }
 }
