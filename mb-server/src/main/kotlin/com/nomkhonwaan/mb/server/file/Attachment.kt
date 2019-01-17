@@ -13,6 +13,6 @@ data class Attachment(
         @Id val id: String,
         val originalFilename: String,
         @DBRef val uploader: User,
-        @CreatedDate val createdAt: ZonedDateTime,
-        @LastModifiedDate val updatedAt: ZonedDateTime
+        @CreatedDate val createdAt: ZonedDateTime? = null,
+        @LastModifiedDate val updatedAt: ZonedDateTime? = null
 )

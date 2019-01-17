@@ -4,13 +4,13 @@ import com.nomkhonwaan.mb.server.fixture.categories
 import com.nomkhonwaan.mb.server.fixture.filterBy
 import com.nomkhonwaan.mb.server.fixture.posts
 import org.junit.jupiter.api.Assertions
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 
 object CategoryResolverSpec : Spek({
-    val postService: PostService = Mockito.mock(PostService::class.java)
+    val postService: PostService = mock(PostService::class.java)
     val categoryResolver = CategoryResolver(postService)
 
     describe("latestPublishedPosts()") {

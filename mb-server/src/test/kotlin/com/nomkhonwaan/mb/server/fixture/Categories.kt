@@ -10,8 +10,5 @@ val categories: List<Category> = listOf(
         },
         Category(id = ObjectId.get().toHexString(), name = "Bar").apply {
             slug = "${Slugify().slugify(name)}-$id"
-        },
-        Category(name = "Baz").apply {
-            slug = "${Slugify().slugify(name)}-$id"
         }
 )

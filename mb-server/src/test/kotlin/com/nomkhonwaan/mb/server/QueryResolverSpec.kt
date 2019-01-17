@@ -9,16 +9,16 @@ import com.nomkhonwaan.mb.server.fixture.posts
 import com.nomkhonwaan.mb.server.fixture.users
 import graphql.GraphQLException
 import org.junit.jupiter.api.Assertions
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
 
 object QueryResolverSpec : Spek({
-    val categoryService: CategoryService = Mockito.mock(CategoryService::class.java)
-    val postService: PostService = Mockito.mock(PostService::class.java)
+    val categoryService: CategoryService = mock(CategoryService::class.java)
+    val postService: PostService = mock(PostService::class.java)
     val queryResolver = QueryResolver(categoryService, postService)
 
     beforeEachTest {
@@ -32,7 +32,7 @@ object QueryResolverSpec : Spek({
     }
 
     describe("categories()") {
-        it("should return a list of categories") {
+        it("should call categoryService.findAll()") {
             // Given
             val expectedResult: List<Category?> = categories
             `when`(categoryService.findAll()).thenReturn(categories)

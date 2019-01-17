@@ -16,18 +16,19 @@ import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 import org.junit.jupiter.api.Assertions
 import org.mockito.ArgumentCaptor
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
+import org.mockito.Mockito.*
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import org.springframework.data.domain.Sort
 import java.time.ZonedDateTime
 
 object PostServiceImplSpec : Spek({
-    val postRepository: PostRepository = Mockito.mock(PostRepository::class.java)
+    val postRepository: PostRepository = mock(PostRepository::class.java)
     val postService = PostServiceImpl(postRepository)
+
+    afterEachTest {
+        reset(postRepository)
+    }
 
     describe("findAll()") {
         context("find all by status") {
@@ -66,7 +67,7 @@ object PostServiceImplSpec : Spek({
                 val status = Status.PUBLISHED
                 val sort: Sort = Sort.by(Sort.Direction.DESC, "publishedAt")
                 val expectedResult: List<Post?> = posts.filterBy(author).filterBy(status)
-                `when`(postRepository.findAllByAuthorIdAndStatus(author.id!!, status, sort)).thenReturn(expectedResult)
+                `when`(postRepository.findAllByAuthorIdAndStatus(author.id, status, sort)).thenReturn(expectedResult)
 
                 // When
                 val result: List<Post?>? = postService.findAll(author, status)
@@ -80,20 +81,7 @@ object PostServiceImplSpec : Spek({
                 val author: User = users[1]
                 val status = Status.DRAFT
                 val expectedResult: List<Post?> = posts.filterBy(author).filterBy(status)
-                `when`(postRepository.findAllByAuthorIdAndStatus(author.id!!, status)).thenReturn(expectedResult)
-
-                // When
-                val result: List<Post?>? = postService.findAll(author, status)
-
-                // Then
-                Assertions.assertEquals(result, expectedResult)
-            }
-
-            it("should return null if author ID is null") {
-                // Given
-                val author: User = users[2]
-                val status = Status.PUBLISHED
-                val expectedResult: List<Post?>? = null
+                `when`(postRepository.findAllByAuthorIdAndStatus(author.id, status)).thenReturn(expectedResult)
 
                 // When
                 val result: List<Post?>? = postService.findAll(author, status)
@@ -110,7 +98,7 @@ object PostServiceImplSpec : Spek({
                 val status = Status.PUBLISHED
                 val sort: Sort = Sort.by(Sort.Direction.DESC, "publishedAt")
                 val expectedResult: List<Post?> = posts.filterBy(category).filterBy(status)
-                `when`(postRepository.findAllByCategoryIdAndStatus(category.id!!, status, sort)).thenReturn(expectedResult)
+                `when`(postRepository.findAllByCategoryIdAndStatus(category.id, status, sort)).thenReturn(expectedResult)
 
                 // When
                 val result: List<Post?>? = postService.findAll(category, status)
@@ -124,20 +112,7 @@ object PostServiceImplSpec : Spek({
                 val category: Category = categories[1]
                 val status = Status.DRAFT
                 val expectedResult: List<Post?> = posts.filterBy(category).filterBy(status)
-                `when`(postRepository.findAllByCategoryIdAndStatus(category.id!!, status)).thenReturn(expectedResult)
-
-                // When
-                val result: List<Post?>? = postService.findAll(category, status)
-
-                // Then
-                Assertions.assertEquals(result, expectedResult)
-            }
-
-            it("should return null if category ID is null") {
-                // Given
-                val category: Category = categories[2]
-                val status = Status.PUBLISHED
-                val expectedResult: List<Post?>? = null
+                `when`(postRepository.findAllByCategoryIdAndStatus(category.id, status)).thenReturn(expectedResult)
 
                 // When
                 val result: List<Post?>? = postService.findAll(category, status)
@@ -151,59 +126,30 @@ object PostServiceImplSpec : Spek({
     describe("create()") {
         it("should create a new post filterBy DRAFT status") {
             // Given
-            val postId: String = ObjectId.get().toHexString()
             val author: User = users[0]
-            val expectedResult = Post(
+            val postId: String = ObjectId.get().toHexString()
+            val mockResult = Post(
                     id = postId,
                     title = "",
-                    slug = "-${postId}",
+                    slug = "-$postId",
                     status = Status.DRAFT,
                     author = author,
                     categories = listOf()
             )
-            val post: ArgumentCaptor<Post> = ArgumentCaptor.forClass(Post::class.java)
+            val captor: ArgumentCaptor<Post> = ArgumentCaptor.forClass(Post::class.java)
+            `when`<Post>(postRepository.save(any())).thenReturn(mockResult)
 
             // When
-            val result: Post = postService.create(author)
+            postService.create(author)
 
             // Then
-            try {
-                verify(postRepository).save(post.capture())
-            } finally {
-                println(post.allValues)
-            }
+            verify(postRepository, times(2)).save(captor.capture())
 
-
-//            val postId: String = ObjectId.get().toHexString()
-//            val author: User = users[0]
-//            val post: ArgumentCaptor<Post> = ArgumentCaptor.forClass(Post::class.java)
-//
-////            // Given
-//            val expectedResult = Post(
-//                    id = postId,
-//                    title = "",
-//                    slug = "-$postId",
-//                    status = Status.DRAFT,
-//                    author = author,
-//                    categories = listOf()
-//            )
-////
-//////            `when`<Post>(postService.updateTitle(Mockito.any(), "")).thenReturn(expectedResult)
-//////            `when`<Post>(postRepository.save(Mockito.any())).thenReturn(expectedResult)
-////
-////            // When
-//            try {
-//                val result: Post = postService.create(author)
-//            } catch(err: Exception) {
-//                err.printStackTrace()
-//            }
-//
-//            verify(postRepository).save(expectedResult)
-//
-//
-////
-////            // Then
-////            Assertions.assertEquals(result, expectedResult)
+            Assertions.assertNotEquals(captor.allValues[1].id, "")
+            Assertions.assertEquals(captor.allValues[1].slug, "-${captor.allValues[1].id}")
+            Assertions.assertEquals(captor.allValues[1].status, Status.DRAFT)
+            Assertions.assertEquals(captor.allValues[1].author, author)
+            Assertions.assertEquals(captor.allValues[1].categories, listOf<Category>())
         }
     }
 
@@ -229,15 +175,18 @@ object PostServiceImplSpec : Spek({
                 // Given
                 val status = Status.PUBLISHED
                 val post: Post = posts.filterBy(Status.DRAFT)[0]!!
-                val expectedResult: Post = post.copy(status = status, publishedAt = ZonedDateTime.now())
-                `when`<Post>(postRepository.save(ArgumentMatchers.any())).thenReturn(expectedResult)
+                val mockResult: Post = post.copy(status = status, publishedAt = ZonedDateTime.now())
+                val captor: ArgumentCaptor<Post> = ArgumentCaptor.forClass(Post::class.java)
+                `when`<Post>(postRepository.save(any())).thenReturn(mockResult)
 
                 // When
-                val result: Post = postService.updateStatus(post, status)
+                postService.updateStatus(post, status)
 
                 // Then
-                Assertions.assertNotNull(post.publishedAt)
-                Assertions.assertEquals(result, expectedResult)
+                verify(postRepository).save(captor.capture())
+
+                Assertions.assertEquals(captor.value.status, status)
+                Assertions.assertNotNull(captor.value.publishedAt)
             }
         }
 

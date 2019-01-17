@@ -8,7 +8,7 @@ import java.time.ZonedDateTime
 
 @Document(collection = "users")
 data class User(
-        @Id val id: String? = null,
+        @Id val id: String,
         var avatarUrl: String? = null,
         var displayName: String? = null,
         var emails: List<UserEmail>,

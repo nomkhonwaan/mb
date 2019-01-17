@@ -21,23 +21,19 @@ class PostServiceImpl(private val postRepository: PostRepository) : PostService 
         }
     }
 
-    override fun findAll(author: User, status: Status): List<Post?>? {
-        return author.id?.let {
-            if (status == Status.PUBLISHED) {
-                postRepository.findAllByAuthorIdAndStatus(it, status, sortBy("publishedAt"))
-            } else {
-                postRepository.findAllByAuthorIdAndStatus(it, status)
-            }
+    override fun findAll(author: User, status: Status): List<Post?> {
+        return if (status == Status.PUBLISHED) {
+            postRepository.findAllByAuthorIdAndStatus(author.id, status, sortBy("publishedAt"))
+        } else {
+            postRepository.findAllByAuthorIdAndStatus(author.id, status)
         }
     }
 
     override fun findAll(category: Category, status: Status): List<Post?>? {
-        return category.id?.let {
-            if (status == Status.PUBLISHED) {
-                postRepository.findAllByCategoryIdAndStatus(it, status, sortBy("publishedAt"))
-            } else {
-                postRepository.findAllByCategoryIdAndStatus(it, status)
-            }
+        return if (status == Status.PUBLISHED) {
+            postRepository.findAllByCategoryIdAndStatus(category.id, status, sortBy("publishedAt"))
+        } else {
+            postRepository.findAllByCategoryIdAndStatus(category.id, status)
         }
     }
 
