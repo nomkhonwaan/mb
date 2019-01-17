@@ -15,10 +15,5 @@ val users: List<User> = listOf(
                         UserEmail(email = "bar@bar.test", isPrimary = true),
                         UserEmail(email = "baz@baz.test")
                 )
-        ),
-        User(
-                emails = listOf(
-                        UserEmail(email = "qux@qux.test", isPrimary = true)
-                )
         )
 )

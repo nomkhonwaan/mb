@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document(collection = "tags")
 data class Tag(
-        @Id val id: String? = null,
+        @Id val id: String,
         var name: String,
         var slug: String? = null
 )

@@ -5,15 +5,15 @@ import com.nomkhonwaan.mb.server.auth.UserRepository
 import com.nomkhonwaan.mb.server.fixture.users
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.extension.ExtendWith
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import org.springframework.test.context.junit.jupiter.SpringExtension
 
 @ExtendWith(SpringExtension::class)
 object ResourceServerConfigSpec : Spek({
-    val userRepository: UserRepository = Mockito.mock(UserRepository::class.java)
+    val userRepository: UserRepository = mock(UserRepository::class.java)
     val resourceServerConfig = ResourceServerConfig(userRepository)
 
     describe("principalExtractor()") {

@@ -9,17 +9,15 @@ import com.nomkhonwaan.mb.server.fixture.users
 import graphql.GraphQLException
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.Assertions
-import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
 import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
-import org.springframework.http.HttpStatus
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.web.client.HttpClientErrorException
 
 object MutationResolverSpec : Spek({
-    val postService: PostService = Mockito.mock(PostService::class.java)
+    val postService: PostService = mock(PostService::class.java)
     val mutationResolver = MutationResolver(postService)
 
     beforeEachTest {
