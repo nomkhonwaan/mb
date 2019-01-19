@@ -8,9 +8,6 @@ type Query {
     # Return a list of categories
     categories: [Category]!
 
-    # Return a list of the latest updated categories
-    latestUpdatedCategories: [Category]!
-
     # Return a list of published posts
     latestPublishedPosts: [Post]!
 
