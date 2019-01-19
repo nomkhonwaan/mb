@@ -16,7 +16,8 @@ val posts: List<Post?> = listOf(
                 status = Status.PUBLISHED,
                 author = users[0],
                 categories = listOf(categories[0]),
-                createdAt = ZonedDateTime.now()
+                createdAt = ZonedDateTime.now(),
+                updatedAt = ZonedDateTime.now().plusDays(1)
         ).apply {
             slug = "${Slugify().slugify(title)}-$id"
         },

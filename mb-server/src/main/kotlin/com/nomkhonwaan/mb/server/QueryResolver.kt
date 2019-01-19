@@ -18,13 +18,6 @@ class QueryResolver(
     }
 
     /**
-     * Return a list of the latest updated categories.
-     */
-    fun latestUpdatedCategories(): List<Category?> {
-        return listOf()
-    }
-
-    /**
      * Return a list of published posts.
      */
     fun latestPublishedPosts(): List<Post?> {
@@ -36,7 +29,7 @@ class QueryResolver(
      */
     fun latestDraftPosts(): List<Post?> {
         return whenAuthorized {
-            postService.findAll(it, Status.DRAFT) ?: listOf()
+            postService.findAll(it, Status.DRAFT)
         }
     }
 }
