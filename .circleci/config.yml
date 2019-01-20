@@ -31,13 +31,13 @@ jobs:
             - ./build
   mb-server_build_to_docker:
     machine: true
-    working_directory: ~/repo/mb-server
+    working_directory: ~/repo
     steps:
       - checkout
       - attach_workspace:
           at: ./mb-server
       - run: |
-          docker build -t nomkhonwaan/mb-server:latest .
+          docker build -t nomkhonwaan/mb-server:latest -f ./mb-server/Dockerfile ./mb-server
           docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
           docker push nomkhonwaan/mb-server:latest
   mb-server_deploy_to_pivotal_web_services:
