@@ -14,59 +14,49 @@ class MutationResolver(
 ) : GraphQLMutationResolver {
     /**
      * Create a new empty post.
+     *
+     * @throws UnauthorizedException
      */
     fun createPost(): Post {
-        try {
-            return whenAuthorized {
-                postService.create(it)
-            }
-        } catch (err: HttpClientErrorException) {
-            throw UnauthorizedException(err.message)
-        }
+        return whenAuthorized { postService.create(it) }
     }
 
     /**
      * Update a title of the post.
+     *
+     * @throws UnauthorizedException
      */
     fun updatePostTitle(input: UpdatePostTitleInput): Post? {
-        try {
-            return whenAuthorized { user: User ->
-                postService.findOneById(input.id, user)?.let { post: Post ->
-                    postService.updateTitle(post, input.title)
-                }
+        return whenAuthorized { user: User ->
+            postService.findOneById(input.id, user)?.let { post: Post ->
+                postService.updateTitle(post, input.title)
             }
-        } catch (err: HttpClientErrorException) {
-            throw UnauthorizedException(err.message)
         }
     }
 
     /**
      * Update a status of the post.
+     *
+     * @throws UnauthorizedException
      */
     fun updatePostStatus(input: UpdatePostStatusInput): Post? {
-        try {
-            return whenAuthorized { user: User ->
-                postService.findOneById(input.id, user)?.let { post: Post ->
-                    postService.updateStatus(post, input.status)
-                }
+        return whenAuthorized { user: User ->
+            postService.findOneById(input.id, user)?.let { post: Post ->
+                postService.updateStatus(post, input.status)
             }
-        } catch (err: HttpClientErrorException) {
-            throw UnauthorizedException(err.message)
         }
     }
 
     /**
      * Update a content of the post.
+     *
+     * @throws UnauthorizedException
      */
     fun updatePostContent(input: UpdatePostContentInput): Post? {
-        try {
-            return whenAuthorized { user: User ->
-                postService.findOneById(input.id, user)?.let { post: Post ->
-                    postService.updateContent(post, input.markdown)
-                }
+        return whenAuthorized { user: User ->
+            postService.findOneById(input.id, user)?.let { post: Post ->
+                postService.updateContent(post, input.markdown)
             }
-        } catch (err: HttpClientErrorException) {
-            throw UnauthorizedException(err.message)
         }
     }
 }

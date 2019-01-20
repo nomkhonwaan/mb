@@ -61,36 +61,18 @@ object QueryResolverSpec : Spek({
     }
 
     describe("latestDraftPosts()") {
-        context("with authorized user") {
-            it("should call postService.findAllByStatus() with [Status.DRAFT] and [User]") {
-                // Given
-                val author: User = users[0]
-                val status = Status.DRAFT
-                val expectedResult: List<Post?> = posts.filterBy(author).filterBy(status)
-                `when`(postService.findAllByStatus(status, author)).thenReturn(expectedResult)
+        it("should call postService.findAllByStatus() with [Status.DRAFT] and [User]") {
+            // Given
+            val author: User = users[0]
+            val status = Status.DRAFT
+            val expectedResult: List<Post?> = posts.filterBy(author).filterBy(status)
+            `when`(postService.findAllByStatus(status, author)).thenReturn(expectedResult)
 
-                // When
-                val result: List<Post?> = queryResolver.latestDraftPosts()
+            // When
+            val result: List<Post?> = queryResolver.latestDraftPosts()
 
-                // Then
-                Assertions.assertEquals(result, expectedResult)
-            }
-        }
-
-        context("with unauthorized user") {
-            it("should throw an UnauthorizedException which is embedded in the GraphQLException") {
-                // Given
-                SecurityContextHolder.getContext().authentication =
-                        UsernamePasswordAuthenticationToken("anonymousUser", null, listOf())
-
-                // When
-                val err: GraphQLException = Assertions.assertThrows(GraphQLException::class.java) {
-                    queryResolver.latestDraftPosts()
-                }
-
-                // Then
-                Assertions.assertEquals(err.message, GraphQLException(UnauthorizedException().message).message)
-            }
+            // Then
+            Assertions.assertEquals(result, expectedResult)
         }
     }
 })

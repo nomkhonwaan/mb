@@ -1,12 +1,9 @@
 package com.nomkhonwaan.mb.server
 
 import com.nomkhonwaan.mb.server.auth.User
-import com.nomkhonwaan.mb.server.blog.Post
-import com.nomkhonwaan.mb.server.blog.PostService
-import com.nomkhonwaan.mb.server.blog.Status
-import com.nomkhonwaan.mb.server.exception.UnauthorizedException
+import com.nomkhonwaan.mb.server.blog.*
+import com.nomkhonwaan.mb.server.fixture.posts
 import com.nomkhonwaan.mb.server.fixture.users
-import graphql.GraphQLException
 import org.bson.types.ObjectId
 import org.junit.jupiter.api.Assertions
 import org.mockito.Mockito.`when`
@@ -31,40 +28,121 @@ object MutationResolverSpec : Spek({
     }
 
     describe("createPost()") {
-        context("with authorized user") {
-            it("should call postService.create()") {
-                // Given
-                val author: User = users[0]
-                val expectedResult = Post(
-                        id = ObjectId.get().toHexString(),
-                        status = Status.DRAFT,
-                        author = author,
-                        categories = listOf()
-                )
-                `when`(postService.create(author)).thenReturn(expectedResult)
+        it("should call postService.create()") {
+            // Given
+            val author: User = users[0]
+            val expectedResult = Post(
+                    id = ObjectId.get().toHexString(),
+                    status = Status.DRAFT,
+                    author = author,
+                    categories = listOf()
+            )
+            `when`(postService.create(author)).thenReturn(expectedResult)
 
-                // When
-                val result: Post = mutationResolver.createPost()
+            // When
+            val result: Post = mutationResolver.createPost()
 
-                // Then
-                Assertions.assertEquals(result, expectedResult)
-            }
+            // Then
+            Assertions.assertEquals(result, expectedResult)
+        }
+    }
+
+    describe("updatePostTitle()") {
+        it("should call postService.updateTitle()") {
+            // Given
+            val author: User = users[0]
+            val post: Post = posts[0]!!
+            val title = "Qux"
+            val input = UpdatePostTitleInput(post.id, title)
+            val expectedResult: Post? = post.copy(title = title)
+            `when`(postService.findOneById(post.id, author)).thenReturn(post)
+            `when`(postService.updateTitle(post, title)).thenReturn(expectedResult)
+
+            // When
+            val result: Post? = mutationResolver.updatePostTitle(input)
+
+            // Then
+            Assertions.assertEquals(result, expectedResult)
         }
 
-        context("with unauthorized user") {
-            it("should throw an UnauthorizedException which is embedded in the GraphQLException") {
-                // Given
-                SecurityContextHolder.getContext().authentication =
-                        UsernamePasswordAuthenticationToken("anonymousUser", null, listOf())
+        it("should not update title and return null if the post is not existing") {
+            // Given
+            val title = "Qux"
+            val input = UpdatePostTitleInput("1", title)
+            val expectedResult: Post? = null
+            `when`(postService.findOneById("1")).thenReturn(null)
 
-                // When
-                val err: GraphQLException = Assertions.assertThrows(GraphQLException::class.java) {
-                    mutationResolver.createPost()
-                }
+            // When
+            val result: Post? = mutationResolver.updatePostTitle(input)
 
-                // Then
-                Assertions.assertEquals(err.message, GraphQLException(UnauthorizedException().message).message)
-            }
+            // THen
+            Assertions.assertEquals(result, expectedResult)
+        }
+    }
+
+    describe("updatePostStatus()") {
+        it("should call postService.updateStatus()") {
+            // Given
+            val author: User = users[0]
+            val post: Post = posts[0]!!
+            val status = Status.DRAFT
+            val input = UpdatePostStatusInput(post.id, status)
+            val expectedResult: Post? = post.copy(status = status)
+            `when`(postService.findOneById(post.id, author)).thenReturn(post)
+            `when`(postService.updateStatus(post, status)).thenReturn(expectedResult)
+
+            // When
+            val result: Post? = mutationResolver.updatePostStatus(input)
+
+            // Then
+            Assertions.assertEquals(result, expectedResult)
+        }
+
+        it("should not update status and return null if the post is not existing") {
+            // Given
+            val status = Status.DRAFT
+            val input = UpdatePostStatusInput("1", status)
+            val expectedResult: Post? = null
+            `when`(postService.findOneById("1")).thenReturn(null)
+
+            // When
+            val result: Post? = mutationResolver.updatePostStatus(input)
+
+            // THen
+            Assertions.assertEquals(result, expectedResult)
+        }
+    }
+
+    describe("updatePostContent()") {
+        it("should call postService.updateContent()") {
+            // Given
+            val author: User = users[0]
+            val post: Post = posts[0]!!
+            val markdown = "# Hello, world!"
+            val input = UpdatePostContentInput(post.id, markdown)
+            val expectedResult: Post? = post.copy(markdown = markdown, html = "<h1>Hello, world!</h1>")
+            `when`(postService.findOneById(post.id, author)).thenReturn(post)
+            `when`(postService.updateContent(post, markdown)).thenReturn(expectedResult)
+
+            // When
+            val result: Post? = mutationResolver.updatePostContent(input)
+
+            // Then
+            Assertions.assertEquals(result, expectedResult)
+        }
+
+        it("should not update content and return null if the post is not existing") {
+            // Given
+            val markdown = "# Hello, world!"
+            val input = UpdatePostContentInput("1", markdown)
+            val expectedResult: Post? = null
+            `when`(postService.findOneById("1")).thenReturn(null)
+
+            // When
+            val result: Post? = mutationResolver.updatePostContent(input)
+
+            // THen
+            Assertions.assertEquals(result, expectedResult)
         }
     }
 })
