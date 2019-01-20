@@ -6,17 +6,27 @@ interface PostService {
     /**
      * Return a list of posts filtered by its status.
      */
-    fun findAll(status: Status): List<Post?>
+    fun findAllByStatus(status: Status): List<Post?>
 
     /**
      * Return a list of posts that belong to the author and filtered by its status.
      */
-    fun findAll(author: User, status: Status): List<Post?>
+    fun findAllByStatus(status: Status, author: User): List<Post?>
 
     /**
      * Return a list of posts that belong to the category and filtered by its status.
      */
-    fun findAll(category: Category, status: Status): List<Post?>
+    fun findAllByStatus(status: Status, category: Category): List<Post?>
+
+    /**
+     * Return a single post by its ID.
+     */
+    fun findOneById(id: String): Post?
+
+    /**
+     * Return a single post that belongs to the author by its ID.
+     */
+    fun findOneById(id: String, author: User): Post?
 
     /**
      * Return a empty post with DRAFT status.

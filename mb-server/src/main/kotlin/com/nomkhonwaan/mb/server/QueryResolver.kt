@@ -21,7 +21,7 @@ class QueryResolver(
      * Return a list of published posts.
      */
     fun latestPublishedPosts(): List<Post?> {
-        return postService.findAll(Status.PUBLISHED)
+        return postService.findAllByStatus(Status.PUBLISHED)
     }
 
     /**
@@ -29,7 +29,7 @@ class QueryResolver(
      */
     fun latestDraftPosts(): List<Post?> {
         return whenAuthorized {
-            postService.findAll(it, Status.DRAFT)
+            postService.findAllByStatus(Status.DRAFT, it)
         }
     }
 }

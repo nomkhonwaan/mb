@@ -19,6 +19,15 @@ type Query {
 type Mutation {
     # Create a new empty post
     createPost: Post!
+
+    # Update a title of the post
+    updatePostTitle(input: UpdatePostTitleInput!): Post
+
+    # Toggle post status whether draft or published
+    updatePostStatus(input: UpdatePostStatusInput!): Post
+
+    # Update a content of the post
+    updatePostContent(input: UpdatePostContentInput!): Post
 }
 
 # Group of posts regarded as having particular shared characteristics
@@ -91,4 +100,19 @@ type UserEmail {
 enum Status {
     DRAFT
     PUBLISHED
+}
+
+input UpdatePostTitleInput {
+    id: ID!
+    title: String!
+}
+
+input UpdatePostStatusInput {
+    id: ID!
+    status: Status!
+}
+
+input UpdatePostContentInput {
+    id: ID!
+    markdown: String!
 }

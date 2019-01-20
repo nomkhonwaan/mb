@@ -32,7 +32,7 @@ object QueryResolverSpec : Spek({
     }
 
     describe("categories()") {
-        it("should call categoryService.findAll()") {
+        it("should call categoryService.findAllByStatus()") {
             // Given
             val expectedResult: List<Category?> = categories
             `when`(categoryService.findAll()).thenReturn(categories)
@@ -46,11 +46,11 @@ object QueryResolverSpec : Spek({
     }
 
     describe("latestPublishedPost()") {
-        it("should call postService.findAll() with [Status.PUBLISHED]") {
+        it("should call postService.findAllByStatus() with [Status.PUBLISHED]") {
             // Given
             val status = Status.PUBLISHED
             val expectedResult: List<Post?> = posts.filterBy(status)
-            `when`(postService.findAll(status)).thenReturn(expectedResult)
+            `when`(postService.findAllByStatus(status)).thenReturn(expectedResult)
 
             // When
             val result: List<Post?> = queryResolver.latestPublishedPosts()
@@ -62,12 +62,12 @@ object QueryResolverSpec : Spek({
 
     describe("latestDraftPosts()") {
         context("with authorized user") {
-            it("should call postService.findAll() with [Status.DRAFT] and [User]") {
+            it("should call postService.findAllByStatus() with [Status.DRAFT] and [User]") {
                 // Given
                 val author: User = users[0]
                 val status = Status.DRAFT
                 val expectedResult: List<Post?> = posts.filterBy(author).filterBy(status)
-                `when`(postService.findAll(author, status)).thenReturn(expectedResult)
+                `when`(postService.findAllByStatus(status, author)).thenReturn(expectedResult)
 
                 // When
                 val result: List<Post?> = queryResolver.latestDraftPosts()

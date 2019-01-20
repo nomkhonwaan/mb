@@ -13,7 +13,7 @@ import java.time.ZonedDateTime
 
 @Service
 class PostServiceImpl(private val postRepository: PostRepository) : PostService {
-    override fun findAll(status: Status): List<Post?> {
+    override fun findAllByStatus(status: Status): List<Post?> {
         return if (status == Status.PUBLISHED) {
             postRepository.findAllByStatus(status, sortBy("publishedAt"))
         } else {
@@ -21,20 +21,28 @@ class PostServiceImpl(private val postRepository: PostRepository) : PostService 
         }
     }
 
-    override fun findAll(author: User, status: Status): List<Post?> {
+    override fun findAllByStatus(status: Status, author: User): List<Post?> {
         return if (status == Status.PUBLISHED) {
-            postRepository.findAllByAuthorIdAndStatus(author.id, status, sortBy("publishedAt"))
+            postRepository.findAllByStatusAndAuthorId(status, author.id, sortBy("publishedAt"))
         } else {
-            postRepository.findAllByAuthorIdAndStatus(author.id, status)
+            postRepository.findAllByStatusAndAuthorId(status, author.id)
         }
     }
 
-    override fun findAll(category: Category, status: Status): List<Post?> {
+    override fun findAllByStatus(status: Status, category: Category): List<Post?> {
         return if (status == Status.PUBLISHED) {
-            postRepository.findAllByCategoryIdAndStatus(category.id, status, sortBy("publishedAt"))
+            postRepository.findAllByStatusAndCategoryId(status, category.id, sortBy("publishedAt"))
         } else {
-            postRepository.findAllByCategoryIdAndStatus(category.id, status)
+            postRepository.findAllByStatusAndCategoryId(status, category.id)
         }
+    }
+
+    override fun findOneById(id: String): Post? {
+        return postRepository.findById(id).orElse(null)
+    }
+
+    override fun findOneById(id: String, author: User): Post? {
+        return findOneById(id)?.takeIf { it.author.id == author.id }
     }
 
     private fun sortBy(field: String, direction: Sort.Direction = Sort.Direction.DESC): Sort {
