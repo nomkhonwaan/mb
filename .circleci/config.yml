@@ -33,6 +33,7 @@ jobs:
     machine: true
     working_directory: ~/repo/mb-server
     steps:
+      - checkout
       - attach_workspace:
           at: ./mb-server
       - run: |
