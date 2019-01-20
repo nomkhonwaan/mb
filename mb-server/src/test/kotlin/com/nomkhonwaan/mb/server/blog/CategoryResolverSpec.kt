@@ -19,7 +19,7 @@ object CategoryResolverSpec : Spek({
             val category: Category = categories[0]
             val status = Status.PUBLISHED
             val expectedResult: List<Post?> = posts.filterBy(category)
-            `when`(postService.findAll(category, status)).thenReturn(expectedResult)
+            `when`(postService.findAllByStatus(status, category)).thenReturn(expectedResult)
 
             // When
             val result: List<Post?>? = categoryResolver.latestPublishedPosts(category)

@@ -44,3 +44,7 @@ fun List<Post?>.filterBy(author: User): List<Post?> {
 fun List<Post?>.filterBy(category: Category): List<Post?> {
     return this.filter { it?.categories?.contains(category) ?: false }
 }
+
+fun List<Post?>.findBy(id: String): Post? {
+    return this.find { it?.id == id }
+}

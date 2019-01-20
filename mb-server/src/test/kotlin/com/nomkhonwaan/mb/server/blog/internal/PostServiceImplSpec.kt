@@ -6,10 +6,7 @@ import com.nomkhonwaan.mb.server.blog.Category
 import com.nomkhonwaan.mb.server.blog.Post
 import com.nomkhonwaan.mb.server.blog.PostRepository
 import com.nomkhonwaan.mb.server.blog.Status
-import com.nomkhonwaan.mb.server.fixture.categories
-import com.nomkhonwaan.mb.server.fixture.filterBy
-import com.nomkhonwaan.mb.server.fixture.posts
-import com.nomkhonwaan.mb.server.fixture.users
+import com.nomkhonwaan.mb.server.fixture.*
 import org.bson.types.ObjectId
 import org.commonmark.node.Node
 import org.commonmark.parser.Parser
@@ -21,6 +18,7 @@ import org.spekframework.spek2.Spek
 import org.spekframework.spek2.style.specification.describe
 import org.springframework.data.domain.Sort
 import java.time.ZonedDateTime
+import java.util.*
 
 object PostServiceImplSpec : Spek({
     val postRepository: PostRepository = mock(PostRepository::class.java)
@@ -30,7 +28,7 @@ object PostServiceImplSpec : Spek({
         reset(postRepository)
     }
 
-    describe("findAll()") {
+    describe("findAllByStatus()") {
         context("find all by status") {
             it("should return a list of published posts") {
                 // Given
@@ -40,7 +38,7 @@ object PostServiceImplSpec : Spek({
                 `when`(postRepository.findAllByStatus(status, sort)).thenReturn(expectedResult)
 
                 // When
-                val result: List<Post?> = postService.findAll(status)
+                val result: List<Post?> = postService.findAllByStatus(status)
 
                 // Then
                 Assertions.assertEquals(result, expectedResult)
@@ -53,24 +51,24 @@ object PostServiceImplSpec : Spek({
                 `when`(postRepository.findAllByStatus(status)).thenReturn(expectedResult)
 
                 // When
-                val result: List<Post?> = postService.findAll(status)
+                val result: List<Post?> = postService.findAllByStatus(status)
 
                 // Then
                 Assertions.assertEquals(result, expectedResult)
             }
         }
 
-        context("find all by author and status") {
+        context("find all by status and author") {
             it("should return a list of published posts that belong to the author") {
                 // Given
                 val author: User = users[0]
                 val status = Status.PUBLISHED
                 val sort: Sort = Sort.by(Sort.Direction.DESC, "publishedAt")
                 val expectedResult: List<Post?> = posts.filterBy(author).filterBy(status)
-                `when`(postRepository.findAllByAuthorIdAndStatus(author.id, status, sort)).thenReturn(expectedResult)
+                `when`(postRepository.findAllByStatusAndAuthorId(status, author.id, sort)).thenReturn(expectedResult)
 
                 // When
-                val result: List<Post?>? = postService.findAll(author, status)
+                val result: List<Post?>? = postService.findAllByStatus(status, author)
 
                 // Then
                 Assertions.assertEquals(result, expectedResult)
@@ -81,27 +79,27 @@ object PostServiceImplSpec : Spek({
                 val author: User = users[1]
                 val status = Status.DRAFT
                 val expectedResult: List<Post?> = posts.filterBy(author).filterBy(status)
-                `when`(postRepository.findAllByAuthorIdAndStatus(author.id, status)).thenReturn(expectedResult)
+                `when`(postRepository.findAllByStatusAndAuthorId(status, author.id)).thenReturn(expectedResult)
 
                 // When
-                val result: List<Post?>? = postService.findAll(author, status)
+                val result: List<Post?>? = postService.findAllByStatus(status, author)
 
                 // Then
                 Assertions.assertEquals(result, expectedResult)
             }
         }
 
-        context("find all by category and status") {
+        context("find all by status and category") {
             it("should return a list of published posts that belong to the category") {
                 // Given
                 val category: Category = categories[0]
                 val status = Status.PUBLISHED
                 val sort: Sort = Sort.by(Sort.Direction.DESC, "publishedAt")
                 val expectedResult: List<Post?> = posts.filterBy(category).filterBy(status)
-                `when`(postRepository.findAllByCategoryIdAndStatus(category.id, status, sort)).thenReturn(expectedResult)
+                `when`(postRepository.findAllByStatusAndCategoryId(status, category.id, sort)).thenReturn(expectedResult)
 
                 // When
-                val result: List<Post?>? = postService.findAll(category, status)
+                val result: List<Post?>? = postService.findAllByStatus(status, category)
 
                 // Then
                 Assertions.assertEquals(result, expectedResult)
@@ -112,10 +110,70 @@ object PostServiceImplSpec : Spek({
                 val category: Category = categories[1]
                 val status = Status.DRAFT
                 val expectedResult: List<Post?> = posts.filterBy(category).filterBy(status)
-                `when`(postRepository.findAllByCategoryIdAndStatus(category.id, status)).thenReturn(expectedResult)
+                `when`(postRepository.findAllByStatusAndCategoryId(status, category.id)).thenReturn(expectedResult)
 
                 // When
-                val result: List<Post?>? = postService.findAll(category, status)
+                val result: List<Post?>? = postService.findAllByStatus(status, category)
+
+                // Then
+                Assertions.assertEquals(result, expectedResult)
+            }
+        }
+    }
+
+    describe("findOneById()") {
+        context("find one by ID") {
+            it("should return a single post") {
+                // Given
+                val id: String = posts[0]!!.id
+                val expectedResult: Post? = posts.findBy(id)
+                `when`(postRepository.findById(id)).thenReturn(Optional.ofNullable(expectedResult))
+
+                // When
+                val result: Post? = postService.findOneById(id)
+
+                // Then
+                Assertions.assertEquals(result, expectedResult)
+            }
+        }
+
+        context("find one by ID and author") {
+            it("should return a single post that belongs to the author") {
+                // Given
+                val author: User = users[0]
+                val id: String = posts.filterBy(author)[0]!!.id
+                val expectedResult: Post? = posts.findBy(id)
+                `when`(postRepository.findById(id)).thenReturn(Optional.ofNullable(expectedResult))
+
+                // When
+                val result: Post? = postService.findOneById(id, author)
+
+                // Then
+                Assertions.assertEquals(result, expectedResult)
+            }
+
+            it("should return null if post is not existing") {
+                // Given
+                val author: User = users[0]
+                val expectedResult: Post? = null
+                `when`(postRepository.findById("1")).thenReturn(Optional.ofNullable(null))
+
+                // When
+                val result: Post? = postService.findOneById("1" , author)
+
+                // Then
+                Assertions.assertEquals(result, expectedResult)
+            }
+
+            it("should return null if author ID mismatch") {
+                // Given
+                val author: User = users[1]
+                val id: String = posts[0]!!.id
+                val expectedResult: Post? = null
+                `when`(postRepository.findById(id)).thenReturn(Optional.ofNullable(posts.findBy(id)))
+
+                // When
+                val result: Post? = postService.findOneById(id, author)
 
                 // Then
                 Assertions.assertEquals(result, expectedResult)
