@@ -20,7 +20,7 @@ import java.util.concurrent.CompletableFuture
 @Component
 class CategoryResolver(private val queryGateway: QueryGateway) : GraphQLResolver<Category> {
     /**
-     * Return a list of published Posts ordered by "publishedAt" descending.
+     * Returns a list of published Posts ordered by "publishedAt" descending.
      *
      * @param category A Category data object
      * @param offset   An offset of the list of published Posts to be queried

@@ -6,23 +6,41 @@ schema {
 
 # The query root of the GraphQL
 type Query {
-    # Return a list of Categories
+    # Returns a list of Categories
     categories: [Category]!
 
-    # Return a list of published Posts ordered by "publishedAt" descending
+    # Returns a list of published Posts ordered by "publishedAt" descending
     latestPublishedPosts(offset: Int = 0, limit: Int = 5): [Post]!
 
-    # Return a list of draft Posts ordered by "createdAt" descending
+    # Returns a list of draft Posts ordered by "createdAt" descending
     latestDraftPosts(offset: Int = 0, limit: Int = 5): [Post]!
 }
 
 # The mutation root of the GraphQL
 type Mutation {
-    # Create a new Post with DRAFT status and empty categories and tags
+    # Creates a new Post with DRAFT status and empty categories and tags
     createPost: Post!
 
-    # Update a title of the Post
+    ## Attaches an Attachment to the Post
+    #addPostAttachment(input: AddPostAttachmentInput!): Post
+
+    ## Un-attaches an Attachment from the Post
+    #removePostAttachment(input: RemovePostAttachmentInput!): Post
+
+    # Updates a title of the Post and its slug
     updatePostTitle(input: UpdatePostTitleInput!): Post
+
+    ## Updates status of the Post will update the "publishedAt" if the Post has been published from the draft
+    #updatePostStatus(input: UpdatePostStatusInput!): Post
+
+    ## Updates content of the Post and compile to HTML also
+    #updatePostContent(input: UpdatePostContentInput!): Post
+
+    # Replaces list of Categories of the Post
+    updatePostCategories(input: UpdatePostCategoriesInput!): Post
+
+    ## Replaces list of Tags of the Post
+    #updatePostTags(input: UpdatePostTagsInput!): Post
 }
 
 # A group of Posts regarded as having particular shared characteristics

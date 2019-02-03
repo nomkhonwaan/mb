@@ -24,7 +24,7 @@ class MutationResolver(
         private val queryGateway: QueryGateway
 ) : GraphQLMutationResolver {
     /**
-     * Create a new Post with DRAFT status and empty categories and tags.
+     * Creates a new Post with DRAFT status and empty categories and tags.
      */
     @PreAuthorize("hasRole('ROLE_USER')")
     fun createPost(): CompletableFuture<Post> {
@@ -41,7 +41,7 @@ class MutationResolver(
     }
 
     /**
-     * Update a title of the Post.
+     * Updates a title of the Post.
      *
      * @param input An Input data for updating the Post title
      */

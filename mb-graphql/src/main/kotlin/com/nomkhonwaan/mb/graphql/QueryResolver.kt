@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture
 @Component
 class QueryResolver(private val queryGateway: QueryGateway) : GraphQLQueryResolver {
     /**
-     * Return a list of Categories.
+     * Returns a list of Categories.
      */
     fun categories(): CompletableFuture<List<Category?>> {
         return queryGateway.query(
@@ -32,7 +32,7 @@ class QueryResolver(private val queryGateway: QueryGateway) : GraphQLQueryResolv
     }
 
     /**
-     * Return a list of published Posts.
+     * Returns a list of published Posts.
      *
      * @param offset An offset of the list of published Posts to be queried
      * @param limit  A maximum number of the Posts to be queried
@@ -45,7 +45,7 @@ class QueryResolver(private val queryGateway: QueryGateway) : GraphQLQueryResolv
     }
 
     /**
-     * Return a list of draft Posts.
+     * Returns a list of draft Posts.
      *
      * @param offset An offset of the list of draft Posts to be queried
      * @param limit  A maximum number of the Posts to be queried
