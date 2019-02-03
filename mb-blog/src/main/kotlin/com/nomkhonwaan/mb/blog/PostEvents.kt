@@ -14,6 +14,7 @@ data class PostCreatedEvent(
         override val id: String,
         val status: Status,
         val authorId: String,
+        val categories: List<Category?>,
         val createdAt: ZonedDateTime = ZonedDateTime.now()
 ) : Event<String>(id)
 

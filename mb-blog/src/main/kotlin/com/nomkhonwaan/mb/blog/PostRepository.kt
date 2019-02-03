@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository
 /**
  * A CRUD repository of the Post.
  * <p>
- * An extended reactive repository of MongoDB for the Post.
+ * An extended repository of [MongoRepository] for handling CRUD of the Post.
  */
 @Repository
 interface PostRepository : MongoRepository<Post, String> {

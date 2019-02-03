@@ -5,6 +5,8 @@ schema {
 
 # The query root of the GraphQL
 type Query {
+    categories: [Category]!
+
     # Return a list of published Posts ordered by "publishedAt" descending
     latestPublishedPosts(offset: Int = 0, limit: Int = 5): [Post]!
 
@@ -21,6 +23,17 @@ type Mutation {
     updatePostTitle(input: UpdatePostTitleInput!): Post
 }
 
+# A group of Posts regarded as having particular shared characteristics
+type Category {
+    id: ID!
+
+    # A name of the Category
+    name: String
+
+    # A valid URL string composes with name and ID
+    slug: String
+}
+
 # A piece of content in the blog platform
 type Post {
     id: ID!
@@ -33,6 +46,12 @@ type Post {
 
     # A status that indicates the type of the Post whether publicly or privately
     status: Status
+
+    # An original content of the Post in markdown syntax
+    markdown: String
+
+    # A content of the Post in HTML format translated from markdown
+    html: String
 
     # An author of the Post
     author: User!

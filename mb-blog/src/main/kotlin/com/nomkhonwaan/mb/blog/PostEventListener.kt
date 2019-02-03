@@ -28,6 +28,7 @@ class PostEventListener(
                         id = event.id,
                         status = event.status,
                         authorId = event.authorId,
+                        categories = event.categories,
                         createdAt = event.createdAt
                 )
         )

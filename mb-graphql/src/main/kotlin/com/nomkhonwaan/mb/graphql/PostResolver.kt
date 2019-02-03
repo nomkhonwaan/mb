@@ -12,21 +12,20 @@ import java.util.concurrent.CompletableFuture
 /**
  * A resolver of the Post.
  * <p>
- * This is a specific type resolver for performing field mutation.
+ * This is a specific type resolver for performing field query and mutation.
  * Most of the actions performed via the query message bus.
  *
  * @param queryGateway An injection of the QueryGateway for dealing with query message bus
  */
 @Component
-class PostResolver(private val queryGateway: QueryGateway) :GraphQLResolver<Post> {
+class PostResolver(private val queryGateway: QueryGateway) : GraphQLResolver<Post> {
     /**
      * Resolves an author of the Post from its authorId.
      *
      * @param post A Post data object
      */
     fun author(post: Post): CompletableFuture<User> {
-        return queryGateway
-                .query(FindUserByIDQuery(post.authorId), User::class.java)
+        return queryGateway.query(FindUserByIDQuery(post.authorId), User::class.java)
     }
 
     /**

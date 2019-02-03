@@ -43,6 +43,11 @@ class PostAggregate() {
     private lateinit var authorId: String
 
     /**
+     * A list of Categories that the Post belongs to
+     */
+    private lateinit var categories: List<Category?>
+
+    /**
      * A datetime that the Post was created
      */
     private lateinit var createdAt: ZonedDateTime
@@ -63,7 +68,8 @@ class PostAggregate() {
                 PostCreatedEvent(
                         if (command.id.isNotBlank()) command.id else ObjectId.get().toHexString(),
                         Status.DRAFT,
-                        command.authorId
+                        command.authorId,
+                        listOf()
                 )
         )
     }
@@ -94,6 +100,7 @@ class PostAggregate() {
         id = event.id
         status = event.status
         authorId = event.authorId
+        categories = event.categories
         createdAt = event.createdAt
     }
 
