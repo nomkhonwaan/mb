@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.blog
+package com.nomkhonwaan.mb.blog.post
 
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -46,7 +46,7 @@ class PostQueryHandler(private val postRepository: PostRepository) {
         val page: Int = Math.ceil(query.offset.toDouble() / query.limit.toDouble()).toInt()
         val sort: Sort = Sort.by(Sort.Direction.DESC, "publishedAt")
 
-        return postRepository.findAll(Status.PUBLISHED, PageRequest.of(page, query.limit, sort))
+        return postRepository.findAllByStatus(Status.PUBLISHED, PageRequest.of(page, query.limit, sort))
     }
 
     /**
@@ -59,6 +59,10 @@ class PostQueryHandler(private val postRepository: PostRepository) {
         val page: Int = Math.ceil(query.offset.toDouble() / query.limit.toDouble()).toInt()
         val sort: Sort = Sort.by(Sort.Direction.DESC, "createdAt")
 
-        return postRepository.findAll(query.authorId, Status.DRAFT, PageRequest.of(page, query.limit, sort))
+        return postRepository.findAllByAuthorIdAndStatus(
+                query.authorId,
+                Status.DRAFT,
+                PageRequest.of(page, query.limit, sort)
+        )
     }
 }

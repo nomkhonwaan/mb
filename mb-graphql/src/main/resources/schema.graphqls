@@ -1,10 +1,12 @@
 schema {
     query: Query
+
     mutation: Mutation
 }
 
 # The query root of the GraphQL
 type Query {
+    # Return a list of Categories
     categories: [Category]!
 
     # Return a list of published Posts ordered by "publishedAt" descending
@@ -32,6 +34,9 @@ type Category {
 
     # A valid URL string composes with name and ID
     slug: String
+
+    # Return a list of published Posts ordered by "publishedAt" descending
+    latestPublishedPosts(offset: Int = 0, limit: Int = 5): [Post]!
 }
 
 # A piece of content in the blog platform
@@ -55,6 +60,9 @@ type Post {
 
     # An author of the Post
     author: User!
+
+    # A list of Categories that the Post belonging to
+    categories: [Category]!
 
     # An RFC3339 datetime that the Post was published
     publishedAt: String

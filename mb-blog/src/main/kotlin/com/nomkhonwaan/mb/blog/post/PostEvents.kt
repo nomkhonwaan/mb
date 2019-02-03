@@ -1,5 +1,6 @@
-package com.nomkhonwaan.mb.blog
+package com.nomkhonwaan.mb.blog.post
 
+import com.nomkhonwaan.mb.blog.category.Category
 import com.nomkhonwaan.mb.common.cqrs.Event
 import java.time.ZonedDateTime
 

@@ -1,7 +1,11 @@
 package com.nomkhonwaan.mb.graphql
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver
-import com.nomkhonwaan.mb.blog.*
+import com.nomkhonwaan.mb.blog.category.Category
+import com.nomkhonwaan.mb.blog.category.FindAllCategoriesQuery
+import com.nomkhonwaan.mb.blog.post.FindAllDraftPostsQuery
+import com.nomkhonwaan.mb.blog.post.FindAllPublishedPostsQuery
+import com.nomkhonwaan.mb.blog.post.Post
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.security.access.prepost.PreAuthorize

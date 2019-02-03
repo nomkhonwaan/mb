@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.blog
+package com.nomkhonwaan.mb.blog.post
 
 import com.nomkhonwaan.mb.common.cqrs.Command
 

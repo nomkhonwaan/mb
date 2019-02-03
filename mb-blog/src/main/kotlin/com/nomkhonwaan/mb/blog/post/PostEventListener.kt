@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.blog
+package com.nomkhonwaan.mb.blog.post
 
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.queryhandling.QueryUpdateEmitter
