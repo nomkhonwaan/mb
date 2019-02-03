@@ -1,0 +1,11 @@
+rootProject.name = 'mb'
+
+include('mb-auth')
+include('mb-autoconfigure')
+include('mb-blog')
+include('mb-common')
+include('mb-graphql')
+include('mb-notification')
+include('mb-restful')
+include('mb-server')
+include('mb-storage')

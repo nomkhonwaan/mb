@@ -1,0 +1,7 @@
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation('org.axonframework:axon-spring:4.0.3')
+}

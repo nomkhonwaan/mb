@@ -1,0 +1,11 @@
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation(project(':mb-autoconfigure'))
+    implementation(project(':mb-blog'))
+    implementation(project(':mb-graphql'))
+    
+    implementation('org.springframework.boot:spring-boot-starter-web')
+}

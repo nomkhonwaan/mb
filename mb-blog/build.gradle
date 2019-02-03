@@ -1,0 +1,14 @@
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation(project(':mb-common'))
+
+    implementation('org.axonframework:axon-spring:4.0.3')
+    implementation('org.axonframework:axon-messaging:4.0.3')
+    implementation('org.axonframework:axon-modelling:4.0.3')
+    implementation('org.springframework.boot:spring-boot-starter-data-mongodb')
+    implementation('com.atlassian.commonmark:commonmark:0.12.1')
+    implementation('com.github.slugify:slugify:2.3')
+}

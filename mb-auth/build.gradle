@@ -1,0 +1,12 @@
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation(project(':mb-common'))
+
+    implementation('com.auth0:auth0:1.10.0')
+    implementation('org.axonframework:axon-messaging:4.0.3')
+    implementation('org.springframework:spring-context')
+    implementation('org.springframework.boot:spring-boot-autoconfigure')
+}

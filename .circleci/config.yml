@@ -1,0 +1,110 @@
+version: 2
+
+jobs:
+  mb-server_test:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - run: ./gradlew :mb-server:test
+      - run: |
+          ./gradlew :mb-server:check :mb-server:jacocoTestReport
+          bash <(curl -s https://codecov.io/bash)
+      - save_cache:
+          paths:
+            - ~/.gradle
+          key: gradle-{{ checksum "build.gradle" }}
+  mb-server_build_to_jar:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - gradle-{{ checksum "build.gradle" }}
+      - run: ./gradlew :mb-server:bootJar
+      - persist_to_workspace:
+          root: ./mb-server
+          paths:
+            - ./build
+  mb-server_build_to_docker:
+    machine: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./mb-server
+      - run: |
+          docker build -t nomkhonwaan/mb-server:latest -f ./mb-server/Dockerfile ./mb-server
+          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker push nomkhonwaan/mb-server:latest
+  mb-server_deploy_to_pivotal_web_services:
+    machine: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./mb-server
+      - run: |
+          curl \
+            -L \
+            -o cf-cli_amd64.deb \
+            https://cli.run.pivotal.io/stable?release=debian64&source=github
+
+          sleep 1m
+
+          sudo dpkg -i cf-cli_amd64.deb
+
+          cf -v
+          cf api https://api.run.pivotal.io
+          cf auth "$CF_USER" "$CF_PASSWORD"
+          cf target -o nomkhonwaan
+          cf push -f ./mb-server/manifest.yml -p ./mb-server/build/libs/*.jar
+  mb-server_deploy_to_docker_deploy_webhook:
+    machine: true
+    steps:
+      - run: |
+          curl \
+            -H 'Content-Type: application/json' \
+            -d '{"repository": { "repo_name": "nomkhonwaan/mb-server" }, "push_data": { "tag": "latest" } }' \
+            $DOCKER_DEPLOY_WEBHOOK_PRODUCTION
+
+workflows:
+  version: 2
+  mb-server_workflow:
+    jobs:
+      - mb-server_test
+      - mb-server_build_to_jar:
+          requires:
+            - mb-server_test
+      - mb-server_build_to_docker:
+          requires:
+            - mb-server_build_to_jar
+          filters:
+            branches:
+              only:
+                - master
+      - mb-server_deploy_to_pivotal_web_services:
+          requires:
+            - mb-server_build_to_jar
+            - hold
+          filters:
+            branches:
+              ignore:
+                - master
+      - hold:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
+      - mb-server_deploy_to_docker_deploy_webhook:
+          requires:
+            - mb-server_build_to_docker
+            - hold
+          filters:
+            branches:
+              only:
+                - master

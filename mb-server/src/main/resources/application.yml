@@ -1,0 +1,23 @@
+auth0:
+    domain: nomkhonwaan.auth0.com
+    audience: https://nomkhonwaan.auth0.com/api/v2/
+    client-id: ${AUTH0_CLIENT_ID}
+    client-secret: ${AUTH0_CLIENT_SECRET}
+
+axon:
+  extensions:
+    mongo:
+      databaseName: nomkhonwaan_com
+
+graphiql:
+  mapping: /
+
+security:
+  oauth2:
+    resource:
+      user-info-uri: https://nomkhonwaan.auth0.com/userinfo
+
+spring:
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost/nomkhonwaan_com}
