@@ -97,7 +97,7 @@ type User {
     id: ID!
 
     # A valid URL string of the avatar URL
-    avatarURL: String
+    avatarUrl: String
 
     # A name of the User
     displayName: String!
@@ -114,4 +114,12 @@ input UpdatePostTitleInput {
 
     # A title of the Post
     title: String!
+}
+
+# An input type for updating Post Categories
+input UpdatePostCategoriesInput {
+    id: ID!
+
+    # A list of Category IDs
+    categoryIds: [String]!
 }

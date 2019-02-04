@@ -14,6 +14,6 @@ data class User(private val user: Auth0User) {
     val displayName: String
         get() = user.name
 
-    val avatarURL: String
+    val avatarUrl: String
         get() = user.picture
 }
