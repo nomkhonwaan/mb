@@ -21,6 +21,16 @@ class CategoryQueryHandler(
         private val postRepository: PostRepository
 ) {
     /**
+     * Returns a single Category from the query store.
+     *
+     * @param query A Query for finding a single Category by its ID
+     */
+    @QueryHandler
+    fun handle(query: FindCategoryByIDQuery): Category? {
+        return categoryRepository.findById(query.id).orElse(null)
+    }
+
+    /**
      * Returns a list of Categories from the query store.
      *
      * @param query A Query for finding a list of Categories
@@ -41,7 +51,7 @@ class CategoryQueryHandler(
         val sort: Sort = Sort.by(Sort.Direction.DESC, "publishedAt")
 
         return postRepository.findAllByCategoryIdAndStatus(
-                query.categoryId,
+                query.id,
                 Status.PUBLISHED,
                 PageRequest.of(page, query.limit, sort)
         )
