@@ -91,19 +91,20 @@ class PostAggregate() {
         )
     }
 
-//    /**
-//     * Handles Post Categories updating Command.
-//     *
-//     * @param command A Command for updating Post Categories
-//     */
-//    @CommandHandler
-//    fun handle(command: UpdatePostCategoriesCommand) {
-//        AggregateLifecycle.apply(
-//                PostCategoriesUpdatedEvent(
-//                        command.id
-//                )
-//        )
-//    }
+    /**
+     * Handles Post Categories updating Command.
+     *
+     * @param command A Command for updating Post Categories
+     */
+    @CommandHandler
+    fun handle(command: UpdatePostCategoriesCommand) {
+        AggregateLifecycle.apply(
+                PostCategoriesUpdatedEvent(
+                        command.id,
+                        command.categoriesIds
+                )
+        )
+    }
 
     /**
      * Listens on Post created Event.
