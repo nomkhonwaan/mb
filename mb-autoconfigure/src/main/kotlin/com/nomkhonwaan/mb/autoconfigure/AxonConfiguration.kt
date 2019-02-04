@@ -8,6 +8,7 @@ import org.axonframework.extensions.mongo.DefaultMongoTemplate
 import org.axonframework.extensions.mongo.eventsourcing.eventstore.MongoEventStorageEngine
 import org.axonframework.spring.config.AxonConfiguration
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -29,6 +30,7 @@ class AxonConfiguration {
      * The Event store `EmbeddedEventStore` delegates actual storage and retrieval of events to an `EventStorageEngine`.
      */
     @Bean
+    @ConditionalOnMissingBean
     fun eventStore(storageEngine: EventStorageEngine, configuration: AxonConfiguration): EmbeddedEventStore {
         return EmbeddedEventStore.builder()
                 .storageEngine(storageEngine)
@@ -43,6 +45,7 @@ class AxonConfiguration {
      * for enabling MongoDB for the event store instead of Axon Server.
      */
     @Bean
+    @ConditionalOnMissingBean
     fun storageEngine(client: MongoClient): EventStorageEngine {
         return MongoEventStorageEngine.builder()
                 .mongoTemplate(
