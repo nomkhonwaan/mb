@@ -32,3 +32,14 @@ data class PostTitleUpdatedEvent(
         val slug: String,
         val updatedAt: ZonedDateTime = ZonedDateTime.now()
 ) : Event<String>(id)
+
+/**
+ * A Post categories updated Event.
+ *
+ * @param id          An identifier of the Post
+ * @param categoryIds A list of Category IDs
+ */
+data class PostCategoriesUpdatedEvent(
+        override val id: String,
+        val categoryIds: List<String?>
+) : Event<String>(id)

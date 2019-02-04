@@ -32,18 +32,13 @@ class MutationResolver(
 
         return commandGateway
                 .send<String>(CreatePostCommand("", authorId))
-                .thenApply {
-                    queryGateway
-                            .subscriptionQuery(FindPostByIDQuery(it), Post::class.java, Post::class.java)
-                            .updates()
-                            .blockFirst()
-                }
+                .thenApply { queryPostSync(it) }
     }
 
     /**
      * Updates a title of the Post.
      *
-     * @param input An Input data for updating the Post title
+     * @param input An Input data for updating Post title
      */
     @PreAuthorize("hasRole('ROLE_USER')")
     fun updatePostTitle(input: UpdatePostTitleInput): CompletableFuture<Post?> {
@@ -54,12 +49,37 @@ class MutationResolver(
                 .thenComposeAsync { post: Post ->
                     commandGateway
                             .send<Unit>(UpdatePostTitleCommand(post.id, input.title))
-                            .thenApply {
-                                queryGateway
-                                        .subscriptionQuery(FindPostByIDQuery(post.id), Post::class.java, Post::class.java)
-                                        .updates()
-                                        .blockFirst()
-                            }
+                            .thenApply { queryPostSync(post.id) }
                 }
+    }
+
+    /**
+     * Updates a list of the Categories of the Post.
+     *
+     * @param input An Input data for updating Post Categories
+     */
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun updatePostCategories(input: UpdatePostCategoriesInput): CompletableFuture<Post?> {
+        val authorId: String = SecurityContextHolder.getContext().authentication.principal as String
+
+        return queryGateway
+                .query(FindOwnPostByIDQuery(input.id, authorId), Post::class.java)
+                .thenComposeAsync { post: Post ->
+                    commandGateway
+                            .send<Unit>(UpdatePostCategoriesCommand(post.id, input.categoryIds))
+                            .thenApply { queryPostSync(post.id) }
+                }
+    }
+
+    /**
+     * Queries Post by its ID synchronously.
+     *
+     * @param id An identifier of the Post
+     */
+    private fun queryPostSync(id: String): Post? {
+        return queryGateway
+                .subscriptionQuery(FindPostByIDQuery(id), Post::class.java, Post::class.java)
+                .updates()
+                .blockFirst()
     }
 }
