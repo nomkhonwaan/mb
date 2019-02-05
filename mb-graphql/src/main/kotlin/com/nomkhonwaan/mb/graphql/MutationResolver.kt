@@ -45,7 +45,7 @@ class MutationResolver(
         val authorId: String = SecurityContextHolder.getContext().authentication.principal as String
 
         return queryGateway
-                .query(FindOwnPostByIDQuery(input.id, authorId), Post::class.java)
+                .query(FindOwnPostByIdQuery(input.id, authorId), Post::class.java)
                 .thenComposeAsync { post: Post ->
                     commandGateway
                             .send<Unit>(UpdatePostTitleCommand(post.id, input.title))
@@ -63,7 +63,7 @@ class MutationResolver(
         val authorId: String = SecurityContextHolder.getContext().authentication.principal as String
 
         return queryGateway
-                .query(FindOwnPostByIDQuery(input.id, authorId), Post::class.java)
+                .query(FindOwnPostByIdQuery(input.id, authorId), Post::class.java)
                 .thenComposeAsync { post: Post ->
                     commandGateway
                             .send<Unit>(UpdatePostCategoriesCommand(post.id, input.categoryIds))
@@ -78,7 +78,7 @@ class MutationResolver(
      */
     private fun queryPostSync(id: String): Post? {
         return queryGateway
-                .subscriptionQuery(FindPostByIDQuery(id), Post::class.java, Post::class.java)
+                .subscriptionQuery(FindPostByIdQuery(id), Post::class.java, Post::class.java)
                 .updates()
                 .blockFirst()
     }

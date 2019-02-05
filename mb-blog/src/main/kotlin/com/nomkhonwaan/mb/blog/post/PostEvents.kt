@@ -36,10 +36,21 @@ data class PostTitleUpdatedEvent(
 /**
  * A Post categories updated Event.
  *
- * @param id          An identifier of the Post
- * @param categoryIds A list of Category IDs
+ * @param id         An identifier of the Post
+ * @param categories A list of Categories that had verified
  */
 data class PostCategoriesUpdatedEvent(
+        override val id: String,
+        val categories: List<Category?>
+) : Event<String>(id)
+
+/**
+ * A verify list of Category IDs started Event.
+ *
+ * @param id          An identifier of the Post
+ * @param categoryIds A list of Category IDs to be verified
+ */
+data class VerifyCategoryIdsStartedEvent(
         override val id: String,
         val categoryIds: List<String?>
 ) : Event<String>(id)

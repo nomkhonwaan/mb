@@ -8,7 +8,7 @@ class FindAllCategoriesQuery
 /**
  * Finds a single Category by its ID Query.
  */
-data class FindCategoryByIDQuery(val id: String)
+data class FindCategoryByIdQuery(val id: String)
 
 /**
  * Finds all published Posts that belong to the category Query.

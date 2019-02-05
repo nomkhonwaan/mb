@@ -33,7 +33,7 @@ class PostEventListener(
                 )
         )
 
-        queryUpdateEmitter.emit(FindPostByIDQuery::class.java, { it.id == event.id }, post)
+        queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
     }
 
     /**
@@ -51,6 +51,22 @@ class PostEventListener(
             })
         }
 
-        queryUpdateEmitter.emit(FindPostByIDQuery::class.java, { it.id == event.id }, post)
+        queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
+    }
+
+    /**
+     * Saves an updated categories Post to the query store.
+     *
+     *@param event A Post categories updated Event
+     */
+    @EventHandler
+    fun handle(event: PostCategoriesUpdatedEvent) {
+        val post: Post? = postRepository.findById(event.id).orElse(null)?.run {
+            postRepository.save(this.apply {
+                categories = event.categories
+            })
+        }
+
+        queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
     }
 }

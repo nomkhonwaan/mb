@@ -93,15 +93,34 @@ class PostAggregate() {
 
     /**
      * Handles Post Categories updating Command.
+     * <p>
+     * This handler function will trigger list of category IDs verification saga for checking an existing of the category.
      *
      * @param command A Command for updating Post Categories
      */
     @CommandHandler
     fun handle(command: UpdatePostCategoriesCommand) {
         AggregateLifecycle.apply(
-                PostCategoriesUpdatedEvent(
+                VerifyCategoryIdsStartedEvent(
                         command.id,
                         command.categoriesIds
+                )
+        )
+    }
+
+    /**
+     * Handles Post Categories verify completed Command.
+     * <p>
+     * This handler function will be handled after the list of Category IDs has been verified.
+     *
+     * @param command A Command for confirm that the list of Category IDs has been verified
+     */
+    @CommandHandler
+    fun handle(command: CompleteVerifyCategoryIdsCommand) {
+        AggregateLifecycle.apply(
+                PostCategoriesUpdatedEvent(
+                        command.id,
+                        command.categories
                 )
         )
     }
@@ -131,5 +150,15 @@ class PostAggregate() {
         title = event.title
         slug = event.slug
         updatedAt = event.updatedAt
+    }
+
+    /**
+     * Listens on Post Categories updated Event.
+     *
+     * @param event An Event of the Post Categories updating Command
+     */
+    @EventSourcingHandler
+    fun on(event: PostCategoriesUpdatedEvent) {
+        categories = event.categories
     }
 }

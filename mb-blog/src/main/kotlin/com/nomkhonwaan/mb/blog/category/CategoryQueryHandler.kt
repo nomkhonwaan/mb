@@ -26,7 +26,7 @@ class CategoryQueryHandler(
      * @param query A Query for finding a single Category by its ID
      */
     @QueryHandler
-    fun handle(query: FindCategoryByIDQuery): Category? {
+    fun handle(query: FindCategoryByIdQuery): Category? {
         return categoryRepository.findById(query.id).orElse(null)
     }
 

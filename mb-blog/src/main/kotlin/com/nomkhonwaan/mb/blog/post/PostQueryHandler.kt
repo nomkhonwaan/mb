@@ -20,7 +20,7 @@ class PostQueryHandler(private val postRepository: PostRepository) {
      * @param query A Query for finding a single Post by its ID
      */
     @QueryHandler
-    fun handle(query: FindPostByIDQuery): Post? {
+    fun handle(query: FindPostByIdQuery): Post? {
         return postRepository.findById(query.id).orElse(null)
     }
 
@@ -30,7 +30,7 @@ class PostQueryHandler(private val postRepository: PostRepository) {
      * @param query A Query for finding a single Post that belongs to the author by its ID
      */
     @QueryHandler
-    fun handle(query: FindOwnPostByIDQuery): Post? {
+    fun handle(query: FindOwnPostByIdQuery): Post? {
         return postRepository.findById(query.id).orElse(null)?.takeIf {
             it.authorId == query.authorId
         }

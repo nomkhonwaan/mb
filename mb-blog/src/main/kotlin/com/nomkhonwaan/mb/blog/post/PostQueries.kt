@@ -5,7 +5,7 @@ package com.nomkhonwaan.mb.blog.post
  *
  * @param id An identifier of the Post
  */
-data class FindPostByIDQuery(val id: String)
+data class FindPostByIdQuery(val id: String)
 
 /**
  * Finds a single Post that belongs to the author by its ID Query.
@@ -13,7 +13,7 @@ data class FindPostByIDQuery(val id: String)
  * @param id       An identifier of the Post
  * @param authorId An identifier of the author
  */
-data class FindOwnPostByIDQuery(val id: String, val authorId: String)
+data class FindOwnPostByIdQuery(val id: String, val authorId: String)
 
 /**
  * Finds all published Posts Query.
