@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.blog
+package com.nomkhonwaan.mb.blog.post
 
 /**
  * A status indicating the type of Post.

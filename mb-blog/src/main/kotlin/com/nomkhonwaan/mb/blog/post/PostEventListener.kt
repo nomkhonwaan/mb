@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.blog
+package com.nomkhonwaan.mb.blog.post
 
 import org.axonframework.eventhandling.EventHandler
 import org.axonframework.queryhandling.QueryUpdateEmitter
@@ -8,7 +8,8 @@ import org.springframework.stereotype.Component
 /**
  * A event listener of the Post.
  *
- * @param postRepository A CRUD repository of the Post
+ * @param postRepository     A CRUD repository of the Post
+ * @param queryUpdateEmitter An update emitter that will emit signal to the query bus immediately
  */
 @Component
 @EnableAutoConfiguration
@@ -28,11 +29,12 @@ class PostEventListener(
                         id = event.id,
                         status = event.status,
                         authorId = event.authorId,
+                        categories = event.categories,
                         createdAt = event.createdAt
                 )
         )
 
-        queryUpdateEmitter.emit(FindPostByIDQuery::class.java, { it.id == event.id }, post)
+        queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
     }
 
     /**
@@ -50,6 +52,22 @@ class PostEventListener(
             })
         }
 
-        queryUpdateEmitter.emit(FindPostByIDQuery::class.java, { it.id == event.id }, post)
+        queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
+    }
+
+    /**
+     * Saves an updated categories Post to the query store.
+     *
+     *@param event A Post categories updated Event
+     */
+    @EventHandler
+    fun handle(event: PostCategoriesUpdatedEvent) {
+        val post: Post? = postRepository.findById(event.id).orElse(null)?.run {
+            postRepository.save(this.apply {
+                categories = event.categories
+            })
+        }
+
+        queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
     }
 }

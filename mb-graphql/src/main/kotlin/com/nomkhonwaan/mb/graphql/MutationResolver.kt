@@ -1,7 +1,7 @@
 package com.nomkhonwaan.mb.graphql
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver
-import com.nomkhonwaan.mb.blog.*
+import com.nomkhonwaan.mb.blog.post.*
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.security.access.prepost.PreAuthorize
@@ -15,8 +15,8 @@ import java.util.concurrent.CompletableFuture
  * The mutation is a client interface that will proxy all command requests from the client side
  * to the command message bus.
  *
- * @param commandGateway An injection of the CommandGateway for dealing with command message bus
- * @param queryGateway   An injection of the QueryGateway for dealing with query message bus
+ * @param commandGateway An injection of CommandGateway for dealing with the command message bus
+ * @param queryGateway   An injection of QueryGateway for dealing with the query message bus
  */
 @Component
 class MutationResolver(
@@ -24,7 +24,7 @@ class MutationResolver(
         private val queryGateway: QueryGateway
 ) : GraphQLMutationResolver {
     /**
-     * Create a new Post with DRAFT status and empty categories and tags.
+     * Creates a new Post with DRAFT status and empty categories and tags.
      */
     @PreAuthorize("hasRole('ROLE_USER')")
     fun createPost(): CompletableFuture<Post> {
@@ -32,34 +32,54 @@ class MutationResolver(
 
         return commandGateway
                 .send<String>(CreatePostCommand("", authorId))
-                .thenApply {
-                    queryGateway
-                            .subscriptionQuery(FindPostByIDQuery(it), Post::class.java, Post::class.java)
-                            .updates()
-                            .blockFirst()
-                }
+                .thenApply { queryPostSync(it) }
     }
 
     /**
-     * Update a title of the Post.
+     * Updates a title of the Post.
      *
-     * @param input An Input data for updating the Post title
+     * @param input An Input data for updating Post title
      */
     @PreAuthorize("hasRole('ROLE_USER')")
     fun updatePostTitle(input: UpdatePostTitleInput): CompletableFuture<Post?> {
         val authorId: String = SecurityContextHolder.getContext().authentication.principal as String
 
         return queryGateway
-                .query(FindOwnPostByIDQuery(input.id, authorId), Post::class.java)
+                .query(FindOwnPostByIdQuery(input.id, authorId), Post::class.java)
                 .thenComposeAsync { post: Post ->
                     commandGateway
                             .send<Unit>(UpdatePostTitleCommand(post.id, input.title))
-                            .thenApply {
-                                queryGateway
-                                        .subscriptionQuery(FindPostByIDQuery(post.id), Post::class.java, Post::class.java)
-                                        .updates()
-                                        .blockFirst()
-                            }
+                            .thenApply { queryPostSync(post.id) }
                 }
+    }
+
+    /**
+     * Updates a list of the Categories of the Post.
+     *
+     * @param input An Input data for updating Post Categories
+     */
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun updatePostCategories(input: UpdatePostCategoriesInput): CompletableFuture<Post?> {
+        val authorId: String = SecurityContextHolder.getContext().authentication.principal as String
+
+        return queryGateway
+                .query(FindOwnPostByIdQuery(input.id, authorId), Post::class.java)
+                .thenComposeAsync { post: Post ->
+                    commandGateway
+                            .send<Unit>(UpdatePostCategoriesCommand(post.id, input.categoryIds))
+                            .thenApply { queryPostSync(post.id) }
+                }
+    }
+
+    /**
+     * Queries Post by its ID synchronously.
+     *
+     * @param id An identifier of the Post
+     */
+    private fun queryPostSync(id: String): Post? {
+        return queryGateway
+                .subscriptionQuery(FindPostByIdQuery(id), Post::class.java, Post::class.java)
+                .updates()
+                .blockFirst()
     }
 }

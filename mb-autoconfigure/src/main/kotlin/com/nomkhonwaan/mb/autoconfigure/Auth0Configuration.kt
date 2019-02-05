@@ -4,6 +4,7 @@ import com.auth0.client.auth.AuthAPI
 import com.auth0.client.mgmt.ManagementAPI
 import com.auth0.json.auth.TokenHolder
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
@@ -40,6 +41,7 @@ class Auth0Configuration {
      * Provides an Auth0 API client.
      */
     @Bean
+    @ConditionalOnMissingBean
     fun authAPI(): AuthAPI {
         return AuthAPI(domain, clientID, clientSecret)
     }
@@ -50,6 +52,7 @@ class Auth0Configuration {
      * The Management API requires for retrieving user information by their ID from Auth0 APIs.
      */
     @Bean
+    @ConditionalOnMissingBean
     fun managementAPI(authAPI: AuthAPI): ManagementAPI {
         // TODO: make sure that the Management API should not request new access token if the current one is not expire.
         val holder: TokenHolder = authAPI().requestToken(audience).execute()

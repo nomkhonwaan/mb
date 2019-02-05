@@ -1,6 +1,7 @@
-package com.nomkhonwaan.mb.blog
+package com.nomkhonwaan.mb.blog.post
 
 import com.github.slugify.Slugify
+import com.nomkhonwaan.mb.blog.category.Category
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
@@ -43,6 +44,11 @@ class PostAggregate() {
     private lateinit var authorId: String
 
     /**
+     * A list of Categories that the Post belongs to
+     */
+    private lateinit var categories: List<Category?>
+
+    /**
      * A datetime that the Post was created
      */
     private lateinit var createdAt: ZonedDateTime
@@ -63,7 +69,8 @@ class PostAggregate() {
                 PostCreatedEvent(
                         if (command.id.isNotBlank()) command.id else ObjectId.get().toHexString(),
                         Status.DRAFT,
-                        command.authorId
+                        command.authorId,
+                        listOf()
                 )
         )
     }
@@ -85,6 +92,40 @@ class PostAggregate() {
     }
 
     /**
+     * Handles Post Categories updating Command.
+     * <p>
+     * This handler function will trigger list of category IDs verification saga for checking an existing of the category.
+     *
+     * @param command A Command for updating Post Categories
+     */
+    @CommandHandler
+    fun handle(command: UpdatePostCategoriesCommand) {
+        AggregateLifecycle.apply(
+                VerifyCategoryIdsStartedEvent(
+                        command.id,
+                        command.categoriesIds
+                )
+        )
+    }
+
+    /**
+     * Handles Post Categories verify completed Command.
+     * <p>
+     * This handler function will be handled after the list of Category IDs has been verified.
+     *
+     * @param command A Command for confirm that the list of Category IDs has been verified
+     */
+    @CommandHandler
+    fun handle(command: CompleteVerifyCategoryIdsCommand) {
+        AggregateLifecycle.apply(
+                PostCategoriesUpdatedEvent(
+                        command.id,
+                        command.categories
+                )
+        )
+    }
+
+    /**
      * Listens on Post created Event.
      *
      * @param event An Event of the Post creation Command
@@ -94,6 +135,7 @@ class PostAggregate() {
         id = event.id
         status = event.status
         authorId = event.authorId
+        categories = event.categories
         createdAt = event.createdAt
     }
 
@@ -108,5 +150,15 @@ class PostAggregate() {
         title = event.title
         slug = event.slug
         updatedAt = event.updatedAt
+    }
+
+    /**
+     * Listens on Post Categories updated Event.
+     *
+     * @param event An Event of the Post Categories updating Command
+     */
+    @EventSourcingHandler
+    fun on(event: PostCategoriesUpdatedEvent) {
+        categories = event.categories
     }
 }

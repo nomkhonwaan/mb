@@ -1,5 +1,6 @@
-package com.nomkhonwaan.mb.blog
+package com.nomkhonwaan.mb.blog.post
 
+import com.nomkhonwaan.mb.blog.category.Category
 import com.nomkhonwaan.mb.common.cqrs.Event
 import java.time.ZonedDateTime
 
@@ -14,6 +15,7 @@ data class PostCreatedEvent(
         override val id: String,
         val status: Status,
         val authorId: String,
+        val categories: List<Category?>,
         val createdAt: ZonedDateTime = ZonedDateTime.now()
 ) : Event<String>(id)
 
@@ -29,4 +31,26 @@ data class PostTitleUpdatedEvent(
         val title: String,
         val slug: String,
         val updatedAt: ZonedDateTime = ZonedDateTime.now()
+) : Event<String>(id)
+
+/**
+ * A Post categories updated Event.
+ *
+ * @param id         An identifier of the Post
+ * @param categories A list of Categories that had verified
+ */
+data class PostCategoriesUpdatedEvent(
+        override val id: String,
+        val categories: List<Category?>
+) : Event<String>(id)
+
+/**
+ * A verify list of Category IDs started Event.
+ *
+ * @param id          An identifier of the Post
+ * @param categoryIds A list of Category IDs to be verified
+ */
+data class VerifyCategoryIdsStartedEvent(
+        override val id: String,
+        val categoryIds: List<String?>
 ) : Event<String>(id)

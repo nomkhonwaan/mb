@@ -22,8 +22,8 @@ class MongoConfiguration {
      * <p>
      * The second conversion is from [java.time.ZonedDateTime] to [java.util.Date].
      */
-    @ConditionalOnMissingBean
     @Bean
+    @ConditionalOnMissingBean
     fun mongoCustomConversions(): MongoCustomConversions {
         return MongoCustomConversions(listOf(
                 Converter<Date, ZonedDateTime> {

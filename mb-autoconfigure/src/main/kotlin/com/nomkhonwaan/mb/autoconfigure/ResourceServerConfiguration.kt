@@ -1,5 +1,6 @@
 package com.nomkhonwaan.mb.autoconfigure
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.security.oauth2.resource.PrincipalExtractor
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -36,6 +37,7 @@ class ResourceServerConfiguration : ResourceServerConfigurerAdapter() {
      * Customizes principal to using "sub" field. Default is "name".
      */
     @Bean
+    @ConditionalOnMissingBean
     fun principalExtractor(): PrincipalExtractor {
         return PrincipalExtractor { it["sub"] }
     }
