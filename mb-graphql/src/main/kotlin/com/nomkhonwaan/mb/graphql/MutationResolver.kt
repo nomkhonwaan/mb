@@ -15,8 +15,8 @@ import java.util.concurrent.CompletableFuture
  * The mutation is a client interface that will proxy all command requests from the client side
  * to the command message bus.
  *
- * @param commandGateway An injection of the CommandGateway for dealing with command message bus
- * @param queryGateway   An injection of the QueryGateway for dealing with query message bus
+ * @param commandGateway An injection of CommandGateway for dealing with the command message bus
+ * @param queryGateway   An injection of QueryGateway for dealing with the query message bus
  */
 @Component
 class MutationResolver(
