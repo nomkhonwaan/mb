@@ -12,6 +12,11 @@ axon:
 graphiql:
   mapping: /
 
+line:
+  notify:
+    url: https://notify-api.line.me
+    token: ${LINE_NOTIFY_TOKEN}
+
 security:
   oauth2:
     resource:
