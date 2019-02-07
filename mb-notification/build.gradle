@@ -5,7 +5,7 @@ repositories {
 dependencies {
     implementation(project(':mb-blog'))
     implementation(project(':mb-common'))
-
+    
     implementation('com.squareup.retrofit2:retrofit:2.5.0')
     implementation('org.axonframework:axon-messaging:4.0.3')
     implementation('org.springframework:spring-context')

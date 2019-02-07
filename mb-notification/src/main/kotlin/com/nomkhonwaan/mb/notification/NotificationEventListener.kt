@@ -16,17 +16,17 @@ import org.springframework.stereotype.Component
 class NotificationEventListener(private val lineNotifyService: LINENotifyService) {
     @EventHandler
     fun handle(event: PostCreatedEvent) {
-        // TODO: Will notify with generated frontend URL for accessibility
-//        lineNotifyService
-//                .notify("The Post [${event.id}] has been created by [${event.authorId}] at [${event.createdAt.toRFC3339()}]")
-//                .subscribe()
+        lineNotifyService
+                .notify("""
+                    A new Post has been created by [${event.authorId}]: https://www.nomkhonwaan.com/dashboard/posts/${event.id}
+                """.trimIndent()).subscribe()
     }
 
     @EventHandler
     fun handle(event: PostTitleUpdatedEvent) {
-        // TODO: Will notify with generated frontend URL for accessibility
-//        lineNotifyService
-//                .notify("The Post [${event.id}] title has been changed to [${event.title}] at [${event.updatedAt.toRFC3339()}]")
-//                .subscribe()
+        lineNotifyService
+                .notify("""
+                    The Post [${event.id}] title has been updated to [${event.title}]: https://www.nomkhonwaan.com/dashboard/posts/${event.id}
+                """.trimIndent())
     }
 }

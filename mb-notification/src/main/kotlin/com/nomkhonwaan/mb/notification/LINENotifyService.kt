@@ -15,7 +15,7 @@ interface LINENotifyService {
     /**
      * Sends a POST request to the LINE notify server for notifying me on the personal chat.
      *
-    //     * @param body A LINE notify request body
+     * @param message A message string to be sent to the receiver
      */
     @FormUrlEncoded
     @POST("/api/notify")
