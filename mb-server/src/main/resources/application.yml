@@ -9,6 +9,10 @@ axon:
     mongo:
       databaseName: nomkhonwaan_com
 
+firebase:
+  dynamic-links:
+    domain: https://nomkhonwaan.page.link
+
 graphiql:
   mapping: /
 

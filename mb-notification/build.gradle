@@ -6,6 +6,7 @@ dependencies {
     implementation(project(':mb-blog'))
     implementation(project(':mb-common'))
     
+    implementation('com.google.apis:google-api-services-firebasedynamiclinks:v1-rev874-1.25.0')
     implementation('com.squareup.retrofit2:retrofit:2.5.0')
     implementation('org.axonframework:axon-messaging:4.0.3')
     implementation('org.springframework:spring-context')
