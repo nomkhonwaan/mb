@@ -1,5 +1,6 @@
 package com.nomkhonwaan.mb.notification
 
+import com.nomkhonwaan.mb.blog.post.PostContentUpdatedEvent
 import com.nomkhonwaan.mb.blog.post.PostCreatedEvent
 import com.nomkhonwaan.mb.blog.post.PostTitleUpdatedEvent
 import org.axonframework.eventhandling.EventHandler
@@ -20,7 +21,7 @@ class NotificationEventListener(private val lineNotifyService: LINENotifyService
      * @param event A Post created Event
      */
     @EventHandler
-    fun handle(event: PostCreatedEvent) {
+    fun on(event: PostCreatedEvent) {
         lineNotifyService
                 .notify("""
                     A new Post has been created by [${event.authorId}]: https://www.nomkhonwaan.com/dashboard/posts/${event.id}
@@ -33,10 +34,23 @@ class NotificationEventListener(private val lineNotifyService: LINENotifyService
      * @param event A post title updated Event
      */
     @EventHandler
-    fun handle(event: PostTitleUpdatedEvent) {
+    fun on(event: PostTitleUpdatedEvent) {
         lineNotifyService
                 .notify("""
                     The Post [${event.id}] title has been updated to [${event.title}]: https://www.nomkhonwaan.com/dashboard/posts/${event.id}
-                """.trimIndent())
+                """.trimIndent()).subscribe()
+    }
+
+    /**
+     * Sends a text message when the Post content has been updated.
+     *
+     * @param event A post content updated Event
+     */
+    @EventHandler
+    fun on(event: PostContentUpdatedEvent) {
+        lineNotifyService
+                .notify("""
+                    The Post [${event.id}] content has been updated: https://www.nomkhonwaan.com/dashboard/posts/${event.id}
+                """.trimIndent()).subscribe()
     }
 }

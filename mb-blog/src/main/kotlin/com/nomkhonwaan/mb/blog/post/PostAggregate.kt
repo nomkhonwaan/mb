@@ -8,6 +8,9 @@ import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.spring.stereotype.Aggregate
 import org.bson.types.ObjectId
+import org.commonmark.node.Node
+import org.commonmark.parser.Parser
+import org.commonmark.renderer.html.HtmlRenderer
 import java.time.ZonedDateTime
 
 /**
@@ -37,6 +40,16 @@ class PostAggregate() {
      * A datetime that the Post was published
      */
     private var publishedAt: ZonedDateTime? = null
+
+    /**
+     * A content of the Post in markdown syntax
+     */
+    private lateinit var markdown: String
+
+    /**
+     * A content of the Post in HTML format
+     */
+    private lateinit var html: String
 
     /**
      * An author ID of the Post
@@ -87,6 +100,30 @@ class PostAggregate() {
                         command.id,
                         command.title,
                         "${Slugify().slugify(command.title)}-${command.id}"
+                )
+        )
+    }
+
+    /**
+     * Handles Post content updating Command.
+     *
+     * @param command A Command for updating Post content
+     */
+    @CommandHandler
+    fun handle(command: UpdatePostContentCommand) {
+        val renderer: HtmlRenderer = HtmlRenderer.builder().build()
+
+        AggregateLifecycle.apply(
+                PostContentUpdatedEvent(
+                        command.id,
+                        command.markdown,
+                        HtmlRenderer.builder()
+                                .build()
+                                .render(
+                                        Parser.builder()
+                                                .build()
+                                                .parse(command.markdown)
+                                )
                 )
         )
     }
@@ -149,6 +186,19 @@ class PostAggregate() {
         id = event.id
         title = event.title
         slug = event.slug
+        updatedAt = event.updatedAt
+    }
+
+    /**
+     * Listens on Post content updated Event.
+     *
+     * @param event An Event of the Post content updating Command
+     */
+    @EventSourcingHandler
+    fun on(event: PostContentUpdatedEvent) {
+        id = event.id
+        markdown = event.markdown
+        html = event.html
         updatedAt = event.updatedAt
     }
 
