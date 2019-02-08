@@ -13,7 +13,7 @@ import retrofit2.http.POST
 
 interface LINENotifyService {
     /**
-     * Sends a POST request to the LINE notify server for notifying me on the personal chat.
+     * Sends a text message notification.
      *
      * @param message A message string to be sent to the receiver
      */

@@ -7,13 +7,18 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.stereotype.Component
 
 /**
- * A notification listener based on events.
+ * An application event listener that will notify me on personal chat for every Event in the application.
  *
  * @param lineNotifyService A LINE notify service
  */
 @Component
 @EnableAutoConfiguration
 class NotificationEventListener(private val lineNotifyService: LINENotifyService) {
+    /**
+     * Sends a text message when the new Post has been created.
+     *
+     * @param event A Post created Event
+     */
     @EventHandler
     fun handle(event: PostCreatedEvent) {
         lineNotifyService
@@ -22,6 +27,11 @@ class NotificationEventListener(private val lineNotifyService: LINENotifyService
                 """.trimIndent()).subscribe()
     }
 
+    /**
+     * Sends a text message when the Post title has been updated.
+     *
+     * @param event A post title updated Event
+     */
     @EventHandler
     fun handle(event: PostTitleUpdatedEvent) {
         lineNotifyService
