@@ -34,6 +34,21 @@ data class PostTitleUpdatedEvent(
 ) : Event<String>(id)
 
 /**
+ * A Post content updated Event.
+ *
+ * @param id        An identifier of the Post
+ * @param markdown  A content of the Post in markdown syntax
+ * @param html      A content of the Post in HTML format
+ * @param updatedAt A datetime that the Post was updated
+ */
+data class PostContentUpdatedEvent(
+        override val id: String,
+        val markdown: String,
+        val html: String,
+        val updatedAt: ZonedDateTime = ZonedDateTime.now()
+) : Event<String>(id)
+
+/**
  * A Post categories updated Event.
  *
  * @param id         An identifier of the Post

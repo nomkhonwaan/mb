@@ -23,7 +23,7 @@ class PostEventListener(
      * @param event A Post created Event
      */
     @EventHandler
-    fun handle(event: PostCreatedEvent) {
+    fun on(event: PostCreatedEvent) {
         val post: Post = postRepository.save(
                 Post(
                         id = event.id,
@@ -43,11 +43,29 @@ class PostEventListener(
      * @param event A Post title updated Event
      */
     @EventHandler
-    fun handle(event: PostTitleUpdatedEvent) {
+    fun on(event: PostTitleUpdatedEvent) {
         val post: Post? = postRepository.findById(event.id).orElse(null)?.run {
             postRepository.save(this.apply {
                 title = event.title
                 slug = event.slug
+                updatedAt = event.updatedAt
+            })
+        }
+
+        queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
+    }
+
+    /**
+     * Saves an updated content Post to the query store.
+     *
+     * @param event A Post content updated Event
+     */
+    @EventHandler
+    fun on(event: PostContentUpdatedEvent) {
+        val post: Post? = postRepository.findById(event.id).orElse(null)?.run {
+            postRepository.save(this.apply {
+                markdown = event.markdown
+                html = event.html
                 updatedAt = event.updatedAt
             })
         }
@@ -61,7 +79,7 @@ class PostEventListener(
      *@param event A Post categories updated Event
      */
     @EventHandler
-    fun handle(event: PostCategoriesUpdatedEvent) {
+    fun on(event: PostCategoriesUpdatedEvent) {
         val post: Post? = postRepository.findById(event.id).orElse(null)?.run {
             postRepository.save(this.apply {
                 categories = event.categories

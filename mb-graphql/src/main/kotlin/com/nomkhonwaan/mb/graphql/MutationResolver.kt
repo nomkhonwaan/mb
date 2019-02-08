@@ -54,6 +54,24 @@ class MutationResolver(
     }
 
     /**
+     * Updates a content of the Post.
+     *
+     * @param input An Input data for updating Post content
+     */
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun updatePostContent(input: UpdatePostContentInput): CompletableFuture<Post?> {
+        val authorId: String = SecurityContextHolder.getContext().authentication.principal as String
+
+        return queryGateway
+                .query(FindOwnPostByIdQuery(input.id, authorId), Post::class.java)
+                .thenComposeAsync { post: Post ->
+                    commandGateway
+                            .send<Unit>(UpdatePostContentCommand(post.id, input.markdown))
+                            .thenApply { queryPostSync(post.id) }
+                }
+    }
+
+    /**
      * Updates a list of the Categories of the Post.
      *
      * @param input An Input data for updating Post Categories

@@ -19,6 +19,14 @@ data class CreatePostCommand(override val id: String, val authorId: String) : Co
 data class UpdatePostTitleCommand(override val id: String, val title: String) : Command<String>(id)
 
 /**
+ * A Post content updating Command.
+ *
+ * @param id       An identifier of the Post
+ * @param markdown A content of the Post in the markdown syntax
+ */
+data class UpdatePostContentCommand(override val id: String, val markdown: String): Command<String>(id)
+
+/**
  * A Post Categories updating Command.
  *
  * @param id            An identifier of the Post

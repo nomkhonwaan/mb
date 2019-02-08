@@ -9,6 +9,14 @@ package com.nomkhonwaan.mb.graphql
 data class UpdatePostTitleInput(override val id: String, val title: String): Input<String>(id)
 
 /**
+ * An Input class for updating Post content.
+ *
+ * @param id       An identifier of the Post
+ * @param markdown A content of the Post in markdown syntax
+ */
+data class UpdatePostContentInput(override val id: String, val markdown: String): Input<String>(id)
+
+/**
  * An Input class for updating Post Categories.
  *
  * @param id          An identifier of the Post

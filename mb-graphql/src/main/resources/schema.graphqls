@@ -33,8 +33,8 @@ type Mutation {
     ## Updates status of the Post will update the "publishedAt" if the Post has been published from the draft
     #updatePostStatus(input: UpdatePostStatusInput!): Post
 
-    ## Updates content of the Post and compile to HTML also
-    #updatePostContent(input: UpdatePostContentInput!): Post
+    # Updates content of the Post and translates to HTML also
+    updatePostContent(input: UpdatePostContentInput!): Post
 
     # Replaces list of Categories of the Post
     updatePostCategories(input: UpdatePostCategoriesInput!): Post
@@ -114,6 +114,14 @@ input UpdatePostTitleInput {
 
     # A title of the Post
     title: String!
+}
+
+# An input type for updating Post content
+input UpdatePostContentInput {
+    id: ID!
+
+    # A markdown content of the Post
+    markdown: String!
 }
 
 # An input type for updating Post Categories
