@@ -54,7 +54,6 @@ class Auth0Configuration {
     @Bean
     @ConditionalOnMissingBean
     fun managementAPI(authAPI: AuthAPI): ManagementAPI {
-        // TODO: make sure that the Management API should not request new access token if the current one is not expire.
         val holder: TokenHolder = authAPI().requestToken(audience).execute()
 
         return ManagementAPI(domain, holder.accessToken)

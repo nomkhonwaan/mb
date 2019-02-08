@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.stereotype.Component
 
 /**
- * A event listener of the Post.
+ * An event listener of the Post.
  *
  * @param postRepository     A CRUD repository of the Post
  * @param queryUpdateEmitter An update emitter that will emit signal to the query bus immediately
