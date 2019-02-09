@@ -2,6 +2,7 @@ package com.nomkhonwaan.mb.notification
 
 import com.nomkhonwaan.mb.blog.post.PostContentUpdatedEvent
 import com.nomkhonwaan.mb.blog.post.PostCreatedEvent
+import com.nomkhonwaan.mb.blog.post.PostStatusUpdatedEvent
 import com.nomkhonwaan.mb.blog.post.PostTitleUpdatedEvent
 import org.axonframework.eventhandling.EventHandler
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
@@ -31,7 +32,7 @@ class NotificationEventListener(private val lineNotifyService: LINENotifyService
     /**
      * Sends a text message when the Post title has been updated.
      *
-     * @param event A post title updated Event
+     * @param event A Post title updated Event
      */
     @EventHandler
     fun on(event: PostTitleUpdatedEvent) {
@@ -42,9 +43,22 @@ class NotificationEventListener(private val lineNotifyService: LINENotifyService
     }
 
     /**
+     * Sends a text message when the Post status has been updated.
+     *
+     * @param event A Post status updated Event
+     */
+    @EventHandler
+    fun on(event: PostStatusUpdatedEvent) {
+        lineNotifyService
+                .notify("""
+                    The Post [${event.id}] status has been updated to [${event.status}]: https://www.nomkhonwaan.com/dashboard/posts/${event.id}
+                """.trimIndent()).subscribe()
+    }
+
+    /**
      * Sends a text message when the Post content has been updated.
      *
-     * @param event A post content updated Event
+     * @param event A Post content updated Event
      */
     @EventHandler
     fun on(event: PostContentUpdatedEvent) {

@@ -34,6 +34,19 @@ data class PostTitleUpdatedEvent(
 ) : Event<String>(id)
 
 /**
+ * A Post status updated Event.
+ *
+ * @param id          An identifier of the Post
+ * @param status      A status of the Post
+ * @param publishedAt A datatime that the Post was published
+ */
+data class PostStatusUpdatedEvent(
+        override val id: String,
+        val status: Status,
+        val publishedAt: ZonedDateTime? = null
+) : Event<String>(id)
+
+/**
  * A Post content updated Event.
  *
  * @param id        An identifier of the Post
@@ -54,10 +67,7 @@ data class PostContentUpdatedEvent(
  * @param id         An identifier of the Post
  * @param categories A list of Categories that had verified
  */
-data class PostCategoriesUpdatedEvent(
-        override val id: String,
-        val categories: List<Category?>
-) : Event<String>(id)
+data class PostCategoriesUpdatedEvent(override val id: String, val categories: List<Category?>) : Event<String>(id)
 
 /**
  * A verify list of Category IDs started Event.
@@ -65,7 +75,4 @@ data class PostCategoriesUpdatedEvent(
  * @param id          An identifier of the Post
  * @param categoryIds A list of Category IDs to be verified
  */
-data class VerifyCategoryIdsStartedEvent(
-        override val id: String,
-        val categoryIds: List<String?>
-) : Event<String>(id)
+data class VerifyCategoryIdsStartedEvent(override val id: String, val categoryIds: List<String?>) : Event<String>(id)

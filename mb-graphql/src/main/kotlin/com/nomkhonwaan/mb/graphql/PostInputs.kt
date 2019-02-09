@@ -1,5 +1,7 @@
 package com.nomkhonwaan.mb.graphql
 
+import com.nomkhonwaan.mb.blog.post.Status
+
 /**
  * An Input class for updating Post title.
  *
@@ -7,6 +9,14 @@ package com.nomkhonwaan.mb.graphql
  * @param title A title of the Post
  */
 data class UpdatePostTitleInput(override val id: String, val title: String): Input<String>(id)
+
+/**
+ * An Input class for updating Post status.
+ *
+ * @param id     An identifier of the Post
+ * @param status A status of the Post
+ */
+data class UpdatePostStatusInput(override val id: String, val status: Status) : Input<String>(id)
 
 /**
  * An Input class for updating Post content.
