@@ -105,14 +105,28 @@ class PostAggregate() {
     }
 
     /**
+     * Handles Post status updating Command.
+     *
+     * @param command A Command for updating Post status
+     */
+    @CommandHandler
+    fun handle(command: UpdatePostStatusCommand) {
+        AggregateLifecycle.apply(
+                PostStatusUpdatedEvent(
+                        command.id,
+                        command.status,
+                        if (command.status == Status.PUBLISHED) ZonedDateTime.now() else null
+                )
+        )
+    }
+
+    /**
      * Handles Post content updating Command.
      *
      * @param command A Command for updating Post content
      */
     @CommandHandler
     fun handle(command: UpdatePostContentCommand) {
-        val renderer: HtmlRenderer = HtmlRenderer.builder().build()
-
         AggregateLifecycle.apply(
                 PostContentUpdatedEvent(
                         command.id,
@@ -187,6 +201,18 @@ class PostAggregate() {
         title = event.title
         slug = event.slug
         updatedAt = event.updatedAt
+    }
+
+    /**
+     * Listens on Post status updated Event.
+     *
+     * @param event An Event of the Post status updating Command
+     */
+    @EventSourcingHandler
+    fun on(event: PostStatusUpdatedEvent) {
+        id = event.id
+        status = event.status
+        publishedAt = event.publishedAt
     }
 
     /**

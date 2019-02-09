@@ -44,15 +44,33 @@ class PostEventListener(
      */
     @EventHandler
     fun on(event: PostTitleUpdatedEvent) {
-        val post: Post? = postRepository.findById(event.id).orElse(null)?.run {
-            postRepository.save(this.apply {
+        return postRepository.findById(event.id).ifPresent { post: Post ->
+            postRepository.save(post.apply {
                 title = event.title
                 slug = event.slug
                 updatedAt = event.updatedAt
             })
+
+            queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
         }
 
-        queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
+    }
+
+    /**
+     * Saves an updated status Post to the query store.
+     *
+     * @param event A Post status updated Event
+     */
+    @EventHandler
+    fun on(event: PostStatusUpdatedEvent) {
+        return postRepository.findById(event.id).ifPresent { post: Post ->
+            postRepository.save(post.apply {
+                status = event.status
+                publishedAt = event.publishedAt
+            })
+
+            queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
+        }
     }
 
     /**
@@ -62,15 +80,16 @@ class PostEventListener(
      */
     @EventHandler
     fun on(event: PostContentUpdatedEvent) {
-        val post: Post? = postRepository.findById(event.id).orElse(null)?.run {
-            postRepository.save(this.apply {
+        return postRepository.findById(event.id).ifPresent { post: Post ->
+            postRepository.save(post.apply {
                 markdown = event.markdown
                 html = event.html
                 updatedAt = event.updatedAt
             })
+
+            queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
         }
 
-        queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
     }
 
     /**
@@ -80,12 +99,12 @@ class PostEventListener(
      */
     @EventHandler
     fun on(event: PostCategoriesUpdatedEvent) {
-        val post: Post? = postRepository.findById(event.id).orElse(null)?.run {
-            postRepository.save(this.apply {
+        return postRepository.findById(event.id).ifPresent { post: Post ->
+            postRepository.save(post.apply {
                 categories = event.categories
             })
-        }
 
-        queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
+            queryUpdateEmitter.emit(FindPostByIdQuery::class.java, { it.id == event.id }, post)
+        }
     }
 }

@@ -30,8 +30,8 @@ type Mutation {
     # Updates a title of the Post and its slug
     updatePostTitle(input: UpdatePostTitleInput!): Post
 
-    ## Updates status of the Post will update the "publishedAt" if the Post has been published from the draft
-    #updatePostStatus(input: UpdatePostStatusInput!): Post
+    # Updates status of the Post will update the "publishedAt" if the Post has been published from the draft
+    updatePostStatus(input: UpdatePostStatusInput!): Post
 
     # Updates content of the Post and translates to HTML also
     updatePostContent(input: UpdatePostContentInput!): Post
@@ -114,6 +114,14 @@ input UpdatePostTitleInput {
 
     # A title of the Post
     title: String!
+}
+
+# An input type for updating Post status
+input UpdatePostStatusInput {
+    id: ID!
+
+    # A status of the Post
+    status: Status!
 }
 
 # An input type for updating Post content

@@ -19,7 +19,7 @@ data class Post(
         var status: Status,
         var markdown: String? = null,
         var html: String? = null,
-        val publishedAt: ZonedDateTime? = null,
+        var publishedAt: ZonedDateTime? = null,
         val authorId: String,
         @DBRef var categories: List<Category?>,
         val createdAt: ZonedDateTime,

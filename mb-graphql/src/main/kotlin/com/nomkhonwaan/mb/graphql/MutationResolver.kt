@@ -32,7 +32,7 @@ class MutationResolver(
 
         return commandGateway
                 .send<String>(CreatePostCommand("", authorId))
-                .thenApply { queryPostSync(it) }
+                .thenApply { findPostById(it) }
     }
 
     /**
@@ -49,7 +49,25 @@ class MutationResolver(
                 .thenComposeAsync { post: Post ->
                     commandGateway
                             .send<Unit>(UpdatePostTitleCommand(post.id, input.title))
-                            .thenApply { queryPostSync(post.id) }
+                            .thenApply { findPostById(post.id) }
+                }
+    }
+
+    /**
+     * Updates a status of the Post.
+     *
+     * @param input An Input data for updating Post status
+     */
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun updatePostStatus(input: UpdatePostStatusInput): CompletableFuture<Post?> {
+        val authorId: String = SecurityContextHolder.getContext().authentication.principal as String
+
+        return queryGateway
+                .query(FindOwnPostByIdQuery(input.id, authorId), Post::class.java)
+                .thenComposeAsync { post: Post ->
+                    commandGateway
+                            .send<Unit>(UpdatePostStatusCommand(post.id, input.status))
+                            .thenApply { findPostById(post.id) }
                 }
     }
 
@@ -67,7 +85,7 @@ class MutationResolver(
                 .thenComposeAsync { post: Post ->
                     commandGateway
                             .send<Unit>(UpdatePostContentCommand(post.id, input.markdown))
-                            .thenApply { queryPostSync(post.id) }
+                            .thenApply { findPostById(post.id) }
                 }
     }
 
@@ -85,16 +103,16 @@ class MutationResolver(
                 .thenComposeAsync { post: Post ->
                     commandGateway
                             .send<Unit>(UpdatePostCategoriesCommand(post.id, input.categoryIds))
-                            .thenApply { queryPostSync(post.id) }
+                            .thenApply { findPostById(post.id) }
                 }
     }
 
     /**
-     * Queries Post by its ID synchronously.
+     * Finds Post by its ID synchronously.
      *
      * @param id An identifier of the Post
      */
-    private fun queryPostSync(id: String): Post? {
+    private fun findPostById(id: String): Post? {
         return queryGateway
                 .subscriptionQuery(FindPostByIdQuery(id), Post::class.java, Post::class.java)
                 .updates()
