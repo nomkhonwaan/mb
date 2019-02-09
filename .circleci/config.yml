@@ -74,7 +74,7 @@ jobs:
     machine: true
     steps:
       - run: |
-          curl
+          curl \
             -X POST \
             -H 'Content-Type: application/json' \
             -d '{"query":"{ categories { id } }"}' \
