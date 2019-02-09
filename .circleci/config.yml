@@ -70,6 +70,15 @@ jobs:
             -H 'Content-Type: application/json' \
             -d '{"repository": { "repo_name": "nomkhonwaan/mb-server" }, "push_data": { "tag": "latest" } }' \
             $DOCKER_DEPLOY_WEBHOOK_PRODUCTION
+  mb-server_verify:
+    machine: true
+    steps:
+      - run: |
+          curl
+            -X POST \
+            -H 'Content-Type: application/json' \
+            -d '{"query":"{ categories { id } }"}' \
+            https://api.nomkhonwaan.com/graphql
 
 workflows:
   version: 2
@@ -104,6 +113,13 @@ workflows:
           requires:
             - mb-server_build_to_docker
             - hold
+          filters:
+            branches:
+              only:
+                - master
+      - mb-server_verify:
+          requires:
+            - mb-server_deploy_to_docker_deploy_webhook
           filters:
             branches:
               only:
