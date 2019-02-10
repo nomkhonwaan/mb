@@ -1,8 +1,7 @@
 /**
  * External Dependencies
  */
-const { compose, combineReducers, createStore, applyMiddleware } = require('redux');
-const { routerReducer, routerMiddleware } = require('react-router-redux');
+const { compose, combineReducers, createStore } = require('redux');
 
 /**
  * Internal Dependencies
@@ -13,20 +12,13 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 /**
  * Creates new Redux which is embedded React router already. 
- * 
- * @param {object} history 
  */
-function configureStore(history) {
+function configureStore() {
   return createStore(
     combineReducers({
       app,
-      router: routerReducer,
     }),
-    composeEnhancers(
-      applyMiddleware(
-        routerMiddleware(history),
-      ),
-    ),
+    composeEnhancers(),
   );
 }
 

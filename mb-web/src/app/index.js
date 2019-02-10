@@ -3,4 +3,4 @@
  */
 require('./style.scss');
 
-module.exports = require('./sidebar');
+module.exports = require('./app');
