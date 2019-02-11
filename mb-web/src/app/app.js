@@ -3,6 +3,7 @@
  */
 const React = require('react');
 const { connect } = require('react-redux');
+const { renderRoutes } = require('react-router-config');
 const PropTypes = require('prop-types');
 
 /**
@@ -10,6 +11,7 @@ const PropTypes = require('prop-types');
  */
 const Header = require('../components/header');
 const Sidebar = require('../components/sidebar');
+const routes = require('./routes');
 
 /**
  * The main application.
@@ -20,8 +22,10 @@ const App = (props) => {
   return (
     <div className="app">
       <Header />
-      
+
       <Sidebar />
+
+      { renderRoutes(routes) }
     </div>
   )
 }

@@ -22,9 +22,14 @@ const Sidebar = (props) => {
   return (
     <div className="sidebar">
       <header className="header _flex">
-        <div className="toggle-button">
-
-        </div>
+        <a
+          className="toggle-button"
+          href="#"
+          onClick={ props.toggleSidebar }
+        >
+          <span className="close">Close</span>
+          <i className="fal fa-times" />
+        </a>
       </header>
 
       <nav>
@@ -32,6 +37,9 @@ const Sidebar = (props) => {
           {
             props.app.sidebar.items.map(({ name, link }, key) => (
               <li
+                className={ classnames('nav-item', {
+                  '-selected': props.location.pathname === link,
+                }) }
                 key={ key }
                 onClick={ props.toggleSidebar }
               >
@@ -57,6 +65,9 @@ Sidebar.propTypes = {
         }),
       ).isRequired,
     }).isRequired,
+  }).isRequired,
+  location: PropTypes.shape({
+    pathname: PropTypes.string.isRequired,
   }).isRequired,
   toggleSidebar: PropTypes.func.isRequired,
 };
