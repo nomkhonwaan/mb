@@ -2,30 +2,28 @@
  * External Dependencies
  */
 const React = require('react');
-const { connect } = require('react-redux');
 const PropTypes = require('prop-types');
 
 /**
- * Internal Dependencies
+ * An application header component.
+ * 
+ * @param {object} props 
  */
-const { toggleSidebar } = require('../../redux/modules/app');
-
 const Header = (props) => {
   return (
-    <div className="header">
+    <div className="header _flex">
+      <div
+        className="toggle-button _flex _flex-vertical-align-middle"
+        onClick={ props.onClickToggleButton }
+      >
+        <i className="fal fa-bars" />
+      </div>
     </div>
   );
 };
 
 Header.propTypes = {
-  toggleSidebar: PropTypes.func.isRequired,
+  onClickToggleButton: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state) {
-  return {};
-}
-
-module.exports = connect(
-  mapStateToProps,
-  { toggleSidebar },
-)(Header);
+module.exports = Header;

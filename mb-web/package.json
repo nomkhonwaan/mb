@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-pro": "^5.7.1",
     "ajv": "^6.8.1",
     "apollo-boost": "^0.1.27",
     "auth0-js": "^9.10.0",

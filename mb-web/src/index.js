@@ -1,6 +1,7 @@
 /**
  * External Dependencies
  */
+require('@fortawesome/fontawesome-pro/js/all');
 const React = require('react');
 const ReactDOM = require('react-dom');
 const { BrowserRouter } = require('react-router-dom');
