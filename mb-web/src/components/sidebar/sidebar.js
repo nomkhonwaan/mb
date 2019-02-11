@@ -22,14 +22,15 @@ const Sidebar = (props) => {
   return (
     <div className="sidebar">
       <header className="header _flex">
-        <a
-          className="toggle-button"
-          href="#"
+        <div
+          className="toggle-button _flex _flex-vertical-align-middle"
           onClick={ props.toggleSidebar }
         >
-          <span className="close">Close</span>
-          <i className="fal fa-times" />
-        </a>
+          <span className="close">
+            Close
+            <i className="fal fa-times" />
+          </span>
+        </div>
       </header>
 
       <nav>

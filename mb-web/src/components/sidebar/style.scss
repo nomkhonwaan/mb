@@ -1,4 +1,16 @@
 .sidebar {
+  .header {
+    border-bottom: .1rem solid #ececec;
+    height: 6.4rem;
+    
+    .toggle-button {
+      .close {
+        font: normal 400 1.3rem 'Lato', sans-serif;
+        text-transform: uppercase;
+      }
+    }
+  }
+
   .nav-item {
     color: #333;
     font: normal 400 1.6rem 'Lato', sans-serif;
