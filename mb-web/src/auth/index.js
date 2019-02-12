@@ -1,6 +1,5 @@
 /**
  * Internal Dependencies
  */
-require('./style.scss');
-
-module.exports.Login = require('./login');
+import './style.scss';
+export Login from './login';
