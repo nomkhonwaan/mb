@@ -6,10 +6,25 @@
       "**/.*",
       "**/node_modules/**"
     ],
+    "headers": [
+      {
+        "source": "/service-worker.js",
+        "headers": [
+          {
+            "key": "Cache-Control", 
+            "value": "no-cache"
+          }
+        ]
+      }
+    ],
     "rewrites": [
       {
         "source": "**",
         "destination": "/index.html"
+      },
+      {
+        "source": "**/!(*.js|*.css|*.json|*.svg|*.png|*.jpg|*.jpeg)",
+        "function": "serve"
       }
     ]
   }
