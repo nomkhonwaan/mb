@@ -1,0 +1,33 @@
+.popup-overlay {
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: .16; }
+  }
+
+  @keyframes fade-out {
+    from { opacity: .16; }
+    to { opacity: 0; }
+  }
+  
+  background: #333;
+  cursor: pointer;
+  height: 100vh;
+  position: absolute;
+  transform: translateX(25.6rem) translateY(0);
+  width: calc(100% - 25.6rem);
+  z-index: 99;
+
+  &.-entering {
+    animation: fade-in .4s ease-in-out;
+    opacity: .16;
+  }
+
+  &.-entered { opacity: .16; }
+
+  &.-exiting {
+    animation: fade-out .4s ease-in-out;
+    opacity: 0;
+  }
+
+  &.-exited { opacity: 0; }
+}

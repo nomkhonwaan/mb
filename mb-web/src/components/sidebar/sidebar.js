@@ -48,14 +48,17 @@ const Sidebar = (props) => {
 };
 
 Sidebar.propTypes = {
+  /* Properties */
   items: PropTypes.arrayOf(
     PropTypes.shape({
       link: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     })
   ).isRequired,
-  onClickToggleButton: PropTypes.func.isRequired,
   pathname: PropTypes.string.isRequired,
+
+  /* Events */
+  onClickToggleButton: PropTypes.func,
 };
 
 

@@ -23,7 +23,8 @@ const Header = (props) => {
 };
 
 Header.propTypes = {
-  onClickToggleButton: PropTypes.func.isRequired,
+  /* Events */
+  onClickToggleButton: PropTypes.func,
 };
 
 module.exports = Header;
