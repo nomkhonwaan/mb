@@ -1,14 +1,14 @@
 /**
  * External Dependencies
  */
-const update = require('immutability-helper');
+import update from 'immutability-helper';
 
 const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 
 /**
  * Toggles on/off application sidebar.
  */
-function toggleSidebar() {
+export function toggleSidebar() {
   return {
     type: TOGGLE_SIDEBAR,
   };
@@ -49,5 +49,4 @@ function app(state = initialState, action) {
   }
 }
 
-module.exports = app;
-module.exports.toggleSidebar = toggleSidebar;
+export default app;

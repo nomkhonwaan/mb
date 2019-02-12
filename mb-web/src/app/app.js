@@ -1,36 +1,71 @@
 /**
  * External Dependencies
  */
-const React = require('react');
-const { connect } = require('react-redux');
-const { renderRoutes } = require('react-router-config');
-const { withRouter } = require('react-router-dom');
-const PropTypes = require('prop-types');
-const classnames = require('classnames');
+import React from 'react';
+import { connect } from 'react-redux';
+import { renderRoutes } from 'react-router-config';
+import { withRouter } from 'react-router-dom';
+import { Query } from 'react-apollo';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
+import gql from 'graphql-tag';
 
 /**
  * Internal Dependencies
  */
-const Header = require('../components/header');
-const PopupOverlay = require('../components/popup-overlay');
-const Sidebar = require('../components/sidebar');
-const { toggleSidebar } = require('../redux/modules/app');
-const routes = require('./routes');
+import Header from '../components/header';
+import PopupOverlay from '../components/popup-overlay';
+import Sidebar from '../components/sidebar';
+import { toggleSidebar } from '../redux/modules/app';
+import routes from './routes';
+
+/**
+ * A Sidebar component that has been wrapped with Apollo Query.
+ * 
+ * @param {object} props
+ */
+export const WrappedSidebar = (props) => (
+  <Query
+    query={ gql`
+      {
+        categories {
+          name
+          slug
+        }
+      } ` }
+  >
+    {
+      ({ loading, error, data }) => {
+        const categories = loading
+          ? []
+          : data.categories.map(({ name, slug }) => ({ name, link: `/categories/${slug}`, }));
+
+        return (
+          <Sidebar
+            items={ props.items.concat(categories) }
+            pathname={ props.pathname }
+            onClickToggleButton={ props.onClickToggleButton }
+          />
+        );
+      }
+    }
+  </Query>
+);
 
 /**
  * The main application.
  *
  * @param {object} props
  */
-const App = (props) => {
+export const App = (props) => {
   return (
     <div className={ classnames('app', {
       '-sidebar-collapsed': props.app.sidebar.collapsed,
     }) }>
-      <Sidebar 
+      <WrappedSidebar
         items={ props.app.sidebar.items }
-        onClickToggleButton={ props.toggleSidebar } 
         pathname={ props.location.pathname }
+        onClickToggleButton={ props.toggleSidebar }
       />
 
       <PopupOverlay
@@ -70,7 +105,7 @@ function mapStateToProps(state) {
   };
 }
 
-module.exports = withRouter(connect(
+export default withRouter(connect(
   mapStateToProps,
   { toggleSidebar, },
 )(App));

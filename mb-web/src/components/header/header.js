@@ -1,8 +1,8 @@
 /**
  * External Dependencies
  */
-const React = require('react');
-const PropTypes = require('prop-types');
+import React from 'react';
+import PropTypes from 'prop-types';
 
 /**
  * An application header component.
@@ -27,4 +27,4 @@ Header.propTypes = {
   onClickToggleButton: PropTypes.func,
 };
 
-module.exports = Header;
+export default Header;

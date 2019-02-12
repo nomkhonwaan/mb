@@ -1,10 +1,10 @@
 /**
  * External Dependencies
  */
-const React = require('react');
-const { Transition } = require('react-transition-group');
-const PropTypes = require('prop-types');
-const classnames = require('classnames');
+import React from'react';
+import { Transition } from'react-transition-group';
+import PropTypes from'prop-types';
+import classnames from'classnames';
 
 /**
  * A popup overlay that blocks user actions and forces the user to make a decision.
@@ -21,12 +21,11 @@ const PopupOverlay = (props) => {
     >
       {
         (status) => {
-          const classes = {}
-          classes[`-${status}`] = true;
-
           return (
             <div
-              className={ classnames('popup-overlay', classes) }
+              className={ classnames('popup-overlay', {
+                [`-${status}`]: true,
+              }) }
               onClick={ props.onClickBackground }
             >
               { props.children }
@@ -48,4 +47,4 @@ PopupOverlay.propTypes = {
   onClickBackground: PropTypes.func,
 };
 
-module.exports = PopupOverlay;
+export default PopupOverlay;

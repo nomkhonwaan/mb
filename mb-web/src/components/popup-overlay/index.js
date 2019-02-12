@@ -1,6 +1,7 @@
 /**
  * Internal Dependencies
  */
-require('./style.scss');
+import './style.scss';
+import PopupOverlay from './popup-overlay';
 
-module.exports = require('./popup-overlay');
+export default PopupOverlay;

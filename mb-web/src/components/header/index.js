@@ -1,6 +1,7 @@
 /**
  * Internal Dependencies
  */
-require('./style.scss');
+import './style.scss';
+import Header from './header';
 
-module.exports = require('./header');
+export default Header;

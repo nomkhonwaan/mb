@@ -1,6 +1,7 @@
 /**
  * Internal Dependencies
  */
-require('./style.scss');
+import './style.scss';
+import Sidebar from './sidebar';
 
-module.exports = require('./sidebar');
+export default Sidebar;

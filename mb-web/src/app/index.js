@@ -1,6 +1,7 @@
 /**
  * Internal Dependencies
  */
-require('./style.scss');
+import './style.scss';
+import App from './app';
 
-module.exports = require('./app');
+export default App;

@@ -1,12 +1,12 @@
 /**
  * External Dependencies
  */
-const { compose, combineReducers, createStore } = require('redux');
+import { compose, combineReducers, createStore } from 'redux';
 
 /**
  * Internal Dependencies
  */
-const app = require('./modules/app');
+import app from './modules/app';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -22,4 +22,4 @@ function configureStore() {
   );
 }
 
-module.exports = configureStore;
+export default configureStore;

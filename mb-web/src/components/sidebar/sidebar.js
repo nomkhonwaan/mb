@@ -1,10 +1,10 @@
 /**
  * External Dependencies
  */
-const React = require('react');
-const { Link } = require('react-router-dom');
-const PropTypes = require('prop-types');
-const classnames = require('classnames');
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 /**
  * An application sidebar component.
@@ -61,5 +61,4 @@ Sidebar.propTypes = {
   onClickToggleButton: PropTypes.func,
 };
 
-
-module.exports = Sidebar;
+export default Sidebar;
