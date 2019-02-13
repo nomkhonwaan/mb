@@ -27,19 +27,21 @@ const Sidebar = (props) => {
       <nav>
         <ul className="_list-unstyled _unpadding _unmargin">
           {
-            props.items.map(({ name, link }, key) => (
-              <li
-                className={ classnames('nav-item', {
-                  '-selected': props.pathname === link,
-                }) }
-                key={ key }
-                onClick={ props.onClickToggleButton }
-              >
-                <Link to={ link } className="_color-inherit _text-undecorated">
-                  { name }
-                </Link>
-              </li>
-            ))
+            props.items
+              .filter(({ name }) => !props.isAuthenticated || name !== 'Login / Register')
+              .map(({ name, link }, key) => (
+                <li
+                  className={ classnames('nav-item', {
+                    '-selected': props.pathname === link,
+                  }) }
+                  key={ key }
+                  onClick={ props.onClickToggleButton }
+                >
+                  <Link to={ link } className="_color-inherit _text-undecorated">
+                    { name }
+                  </Link>
+                </li>
+              ))
           }
         </ul>
       </nav>
@@ -49,6 +51,7 @@ const Sidebar = (props) => {
 
 Sidebar.propTypes = {
   /* Properties */
+  isAuthenticated: PropTypes.bool,
   items: PropTypes.arrayOf(
     PropTypes.shape({
       link: PropTypes.string.isRequired,
