@@ -80,7 +80,7 @@ export const App = (props) => {
 
       <Header onClickToggleButton={ props.toggleSidebar } />
 
-      { renderRoutes(routes) }
+      { renderRoutes(routes, { authService: props.authService }) }
     </div>
   )
 }
@@ -99,7 +99,8 @@ App.propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
-
+  authService: PropTypes.object.isRequired,
+  
   /* Actions */
   toggleSidebar: PropTypes.func.isRequired,
 };
