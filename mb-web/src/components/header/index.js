@@ -1,7 +1,7 @@
 /**
  * Internal Dependencies
  */
-import './style.scss';
+import './style.css';
 import Header from './header';
 
 export default Header;

@@ -1,7 +1,7 @@
 /**
  * Internal Dependencies
  */
-import './style.scss';
+import './style.css';
 import App from './app';
 
 export default App;

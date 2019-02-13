@@ -21,7 +21,7 @@ import routes from './routes';
 
 /**
  * A Sidebar component that has been wrapped with Apollo Query.
- * 
+ *
  * @param {object} props
  */
 export const WrappedSidebar = (props) => (
@@ -32,13 +32,18 @@ export const WrappedSidebar = (props) => (
           name
           slug
         }
-      } ` }
+      }` }
   >
     {
-      ({ loading, error, data }) => {
-        const categories = loading
-          ? []
-          : data.categories.map(({ name, slug }) => ({ name, link: `/categories/${slug}`, }));
+      ({ loading, _, data }) => {
+        let categories = [];
+
+        if (data && data.categories) {
+          categories = data.categories.map(({ name, slug }) => ({
+            name,
+            link: `/categories/${slug}`,
+          }));
+        }
 
         return (
           <Sidebar

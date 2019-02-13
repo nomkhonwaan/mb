@@ -12,18 +12,25 @@ import { ApolloProvider } from 'react-apollo';
 /**
  * Internal Dependencies
  */
-import './style.scss';
+import './style.css';
 import App from './app';
 import configureStore from './redux/configureStore';
 import * as serviceWorker from './serviceWorker';
+import { AuthService } from './auth';
 
-/* Redux */
-const store = configureStore();
+/* Auth0 */
+const authService = AuthService.Builder
+  .withClientId(process.env.REACT_APP_AUTH0_CLIENT_ID)
+  .withRedirectUri(process.env.REACT_APP_AUTH0_REDIRECT_URI)
+  .build();
 
 /* GraphQL */
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
 });
+
+/* Redux */
+const store = configureStore();
 
 ReactDOM.render(
   <Provider store={ store }>

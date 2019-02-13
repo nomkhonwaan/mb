@@ -1,7 +1,7 @@
 /**
  * Internal Dependencies
  */
-import './style.scss';
+import './style.css';
 import PopupOverlay from './popup-overlay';
 
 export default PopupOverlay;

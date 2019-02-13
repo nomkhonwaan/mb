@@ -1,7 +1,7 @@
 /**
  * Internal Dependencies
  */
-import './style.scss';
+import './style.css';
 import Sidebar from './sidebar';
 
 export default Sidebar;

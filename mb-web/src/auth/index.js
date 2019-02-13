@@ -1,5 +1,8 @@
 /**
  * Internal Dependencies
  */
-import './style.scss';
-export Login from './login';
+import './style.css';
+import Login from './login';
+import AuthService from './AuthService';
+
+export { AuthService };
