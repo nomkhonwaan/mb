@@ -33,8 +33,7 @@ export const App = (props) => {
             name
             slug
           }
-        }
-      ` }
+        }` }
     >
       {
         (({ loading, err, data }) => {
