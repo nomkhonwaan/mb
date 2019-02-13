@@ -99,14 +99,7 @@ class AuthService {
    * Returns an access token.
    */
   getAccessToken() {
-    return this.accessToken;
-  }
-
-  /**
-   * Returns an ID token.
-   */
-  getIdToken() {
-    return this.idToken;
+    return this.accessToken || localStorage.getItem('accessToken');
   }
 
   /**
@@ -133,7 +126,7 @@ class AuthService {
    * Checks whether the current time is past the access token's expiry time.
    */
   isAuthenticated() {
-    return Date.now() < this.expiresAt;
+    return Date.now() < (this.expiresAt || localStorage.getItem('expiresAt'));
   }
 
   /**
@@ -164,13 +157,13 @@ class AuthService {
    * @param {object} authResult 
    */
   setSession(authResult) {
-    // Sets isLoggedIn flag to localStorage
-    localStorage.setItem('isLoggedIn', true);
-
     // Sets the time that the access token will expire at
     this.accessToken = authResult.accessToken;
-    this.idToken = authResult.idToken;
     this.expiresAt = (authResult.expiresIn * 1000) + Date.now();
+    
+    // Stores user's session to the localStorage
+    localStorage.setItem('accessToken', this.accessToken);
+    localStorage.setItem('expiresAt', this.expiresAt);
   }
 
   /**
