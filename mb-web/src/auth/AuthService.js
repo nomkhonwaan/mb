@@ -96,10 +96,101 @@ class AuthService {
   }
 
   /**
+   * Returns an access token.
+   */
+  getAccessToken() {
+    return this.accessToken;
+  }
+
+  /**
+   * Returns an ID token.
+   */
+  getIdToken() {
+    return this.idToken;
+  }
+
+  /**
    * Performs login with Auth0.
    */
   login() {
     this.auth0.authorize();
+  }
+
+  /**
+   * Performs logout.
+   */
+  logout() {
+    // Removes all tokens and expiry time
+    this.accessToken = null;
+    this.idToken = null;
+    this.expiresAt = 0;
+
+    // Removes isLoggedIn flag from localStorage
+    localStorage.removeItem('isLoggedIn');
+  }
+
+  /**
+   * Checks whether the current time is past the access token's expiry time.
+   */
+  isAuthenticated() {
+    return Date.now() < this.expiresAt;
+  }
+
+  /**
+   * Looks for the result of authentication in the URL hash.
+   * Then, the result is processed with the `parseHash` method from auth0.js.
+   */
+  handleAuthentication() {
+    return new Promise((resolve, reject) => {
+      this.auth0.parseHash((err, authResult) => {
+        if (err) {
+          return reject(err);
+        }
+
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          this.setSession(authResult);
+
+          return resolve();
+        }
+        
+        return reject();
+      });
+    });
+  }
+
+  /**
+   * Sets the user's access token, ID token and the access token's expiry time.
+   * 
+   * @param {object} authResult 
+   */
+  setSession(authResult) {
+    // Sets isLoggedIn flag to localStorage
+    localStorage.setItem('isLoggedIn', true);
+
+    // Sets the time that the access token will expire at
+    this.accessToken = authResult.accessToken;
+    this.idToken = authResult.idToken;
+    this.expiresAt = (authResult.expiresIn * 1000) + Date.now();
+  }
+
+  /**
+   * Renews an existing session on Auth0's server.
+   */
+  renewSession() {
+    return new Promise((resolve, reject) => {
+      this.auth0.checkSession({}, (err, authResult) => {
+        if (err) {
+          this.logout();
+          return reject(err);
+        }
+
+        if (authResult && authResult.accessToken && authResult.idToken) {
+          this.setSession(authResult);
+        }
+
+        return resolve();
+      });
+    });
   }
 }
 

@@ -1,8 +1,7 @@
 /**
  * Internal Dependencies
  */
-// const { Login } = require('../auth');
-
+const { Login } = require('../auth');
 
 const routes = [
   // {
@@ -10,10 +9,10 @@ const routes = [
   //   exact: true,
   //   component: RecentPosts,
   // },
-  // {
-  //   path: '/login',
-  //   component: Login,
-  // },
+  {
+    path: '/login',
+    component: Login,
+  },
   // {
   //   path: '(categories|tags)/:slug',
   //   component: Archive,

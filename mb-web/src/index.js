@@ -24,6 +24,11 @@ const authService = AuthService.Builder
   .withRedirectUri(process.env.REACT_APP_AUTH0_REDIRECT_URI)
   .build();
 
+if (!!authService.isAuthenticated()) {
+  console.log(authService.isAuthenticated());
+  authService.renewSession();
+}
+
 /* GraphQL */
 const client = new ApolloClient({
   uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,

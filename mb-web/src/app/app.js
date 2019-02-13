@@ -20,68 +20,57 @@ import { toggleSidebar } from '../redux/modules/app';
 import routes from './routes';
 
 /**
- * A Sidebar component that has been wrapped with Apollo Query.
- *
- * @param {object} props
- */
-export const WrappedSidebar = (props) => (
-  <Query
-    query={ gql`
-      {
-        categories {
-          name
-          slug
-        }
-      }` }
-  >
-    {
-      ({ loading, _, data }) => {
-        let categories = [];
-
-        if (data && data.categories) {
-          categories = data.categories.map(({ name, slug }) => ({
-            name,
-            link: `/categories/${slug}`,
-          }));
-        }
-
-        return (
-          <Sidebar
-            items={ props.items.concat(categories) }
-            pathname={ props.pathname }
-            onClickToggleButton={ props.onClickToggleButton }
-          />
-        );
-      }
-    }
-  </Query>
-);
-
-/**
  * The main application.
  *
  * @param {object} props
  */
 export const App = (props) => {
   return (
-    <div className={ classnames('app', {
-      '-sidebar-collapsed': props.app.sidebar.collapsed,
-    }) }>
-      <WrappedSidebar
-        items={ props.app.sidebar.items }
-        pathname={ props.location.pathname }
-        onClickToggleButton={ props.toggleSidebar }
-      />
+    <Query
+      query={ gql`
+        {
+          categories {
+            name
+            slug
+          }
+        }
+      ` }
+    >
+      {
+        (({ loading, err, data }) => {
+          let categories = [];
 
-      <PopupOverlay
-        in={ !props.app.sidebar.collapsed }
-        onClickBackground={ props.toggleSidebar }
-      />
+          if (data && data.categories) {
+            categories = data.categories.map(({ name, slug }) => ({
+              name,
+              link: `/categories/${slug}`,
+            }))
+          }
 
-      <Header onClickToggleButton={ props.toggleSidebar } />
-
-      { renderRoutes(routes, { authService: props.authService }) }
-    </div>
+          return (
+            <div className={ classnames('app', {
+              '-sidebar-collapsed': props.app.sidebar.collapsed,
+            }) }>
+              <Sidebar 
+                isAuthenticated={ props.authService.isAuthenticated() }
+                items={ props.app.sidebar.items.concat(categories) }
+                pathname={ props.location.pathname }
+                onClickToggleButton={ props.toggleSidebar }
+              />
+        
+              <PopupOverlay
+                in={ !props.app.sidebar.collapsed }
+                onClickBackground={ props.toggleSidebar }
+              />
+        
+              <Header onClickToggleButton={ props.toggleSidebar } />
+        
+              { renderRoutes(routes, { authService: props.authService }) }
+            </div>
+          );
+        })
+      }
+    </Query>
   )
 }
 
