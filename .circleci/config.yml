@@ -4,15 +4,17 @@ jobs:
   mb-web_install:
     docker:
       - image: circleci/node:8
-    working_directory: ~/repo/mb-web
+    working_directory: ~/repo
     steps:
       - checkout
-      - run: npm install
-      - run: npm run build-css
+      - run: |
+          cd ./mb-web
+          npm install
+          npm run build-css
       - save_cache:
           paths:
-            - ./node_modules
-          key: node-{{ checksum "./package.json" }}
+            - ./mb-web/node_modules
+          key: node-{{ checksum "./mb-web/package.json" }}
       - persist_to_workspace:
           root: ./mb-web
           paths: 
@@ -20,27 +22,31 @@ jobs:
   mb-web_test:
     docker:
       - image: circleci/node:8
-    working_directory: ~/repo/mb-web
+    working_directory: ~/repo
     steps:
       - checkout
       - attach_workspace:
           at: ./mb-web
       - restore_cache:
           keys:
-            - node-{{ checksum "./package.json" }}
-      - run: npm test
+            - node-{{ checksum "./mb-web/package.json" }}
+      - run: |
+          cd ./mb-web
+          npm test
   mb-web_build:
     docker:
       - image: circleci/node:8
-    working_directory: ~/repo/mb-web
+    working_directory: ~/repo
     steps:
       - checkout
       - attach_workspace:
           at: ./mb-web
       - restore_cache:
           keys:
-            - node-{{ checksum "./package.json" }}
-      - run: npm run build-js
+            - node-{{ checksum "./mb-web/package.json" }}
+      - run: |
+          cd ./mb-web
+          npm run build-js
       - persist_to_workspace:
           root: ./mb-web
           paths: 
@@ -48,17 +54,18 @@ jobs:
   mb-web_deploy_to_firebase:
     docker:
       - image: circleci/node:8
-    working_directory: ~/repo/mb-web
+    working_directory: ~/repo
     steps:
       - checkout
       - attach_workspace:
           at: ./mb-web
       - restore_cache:
           keys:
-            - node-{{ checksum "./package.json" }}
+            - node-{{ checksum "./mb-web/package.json" }}
       - run: |
-           npx firebase use www-nomkhonwaan-com --token=${FIREBASE_TOKEN}
-           npx firebase deploy --token=${FIREBASE_TOKEN}
+          cd ./mb-web
+          npx firebase use www-nomkhonwaan-com --token=${FIREBASE_TOKEN}
+          npx firebase deploy --token=${FIREBASE_TOKEN}
   mb-server_test:
     docker:
       - image: circleci/openjdk:8-jdk
