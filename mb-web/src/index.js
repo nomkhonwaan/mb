@@ -27,11 +27,10 @@ const authService = AuthService.Builder
 /* GraphQL */
 const configOptions = { uri: process.env.REACT_APP_GRAPHQL_ENDPOINT };
 
+// Set access token to the request header if logged in
 if (authService.isAuthenticated()) {
   Object.assign(configOptions, {
-    headers: {
-      authorization: `Bearer ${authService.getAccessToken()}`,
-    },
+    headers: { authorization: `Bearer ${authService.getAccessToken()}`, },
   });
 }
 

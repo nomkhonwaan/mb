@@ -2,10 +2,16 @@
  * External Dependencies
  */
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /**
- * An application header component.
+ * Internal Dependencies
+ */
+import { toggleSidebar } from '../redux/modules/app';
+
+/**
+ * An application header.
  * 
  * @param {object} props 
  */
@@ -14,7 +20,7 @@ const Header = (props) => {
     <div className="header _flex">
       <div
         className="toggle-sidebar-button _flex _flex-vertical-align-middle"
-        onClick={ props.onClickToggleButton }
+        onClick={ props.toggleSidebar }
       >
         <i className="fal fa-bars" />
       </div>
@@ -22,6 +28,7 @@ const Header = (props) => {
       <div className="toggle-search-dialog-button _flex _flex-vertical-align-middle">
         <i className="fal fa-search" />
       </div>
+
       {
         !props.userInfo ? null : (
           <div className="user-info _flex _flex-vertical-align-middle">
@@ -34,8 +41,21 @@ const Header = (props) => {
 };
 
 Header.propTypes = {
+  /* Properties */
+  userInfo: PropTypes.shape({
+    displayName: PropTypes.string.isRequired,
+    avatarUrl: PropTypes.string.isRequired,
+  }),
+
   /* Events */
-  onClickToggleButton: PropTypes.func,
+  toggleSidebar: PropTypes.func,
 };
 
-export default Header;
+function mapStateToProps() {
+  return {};
+}
+
+export default connect(
+  mapStateToProps,
+  { toggleSidebar, },
+)(Header);
