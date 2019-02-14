@@ -1,0 +1,81 @@
+@import url("https://fonts.googleapis.com/css?family=Athiti:500|Lato:300,400,400i|Pridi:300,500&subset=thai");
+@import url("~bootstrap/dist/css/bootstrap-reboot.css");
+
+@mixin sm { @media screen and (min-width: 576px) { @content; } }
+@mixin md { @media screen and (min-width: 768px) { @content; } }
+@mixin lg { @media screen and (min-width: 992px) { @content; } }
+@mixin xl { @media screen and (min-width: 1200px) { @content; } }
+
+._flex { display: flex!important; }
+._flex-inline { display: inline-flex!important; }
+._flex-left { margin-right: auto!important; }
+._flex-right { margin-left: auto!important; }
+._flex-horizontal-align-left {
+  &:not(._flex-direction-column) { ustify-content: flex-start!important; }
+  &._flex-direction-column { align-items: flex-start!important; }
+}
+._flex-horizontal-align-center {
+  &:not(._flex-direction-column) { justify-content: center!important; }
+  &._flex-direction-column { align-items: center!important; }
+}
+._flex-horizontal-align-right {
+  &:not(._flex-direction-column) { justify-content: flex-end!important; }
+  &._flex-direction-column { align-items: flex-end!important; }
+}
+._flex-vertical-align-top {
+  &:not(._flex-direction-column) { align-items: flex-start!important; }
+  &._flex-direction-column { justify-content: flex-start!important; }
+}
+._flex-vertical-align-middle {
+  &:not(._flex-direction-column) { align-items: center!important; }
+  &._flex-direction-column { justify-content: center!important; }
+}
+._flex-vertical-align-bottom {
+  &:not(._flex-direction-column) { align-items: flex-end!important; }
+  &._flex-direction-column { justify-content: flex-end!important; }
+}
+._flex-direction-column { flex-direction: column!important; }
+._flex-direction-row { flex-direction: row!important; }
+
+._color-inherit { color: inherit!important; }
+
+._overflow-hidden { overflow: hidden!important; }
+
+._list-unstyled { list-style: none!important; }
+._text-undecorated { text-decoration: none!important; }
+
+._no-outline:focus { outline: 0!important; }
+
+._unmargin { margin: 0!important; }
+._unpadding { padding: 0!important; }
+
+._lowercase { text-transform: lowercase!important; }
+._uppercase { text-transform: uppercase!important; }
+
+._narrow {
+  padding: 0 3.2rem;
+  width: 100%!important;
+
+  @include lg {
+    padding: 0;
+    width: 76.8rem!important;
+  }
+}
+
+._wide {
+  @extend ._narrow;
+
+  @include lg {
+    padding: 0 3.2rem;
+    width: 102.4rem!important;
+  }
+
+  @include xl { padding: 0; }
+}
+
+html, body { font-size: 62.5%; }
+
+a, a:hover, a:focus, a:visited {
+  color: inherit;
+  text-decoration: none;
+}

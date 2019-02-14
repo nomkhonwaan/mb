@@ -1,0 +1,10 @@
+.app {
+  display: grid;
+  grid-template-columns: 25.6rem auto;
+  grid-template-rows: 6.4rem auto;
+  transform: translateX(0);
+  transition: transform .4s ease-in-out;
+  width: calc(100% + 25.6rem);
+
+  &.-sidebar-collapsed { transform: translateX(-25.6rem); }
+}
