@@ -29,7 +29,7 @@ const routes = [
   // },
   {
     path: '/:year/:month/:date/:slug/edit',
-    component: (props) => (<Protected { ...props } component={ PostEditor } />),
+    component: (props) => (<ProtectedRoute { ...props } component={ PostEditor } />)
   },
   // {
   //   path: '*',

@@ -3,12 +3,23 @@
  */
 import React from 'react';
 
-const PostEditor = (props) => {
-    return (
-        <div className="post-editor">
-          Post Editor
-        </div>
-    );
-};
+/**
+ * A Post editor page. 
+ * 
+ * @param {object} props 
+ */
+// const PostEditor = (props) => {
+//   return (
+//     <div className="post-editor">
+//       Post Editor
+//     </div>
+//   );
+// };
+
+class PostEditor extends React.Component {
+  render() {
+    return 'Test';
+  }
+}
 
 export default PostEditor;

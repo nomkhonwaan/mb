@@ -3,11 +3,16 @@
  */
 import PropTypes from 'prop-types';
 
+/**
+ * A login page that will handle authentication session after logged in.
+ * 
+ * @param {object} props 
+ */
 const Login = (props) => {
   if (props.location.hash) {
     props.authService.handleAuthentication()
       .then(() => {
-        props.authService.redirectIntended();
+        props.history.replace(props.authService.getPreviousPathname());
       })
       .catch((err) => {
         console.error(err);

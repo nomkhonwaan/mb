@@ -1,6 +1,14 @@
+/**
+ * External Dependencies
+ */
 import React from 'react';
 import PropTypes from 'prop-types';
 
+/**
+ * A HoC for protected component from unauthorized request.
+ * 
+ * @param {object} props 
+ */
 const ProtectedRoute = (props) => {
   if (!props.authService.isAuthenticated()) {
     // Redirect to the Auth0 which will store current pathname to the localStorage.
@@ -17,7 +25,10 @@ const ProtectedRoute = (props) => {
 
 ProtectedRoute.propTypes = {
   authService: PropTypes.object.isRequired,
-  component: PropTypes.node.isRequired,
+  component: PropTypes.oneOfType([ 
+    PropTypes.node, 
+    PropTypes.func 
+  ]).isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
