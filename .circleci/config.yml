@@ -14,7 +14,7 @@ jobs:
       - save_cache:
           paths:
             - ./mb-web/node_modules
-          key: node-{{ checksum "./mb-web/package.json" }}
+          key: node-{{ checksum "./mb-web/package-lock.json" }}
       - persist_to_workspace:
           root: ./mb-web
           paths: 
@@ -29,7 +29,7 @@ jobs:
           at: ./mb-web
       - restore_cache:
           keys:
-            - node-{{ checksum "./mb-web/package.json" }}
+            - node-{{ checksum "./mb-web/package-lock.json" }}
       - run: |
           cd ./mb-web
           npm test
@@ -43,7 +43,7 @@ jobs:
           at: ./mb-web
       - restore_cache:
           keys:
-            - node-{{ checksum "./mb-web/package.json" }}
+            - node-{{ checksum "./mb-web/package-lock.json" }}
       - run: |
           cd ./mb-web
           npm run build-js
@@ -61,7 +61,7 @@ jobs:
           at: ./mb-web
       - restore_cache:
           keys:
-            - node-{{ checksum "./mb-web/package.json" }}
+            - node-{{ checksum "./mb-web/package-lock.json" }}
       - run: |
           cd ./mb-web
           npx firebase use www-nomkhonwaan-com --token=${FIREBASE_TOKEN}
