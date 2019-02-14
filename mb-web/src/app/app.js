@@ -17,6 +17,7 @@ import Header from '../components/header';
 import PopupOverlay from '../components/popup-overlay';
 import Sidebar from '../components/sidebar';
 import { toggleSidebar } from '../redux/modules/app';
+import routes from './routes';
 
 /**
  * The main application.

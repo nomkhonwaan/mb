@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-const PropTypes = require('prop-types');
+import PropTypes from 'prop-types';
 
 const Login = (props) => {
   if (props.location.hash) {
@@ -15,7 +15,7 @@ const Login = (props) => {
         console.error(err);
       });
   } else {
-    // props.authService.login();
+    props.authService.login();
   }
   
   return null;
@@ -28,4 +28,4 @@ Login.propTypes = {
   }).isRequired,
 };
 
-module.exports = Login;
+export default Login;

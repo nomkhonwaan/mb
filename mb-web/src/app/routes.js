@@ -1,4 +1,9 @@
 /**
+ * External Dependencies
+ */
+import React from 'react';
+
+/**
  * Internal Dependencies
  */
 import { Login } from '../auth';
@@ -24,7 +29,11 @@ const routes = [
   // },
   {
     path: '/:year/:month/:date/:slug/edit',
-    component: PostEditor,
+    render: (props) => {
+      return (
+        <PostEditor />
+      );
+    },
   },
   // {
   //   path: '*',
@@ -32,4 +41,4 @@ const routes = [
   // },
 ];
 
-module.exports = routes;
+export default routes;

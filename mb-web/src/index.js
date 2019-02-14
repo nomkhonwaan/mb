@@ -8,7 +8,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
-import history from 'history';
 
 /**
  * Internal Dependencies
