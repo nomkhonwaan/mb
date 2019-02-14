@@ -1,6 +1,8 @@
 package com.nomkhonwaan.mb.graphql
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver
+import com.nomkhonwaan.mb.auth.FindUserByIDQuery
+import com.nomkhonwaan.mb.auth.User
 import com.nomkhonwaan.mb.blog.category.Category
 import com.nomkhonwaan.mb.blog.category.FindAllCategoriesQuery
 import com.nomkhonwaan.mb.blog.post.FindAllDraftPostsQuery
@@ -58,5 +60,15 @@ class QueryResolver(private val queryGateway: QueryGateway) : GraphQLQueryResolv
                 FindAllDraftPostsQuery(authorId, offset, limit),
                 ResponseTypes.multipleInstancesOf(Post::class.java)
         )
+    }
+
+    /**
+     * Returns a logged in user information.
+     */
+    @PreAuthorize("hasRole('ROLE_USER')")
+    fun userInfo(): CompletableFuture<User?> {
+        val authorId: String = SecurityContextHolder.getContext().authentication.principal as String
+
+        return queryGateway.query(FindUserByIDQuery(authorId), User::class.java)
     }
 }
