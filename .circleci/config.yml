@@ -9,6 +9,8 @@ jobs:
       - checkout
       - run: |
           cd ./mb-web
+          echo '@fortawesome:registry=https://npm.fontawesome.com/' > ./mb-web/.npmrc
+          echo "//npm.fontawesome.com/:_authToken=${FONT_AWESOME_NPM_TOKEN}" >> ./mb-web/.npmrc
           npm install
           npm run build-css
       - save_cache:
@@ -103,7 +105,7 @@ jobs:
           at: ./mb-server
       - run: |
           docker build -t nomkhonwaan/mb-server:latest -f ./mb-server/Dockerfile ./mb-server
-          docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+          docker login -u $DOCKER_USERNAME -p ${DOCKER_PASSWORD}
           docker push nomkhonwaan/mb-server:latest
   mb-server_deploy_to_docker_deploy_webhook:
     machine: true
