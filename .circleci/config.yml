@@ -4,15 +4,15 @@ jobs:
   mb-web_install:
     docker:
       - image: circleci/node:8
-    working_directory: ~/repo
+    working_directory: ~/repo/mb-web
     steps:
       - checkout
       - run: npm install
       - run: npm run build-css
       - save_cache:
           paths:
-            - ./mb-web/node_modules
-          key: node-{{ checksum "./mb-web/package.json" }}
+            - ./node_modules
+          key: node-{{ checksum "./package.json" }}
       - persist_to_workspace:
           root: ./mb-web
           paths: 
@@ -20,26 +20,26 @@ jobs:
   mb-web_test:
     docker:
       - image: circleci/node:8
-    working_directory: ~/repo
+    working_directory: ~/repo/mb-web
     steps:
       - checkout
       - attach_workspace:
           at: ./mb-web
       - restore_cache:
           keys:
-            - node-{{ checksum "./mb-web/package.json" }}
+            - node-{{ checksum "./package.json" }}
       - run: npm test
   mb-web_build:
     docker:
       - image: circleci/node:8
-    working_directory: ~/repo
+    working_directory: ~/repo/mb-web
     steps:
       - checkout
       - attach_workspace:
           at: ./mb-web
       - restore_cache:
           keys:
-            - node-{{ checksum "./mb-web/package.json" }}
+            - node-{{ checksum "./package.json" }}
       - run: npm run build-js
       - persist_to_workspace:
           root: ./mb-web
@@ -48,14 +48,14 @@ jobs:
   mb-web_deploy_to_firebase:
     docker:
       - image: circleci/node:8
-    working_directory: ~/repo
+    working_directory: ~/repo/mb-web
     steps:
       - checkout
       - attach_workspace:
           at: ./mb-web
       - restore_cache:
           keys:
-            - node-{{ checksum "./mb-web/package.json" }}
+            - node-{{ checksum "./package.json" }}
       - run: |
            npx firebase use www-nomkhonwaan-com --token=${FIREBASE_TOKEN}
            npx firebase deploy --token=${FIREBASE_TOKEN}
