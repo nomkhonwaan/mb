@@ -33,6 +33,10 @@ export const App = (props) => {
             name
             slug
           }
+          userInfo {
+            displayName
+            avatarUrl
+          }
         }` }
     >
       {
@@ -45,6 +49,8 @@ export const App = (props) => {
               link: `/categories/${slug}`,
             }))
           }
+
+          console.log(data)
 
           return (
             <div className={ classnames('app', {
@@ -62,7 +68,10 @@ export const App = (props) => {
                 onClickBackground={ props.toggleSidebar }
               />
         
-              <Header onClickToggleButton={ props.toggleSidebar } />
+              <Header 
+                onClickToggleButton={ props.toggleSidebar }
+                userInfo={ data ? data.userInfo : null }
+              />
         
               { renderRoutes(routes, { authService: props.authService }) }
             </div>

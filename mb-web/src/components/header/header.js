@@ -13,11 +13,22 @@ const Header = (props) => {
   return (
     <div className="header _flex">
       <div
-        className="toggle-button _flex _flex-vertical-align-middle"
+        className="toggle-sidebar-button _flex _flex-vertical-align-middle"
         onClick={ props.onClickToggleButton }
       >
         <i className="fal fa-bars" />
       </div>
+
+      <div className="toggle-search-dialog-button _flex _flex-vertical-align-middle">
+        <i className="fal fa-search" />
+      </div>
+      {
+        !props.userInfo ? null : (
+          <div className="user-info _flex _flex-vertical-align-middle">
+            <img className="avatar" alt={ props.userInfo.displayName } src={ props.userInfo.avatarUrl } />
+          </div>
+        )
+      }
     </div>
   );
 };
