@@ -28,6 +28,10 @@ const routes = [
   //   component: Single,
   // },
   {
+    path: '/new-post',
+    component: (props) => (<ProtectedRoute { ...props } component={ PostEditor } />),
+  },
+  {
     path: '/:year/:month/:date/:slug/edit',
     component: (props) => (<ProtectedRoute { ...props } component={ PostEditor } />)
   },

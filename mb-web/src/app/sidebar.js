@@ -13,7 +13,7 @@ import classnames from 'classnames';
 import { toggleSidebar } from '../redux/modules/app';
 
 /**
- * An application sidebar component.
+ * An application sidebar.
  *
  * @param {object} props
  */

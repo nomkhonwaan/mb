@@ -4,13 +4,23 @@
 import update from 'immutability-helper';
 
 const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
+const TOGGLE_USER_MENU = 'TOGGLE_USER_MENU';
 
 /**
- * Toggles on/off application sidebar.
+ * Toggles an application sidebar.
  */
 export function toggleSidebar() {
   return {
     type: TOGGLE_SIDEBAR,
+  };
+}
+
+/**
+ * Toggles a user's  menu.
+ */
+export function toggleUserMenu() {
+  return {
+    type: TOGGLE_USER_MENU,
   };
 }
 
@@ -28,6 +38,9 @@ const initialState = {
       },
     ],
   },
+  userMenu: {
+    collapsed: true,
+  },
 };
 
 /**
@@ -41,6 +54,12 @@ function app(state = initialState, action) {
     case TOGGLE_SIDEBAR:
       return update(state, {
         sidebar: {
+          $toggle: ['collapsed'],
+        },
+      });
+    case TOGGLE_USER_MENU:
+      return update(state, {
+        userMenu: {
           $toggle: ['collapsed'],
         },
       });

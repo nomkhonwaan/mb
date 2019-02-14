@@ -9,6 +9,7 @@ import PropTypes from 'prop-types';
  * Internal Dependencies
  */
 import { toggleSidebar } from '../redux/modules/app';
+import UserMenu from './user-menu';
 
 /**
  * An application header.
@@ -30,11 +31,15 @@ const Header = (props) => {
       </div>
 
       {
-        !props.userInfo ? null : (
-          <div className="user-info _flex _flex-vertical-align-middle">
+        !props.userInfo ? null : [
+          <div 
+            className="user-info _flex _flex-vertical-align-middle"
+            key="0"
+          >
             <img className="avatar" alt={ props.userInfo.displayName } src={ props.userInfo.avatarUrl } />
-          </div>
-        )
+          </div>,
+          <UserMenu key="1" />
+        ]
       }
     </div>
   );
