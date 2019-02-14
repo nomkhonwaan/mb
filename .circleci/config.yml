@@ -8,9 +8,10 @@ jobs:
     steps:
       - checkout
       - run: |
+          echo '@fortawesome:registry=https://npm.fontawesome.com/' > ~/.npmrc
+          echo "//npm.fontawesome.com/:_authToken=${FONT_AWESOME_NPM_TOKEN}" >> ~/.npmrc
+      - run: |
           cd ./mb-web
-          echo '@fortawesome:registry=https://npm.fontawesome.com/' > ./mb-web/.npmrc
-          echo "//npm.fontawesome.com/:_authToken=${FONT_AWESOME_NPM_TOKEN}" >> ./mb-web/.npmrc
           npm install
           npm run build-css
       - save_cache:
