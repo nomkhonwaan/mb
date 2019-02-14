@@ -2,10 +2,10 @@
  * External Dependencies
  */
 import React from 'react';
+import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
 import { renderRoutes } from 'react-router-config';
 import { withRouter } from 'react-router-dom';
-import { Query } from 'react-apollo';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import gql from 'graphql-tag';
@@ -17,7 +17,6 @@ import Header from '../components/header';
 import PopupOverlay from '../components/popup-overlay';
 import Sidebar from '../components/sidebar';
 import { toggleSidebar } from '../redux/modules/app';
-import routes from './routes';
 
 /**
  * The main application.

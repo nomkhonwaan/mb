@@ -1,9 +1,7 @@
 /**
  * External Dependencies
  */
-// const React = require('react');
 const PropTypes = require('prop-types');
-const { withRouter } = require('react-router-dom');
 
 const Login = (props) => {
   if (props.location.hash) {
@@ -17,7 +15,7 @@ const Login = (props) => {
         console.error(err);
       });
   } else {
-    props.authService.login();
+    // props.authService.login();
   }
   
   return null;
@@ -30,4 +28,4 @@ Login.propTypes = {
   }).isRequired,
 };
 
-module.exports = withRouter(Login);
+module.exports = Login;

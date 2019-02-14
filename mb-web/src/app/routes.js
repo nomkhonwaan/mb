@@ -1,7 +1,8 @@
 /**
  * Internal Dependencies
  */
-const { Login } = require('../auth');
+import { Login } from '../auth';
+import { PostEditor } from '../single';
 
 const routes = [
   // {
@@ -21,10 +22,10 @@ const routes = [
   //   path: '/:year/:month/:date/:slug',
   //   component: Single,
   // },
-  // {
-  //   path: '/:year/:month/:date/:slug/edit',
-  //   component: PostEditor,
-  // },
+  {
+    path: '/:year/:month/:date/:slug/edit',
+    component: PostEditor,
+  },
   // {
   //   path: '*',
   //   component: PageNotFound,
