@@ -149,12 +149,13 @@ workflows:
   mb-web_workflow:
     jobs:
       - mb-web_install
-      - mb-web_test:
-          requires:
-            - mb-web_install
+      # - mb-web_test:
+      #     requires:
+      #       - mb-web_install
       - mb-web_build:
           requires:
-            - mb-web_test
+            # - mb-web_test
+            - mb-web_install
       - hold:
           type: approval
           filters:
