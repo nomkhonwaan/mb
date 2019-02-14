@@ -8,6 +8,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { ApolloProvider } from 'react-apollo';
 import ApolloClient from 'apollo-boost';
+import { createBrowserHistory } from 'history';
 
 /**
  * Internal Dependencies
@@ -18,10 +19,14 @@ import configureStore from './redux/configure-store';
 import * as serviceWorker from './service-worker';
 import { AuthService } from './auth';
 
+/* HTML5 History */
+const history = createBrowserHistory();
+
 /* Auth0 */
 const authService = AuthService.Builder
   .withClientId(process.env.REACT_APP_AUTH0_CLIENT_ID)
   .withRedirectUri(process.env.REACT_APP_AUTH0_REDIRECT_URI)
+  .withHistory(history)
   .build();
 
 /* GraphQL */

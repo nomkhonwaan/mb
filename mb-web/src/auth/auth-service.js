@@ -2,6 +2,7 @@
  * External Dependencies
  */
 import auth0 from 'auth0-js';
+import * as history from 'history';
 
 /**
  * A wrapper class of the Auth0. 
@@ -15,6 +16,7 @@ class AuthService {
       responseType: builder.responseType,
       scope: builder.scope,
     });
+    this.history = builder.history;
   }
   
   /**
@@ -33,6 +35,9 @@ class AuthService {
 
       // A scope that will be used for retrieving user information after logged-in
       scope = 'openid email profile';
+
+      // A default history that supports HTML5 history API
+      history = history;
 
       /**
        * Allows customizing an application domain name. Default is "nomkhonwaan.auth0.com".
@@ -85,6 +90,16 @@ class AuthService {
       }
 
       /**
+       * Allows customizing a history.
+       *
+       * @param {object} history 
+       */
+      withHistory(history) {
+        this.history = history;
+        return this;
+      }
+
+      /**
        * Returns a new AuthService which contructs from builder object.
        */
       build() {
@@ -104,9 +119,26 @@ class AuthService {
 
   /**
    * Performs login with Auth0.
+   * 
+   * @param {string} redirectUri
    */
-  login() {
+  login(redirectUri) {
+    if (redirectUri) {
+      localStorage.setItem('redirectUri', redirectUri);
+    }
+    
     this.auth0.authorize();
+  }
+
+  /**
+   * Redirects to the previous page (before redirect to the Auth0).
+   * Will redirect to the home page if it not exist.
+   */
+  redirectIntended() {
+    const redirectUri = localStorage.getItem('redirectUri') || '/';
+    localStorage.removeItem(redirectUri);
+
+    this.history.replace(redirectUri);
   }
 
   /**

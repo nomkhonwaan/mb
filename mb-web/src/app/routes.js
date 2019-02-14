@@ -30,8 +30,12 @@ const routes = [
   {
     path: '/:year/:month/:date/:slug/edit',
     render: (props) => {
+      if (!props.authService.isAuthenticated()) {
+        props.authService.login(props.location.pathname);
+      }
+
       return (
-        <PostEditor />
+        <PostEditor { ...props } />
       );
     },
   },

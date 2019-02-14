@@ -7,17 +7,15 @@ const Login = (props) => {
   if (props.location.hash) {
     props.authService.handleAuthentication()
       .then(() => {
-        // TODO: Ridirect user to the previous page
-        console.log(props.authService.isAuthenticated());
+        props.authService.redirectIntended();
       })
       .catch((err) => {
-        // TODO: Display error page, popup message or anything
         console.error(err);
       });
   } else {
     props.authService.login();
   }
-  
+
   return null;
 };
 
