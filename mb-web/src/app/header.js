@@ -39,7 +39,10 @@ const Header = (props) => {
           >
             <img className="avatar" alt={ props.userInfo.displayName } src={ props.userInfo.avatarUrl } />
           </div>,
-          <UserMenu key="1" />,
+          <UserMenu
+            in={ !props.app.userMenu.collapsed } 
+            key="1"
+          />,
         ]
       }
     </div>
@@ -50,6 +53,9 @@ Header.propTypes = {
   /* Properties */
   app: PropTypes.shape({
     listOfDraftPosts: PropTypes.shape({
+      collapsed: PropTypes.bool.isRequired,
+    }).isRequired,
+    userMenu: PropTypes.shape({
       collapsed: PropTypes.bool.isRequired,
     }).isRequired,
   }).isRequired,
@@ -68,6 +74,9 @@ function mapStateToProps(state) {
     app: {
       listOfDraftPosts: {
         collapsed: state.app.listOfDraftPosts.collapsed,
+      },
+      userMenu: {
+        collapsed: state.app.userMenu.collapsed,
       },
     },
   };

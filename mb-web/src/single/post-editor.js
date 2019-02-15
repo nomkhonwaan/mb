@@ -8,18 +8,12 @@ import React from 'react';
  * 
  * @param {object} props 
  */
-// const PostEditor = (props) => {
-//   return (
-//     <div className="post-editor">
-//       Post Editor
-//     </div>
-//   );
-// };
-
-class PostEditor extends React.Component {
-  render() {
-    return 'Test';
-  }
-}
+const PostEditor = (props) => {
+  return (
+    <div className="post-editor">
+      Post Editor
+    </div>
+  );
+};
 
 export default PostEditor;
