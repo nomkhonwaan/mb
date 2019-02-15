@@ -12,7 +12,7 @@ import classnames from 'classnames';
  * Internal Dependencies
  */
 import ToggleSwitch from '../components/toggle-switch';
-import { toggleListOfDraftPosts } from '../redux/modules/app';
+import { toggleListOfDraftPosts, toggleUserMenu } from '../redux/modules/app';
 
 /**
  * A user's menu that will appear after logged in.
@@ -34,7 +34,8 @@ const UserMenu = (props) => {
               [`-${status}`]: true,
             }) }>
               <ul className="_list-unstyled _unmargin _unpadding">
-                <li><Link to="/new-post">Draft a new Post</Link></li>
+                { renderItems(props.app.userMenu.items.slice(0, 1), props.toggleUserMenu) }
+
                 <li 
                     className="_flex _flex-justify-content-space-between"
                     onClick={ props.toggleListOfDraftPosts }
@@ -45,13 +46,11 @@ const UserMenu = (props) => {
                 
                 <li className="horizontal-line-separator"></li>
 
-                <li><Link to="/stats">Stats</Link></li>
+                { renderItems(props.app.userMenu.items.slice(1, 2), props.toggleUserMenu) }
 
                 <li className="horizontal-line-separator"></li>
 
-                <li><Link to="/me">Profile</Link></li>
-                <li><Link to="/settings">Settings</Link></li>
-                <li><Link to="/logout">Logout</Link></li>
+                { renderItems(props.app.userMenu.items.slice(2, 5), props.toggleUserMenu) }
               </ul>
             </div>
           );
@@ -61,12 +60,27 @@ const UserMenu = (props) => {
   );
 };
 
+/**
+ * Renders a list of items on the user's menu.
+ * 
+ * @param {array<object>} items 
+ * @param {function} onClickItem 
+ */
+function renderItems(items, onClickItem) {
+  return items.map(({ link, name }, key) => (
+    <li key={ key } onClick={ onClickItem }>
+      <Link to={ link }>{ name }</Link>
+    </li>
+  ));
+}
+
 UserMenu.propTypes = {
   /* Properties */
   in: PropTypes.bool.isRequired,
 
   /* Actions */
   toggleListOfDraftPosts: PropTypes.func.isRequired,
+  toggleUserMenu: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -75,11 +89,14 @@ function mapStateToProps(state) {
       listOfDraftPosts: {
         collapsed: state.app.listOfDraftPosts.collapsed,
       },
+      userMenu: {
+        items: state.app.userMenu.items,
+      }
     },
   };
 }
 
 export default connect(
   mapStateToProps,
-  { toggleListOfDraftPosts, },
+  { toggleListOfDraftPosts, toggleUserMenu },
 )(UserMenu);
