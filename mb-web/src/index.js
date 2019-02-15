@@ -25,9 +25,16 @@ const authService = AuthService.Builder
   .build();
 
 /* GraphQL */
-const client = new ApolloClient({
-  uri: process.env.REACT_APP_GRAPHQL_ENDPOINT,
-});
+const configOptions = { uri: process.env.REACT_APP_GRAPHQL_ENDPOINT };
+
+// Set access token to the request header if logged in
+if (authService.isAuthenticated()) {
+  Object.assign(configOptions, {
+    headers: { authorization: `Bearer ${authService.getAccessToken()}`, },
+  });
+}
+
+const client = new ApolloClient(configOptions);
 
 /* Redux */
 const store = configureStore();

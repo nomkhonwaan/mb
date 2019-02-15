@@ -13,9 +13,9 @@ import gql from 'graphql-tag';
 /**
  * Internal Dependencies
  */
-import Header from '../components/header';
 import PopupOverlay from '../components/popup-overlay';
-import Sidebar from '../components/sidebar';
+import Header from './header';
+import Sidebar from './sidebar';
 import { toggleSidebar } from '../redux/modules/app';
 import routes from './routes';
 
@@ -32,6 +32,10 @@ export const App = (props) => {
           categories {
             name
             slug
+          }
+          userInfo {
+            displayName
+            avatarUrl
           }
         }` }
     >
@@ -51,10 +55,8 @@ export const App = (props) => {
               '-sidebar-collapsed': props.app.sidebar.collapsed,
             }) }>
               <Sidebar 
-                isAuthenticated={ props.authService.isAuthenticated() }
+                authService={ props.authService }
                 items={ props.app.sidebar.items.concat(categories) }
-                pathname={ props.location.pathname }
-                onClickToggleButton={ props.toggleSidebar }
               />
         
               <PopupOverlay
@@ -62,7 +64,7 @@ export const App = (props) => {
                 onClickBackground={ props.toggleSidebar }
               />
         
-              <Header onClickToggleButton={ props.toggleSidebar } />
+              <Header userInfo={ data ? data.userInfo : null } />
         
               { renderRoutes(routes, { authService: props.authService }) }
             </div>
