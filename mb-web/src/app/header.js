@@ -4,12 +4,11 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
 /**
  * Internal Dependencies
  */
-import { toggleSidebar, toggleUserMenu } from '../redux/modules/app';
+import { toggleSidebar, toggleUserMenu, } from '../redux/modules/app';
 import UserMenu from './user-menu';
 
 /**
@@ -40,14 +39,7 @@ const Header = (props) => {
           >
             <img className="avatar" alt={ props.userInfo.displayName } src={ props.userInfo.avatarUrl } />
           </div>,
-          <div
-            className={ classnames('user-menu', {
-              '-user-menu-collapsed': props.app.userMenu.collapsed,
-            }) }
-            key="1"
-          >
-            <UserMenu />
-          </div>,
+          <UserMenu key="1" />,
         ]
       }
     </div>
@@ -56,12 +48,14 @@ const Header = (props) => {
 
 Header.propTypes = {
   /* Properties */
+  app: PropTypes.shape({
+    listOfDraftPosts: PropTypes.shape({
+      collapsed: PropTypes.bool.isRequired,
+    }).isRequired,
+  }).isRequired,
   userInfo: PropTypes.shape({
     displayName: PropTypes.string.isRequired,
     avatarUrl: PropTypes.string.isRequired,
-  }),
-  userMenu: PropTypes.shape({
-    collapsed: PropTypes.bool.isRequired,
   }),
 
   /* Actions */
@@ -72,8 +66,8 @@ Header.propTypes = {
 function mapStateToProps(state) {
   return {
     app: {
-      userMenu: {
-        collapsed: state.app.userMenu.collapsed,
+      listOfDraftPosts: {
+        collapsed: state.app.listOfDraftPosts.collapsed,
       },
     },
   };

@@ -1,4 +1,4 @@
-/* Application */
+@import '../style.scss';
 
 .app {
   display: grid;
@@ -10,8 +10,6 @@
 
   &.-sidebar-collapsed { transform: translateX(-25.6rem); }
 }
-
-/* Header */
 
 .header {
   border-bottom: .1rem solid hsl(0, 0%, 93%);
@@ -46,7 +44,7 @@
   .user-menu {
     color: hsl(0, 0%, 20%); 
     font: normal 400 1.6rem 'Lato', sans-serif;
-    margin: 8rem 3.2rem 0 0;
+    margin: 8.8rem 3.2rem 0 0;
     position: absolute;
     right: 0;
     top: 0;
@@ -72,7 +70,11 @@
       background: hsl(0, 0%, 100%);
       border: .1rem solid hsl(0, 0%, 93%);
       border-radius: .2rem;
-      min-width: 30.4rem;
+      width: calc(100vh - 25.6rem - 6.4rem - 6.4rem);
+
+      @include md {
+        min-width: 30.4rem;
+      }
     }
 
     li {
@@ -90,8 +92,6 @@
     }
   }
 }
-
-/* Sidebar */
 
 .sidebar {
   .header {

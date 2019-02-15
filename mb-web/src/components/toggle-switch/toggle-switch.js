@@ -5,6 +5,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 /**
+ * Internal Dependencies
+ */
+import noop from '../../noop';
+
+/**
  * A toggle switch component.
  * 
  * @param {object} props 
@@ -12,11 +17,7 @@ import PropTypes from 'prop-types';
 const ToggleSwitch = (props) => {
   return (
     <div className="toggle-switch">
-      <input
-        checked={ !!props.checked }
-        onChange={ props.onChange }
-        type="checkbox"
-      />
+      <input type="checkbox" checked={ !!props.checked } onChange={ noop } />
       <label />
     </div>
   );
@@ -25,9 +26,6 @@ const ToggleSwitch = (props) => {
 ToggleSwitch.propTypes = {
   /* Properties */
   checked: PropTypes.bool,
-
-  /* Events */
-  onChange: PropTypes.func,
 };
 
 export default ToggleSwitch;
