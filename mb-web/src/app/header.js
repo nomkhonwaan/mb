@@ -53,7 +53,7 @@ Header.propTypes = {
   }),
 
   /* Actions */
-  toggleSidebar: PropTypes.func,
+  toggleSidebar: PropTypes.func.isRequired,
 };
 
 function mapStateToProps() {
