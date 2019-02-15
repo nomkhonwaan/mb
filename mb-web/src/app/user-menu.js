@@ -19,30 +19,31 @@ import { toggleListOfDraftPosts } from '../redux/modules/app';
  */
 const UserMenu = (props) => {
   return (
-    <div className="user-menu">
-      <ul className="_list-unstyled">
-        <li><Link to="/new-post">Draft a new Post</Link></li>
-        <li onClick={ toggleListOfDraftPosts }>
-          Display my draft Posts
-          <ToggleSwitch on={ !props.app.listOfDraftPosts.collapsed } />
-        </li>
-        <li className="horizontal-line-separator"></li>
-        <li><Link to="/stats">Stats</Link></li>
-        <li className="horizontal-line-separator"></li>
-        <li><Link to="/me">Profile</Link></li>
-        <li><Link to="/settings">Settings</Link></li>
-        <li><Link to="/logout">Logout</Link></li>
-      </ul>
-    </div>
+    <ul className="_list-unstyled _unmargin _unpadding">
+      <li><Link to="/new-post">Draft a new Post</Link></li>
+      <li 
+        className="_flex _flex-justify-content-space-between"
+        onClick={ props.toggleListOfDraftPosts }
+      >
+        Display my draft Posts
+        <ToggleSwitch checked={ !props.app.listOfDraftPosts.collapsed } />
+      </li>
+      <li className="horizontal-line-separator"></li>
+      <li><Link to="/stats">Stats</Link></li>
+      <li className="horizontal-line-separator"></li>
+      <li><Link to="/me">Profile</Link></li>
+      <li><Link to="/settings">Settings</Link></li>
+      <li><Link to="/logout">Logout</Link></li>
+    </ul>
   );
 };
 
 UserMenu.propTypes = {
   /* Actions */
-  toggleListOfDraftPosts,
+  toggleListOfDraftPosts: PropTypes.func.isRequired,
 };
 
-function mapStateToProps() {
+function mapStateToProps(state) {
   return {
     app: {
       listOfDraftPosts: {

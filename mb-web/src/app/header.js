@@ -4,11 +4,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 
 /**
  * Internal Dependencies
  */
-import { toggleSidebar } from '../redux/modules/app';
+import { toggleSidebar, toggleUserMenu } from '../redux/modules/app';
 import UserMenu from './user-menu';
 
 /**
@@ -35,10 +36,18 @@ const Header = (props) => {
           <div 
             className="user-info _flex _flex-vertical-align-middle"
             key="0"
+            onClick={ props.toggleUserMenu }
           >
             <img className="avatar" alt={ props.userInfo.displayName } src={ props.userInfo.avatarUrl } />
           </div>,
-          <UserMenu key="1" />
+          <div
+            className={ classnames('user-menu', {
+              '-user-menu-collapsed': props.app.userMenu.collapsed,
+            }) }
+            key="1"
+          >
+            <UserMenu />
+          </div>,
         ]
       }
     </div>
@@ -51,16 +60,26 @@ Header.propTypes = {
     displayName: PropTypes.string.isRequired,
     avatarUrl: PropTypes.string.isRequired,
   }),
+  userMenu: PropTypes.shape({
+    collapsed: PropTypes.bool.isRequired,
+  }),
 
   /* Actions */
   toggleSidebar: PropTypes.func.isRequired,
+  toggleUserMenu: PropTypes.func.isRequired,
 };
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  return {
+    app: {
+      userMenu: {
+        collapsed: state.app.userMenu.collapsed,
+      },
+    },
+  };
 }
 
 export default connect(
   mapStateToProps,
-  { toggleSidebar, },
+  { toggleSidebar, toggleUserMenu, },
 )(Header);
