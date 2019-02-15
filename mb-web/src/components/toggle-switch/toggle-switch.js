@@ -26,9 +26,6 @@ const ToggleSwitch = (props) => {
 ToggleSwitch.propTypes = {
   /* Properties */
   checked: PropTypes.bool,
-
-  /* Events */
-  onChange: PropTypes.func,
 };
 
 export default ToggleSwitch;
