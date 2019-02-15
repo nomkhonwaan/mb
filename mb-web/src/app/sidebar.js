@@ -68,8 +68,8 @@ Sidebar.propTypes = {
     pathname: PropTypes.string.isRequired,
   }).isRequired,
 
-  /* Events */
-  toggleSidebar: PropTypes.func,
+  /* Actions */
+  toggleSidebar: PropTypes.func.isRequired,
 };
 
 function mapStateToProps() {
