@@ -4,8 +4,6 @@
 import update from 'immutability-helper';
 
 const TOGGLE_LIST_OF_DRAFT_POSTS = 'TOGGLE_LIST_OF_DRAFT_POSTS';
- 
-
 const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 const TOGGLE_USER_MENU = 'TOGGLE_USER_MENU';
 
@@ -17,7 +15,6 @@ export function toggleListOfDraftPosts() {
     type: TOGGLE_LIST_OF_DRAFT_POSTS,
   };
 }
-
 
 /**
  * Toggles an application sidebar.
@@ -37,12 +34,8 @@ export function toggleUserMenu() {
   };
 }
 
-
-
 const initialState = {
-  listOfDraftPosts: {
-    collapsed: true,
-  },
+  listOfDraftPosts: { collapsed: true, },
   sidebar: {
     collapsed: true,
     items: [
@@ -56,9 +49,7 @@ const initialState = {
       },
     ],
   },
-  userMenu: {
-    collapsed: true,
-  },
+  userMenu: { collapsed: true, },
 };
 
 /**
