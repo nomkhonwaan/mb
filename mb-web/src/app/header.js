@@ -52,9 +52,7 @@ const Header = (props) => {
             key="1"
           >
             <ul className="_list-unstyled _unmargin _unpadding">
-              <li>
-                <Link to="/new-post">Draft a new Post</Link>
-              </li>
+              <li><Link to="/new-post">Draft a new Post</Link></li>
               <li 
                 className="_flex _flex-justify-content-space-between"
                 onClick={ props.toggleListOfDraftPosts }
@@ -65,21 +63,13 @@ const Header = (props) => {
 
               <li className="horizontal-line-separator"></li>
 
-              <li>
-                <Link to="/stats">Stats</Link>
-              </li>
+              <li><Link to="/stats">Stats</Link></li>
 
               <li className="horizontal-line-separator"></li>
 
-              <li>
-                <Link to="/me">Profile</Link>
-              </li>
-              <li>
-                <Link to="/settings">Settings</Link>
-              </li>
-              <li>
-                <Link to="/logout">Logout</Link>
-              </li>
+              <li><Link to="/me">Profile</Link></li>
+              <li><Link to="/settings">Settings</Link></li>
+              <li><Link to="/logout">Logout</Link></li>
             </ul>
           </div>,
         ]
