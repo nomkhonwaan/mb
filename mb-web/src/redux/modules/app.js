@@ -3,8 +3,21 @@
  */
 import update from 'immutability-helper';
 
+const TOGGLE_LIST_OF_DRAFT_POSTS = 'TOGGLE_LIST_OF_DRAFT_POSTS';
+ 
+
 const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
 const TOGGLE_USER_MENU = 'TOGGLE_USER_MENU';
+
+/**
+ * Toggles a list of draft Posts.
+ */
+export function toggleListOfDraftPosts() {
+  return {
+    type: TOGGLE_LIST_OF_DRAFT_POSTS,
+  };
+}
+
 
 /**
  * Toggles an application sidebar.
@@ -24,7 +37,12 @@ export function toggleUserMenu() {
   };
 }
 
+
+
 const initialState = {
+  listOfDraftPosts: {
+    collapsed: true,
+  },
   sidebar: {
     collapsed: true,
     items: [
@@ -51,6 +69,12 @@ const initialState = {
  */
 function app(state = initialState, action) {
   switch (action.type) {
+    case TOGGLE_LIST_OF_DRAFT_POSTS:
+      return update(state, {
+        listOfDraftPosts: {
+          $toggle: [ 'collapsed' ],
+        },
+      });
     case TOGGLE_SIDEBAR:
       return update(state, {
         sidebar: {
