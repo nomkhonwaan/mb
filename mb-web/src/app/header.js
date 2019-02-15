@@ -52,7 +52,7 @@ Header.propTypes = {
     avatarUrl: PropTypes.string.isRequired,
   }),
 
-  /* Events */
+  /* Actions */
   toggleSidebar: PropTypes.func,
 };
 
