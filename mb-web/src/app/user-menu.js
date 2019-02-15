@@ -9,7 +9,8 @@ import PropTypes from 'prop-types';
 /**
  * Internal Dependencies
  */
-import { toggleShowListOfDraftPosts } from '../redux/modules/app';
+import ToggleSwitch from '../components/toggle-switch';
+import { toggleListOfDraftPosts } from '../redux/modules/app';
 
 /**
  * A user's menu that will appear after logged in.
@@ -21,7 +22,10 @@ const UserMenu = (props) => {
     <div className="user-menu">
       <ul className="_list-unstyled">
         <li><Link to="/new-post">Draft a new Post</Link></li>
-        <li onClick={ toggleShowListOfDraftPosts }>Display my draft Posts</li>
+        <li onClick={ toggleListOfDraftPosts }>
+          Display my draft Posts
+          <ToggleSwitch on={ !props.app.listOfDraftPosts.collapsed } />
+        </li>
         <li className="horizontal-line-separator"></li>
         <li><Link to="/stats">Stats</Link></li>
         <li className="horizontal-line-separator"></li>
@@ -35,14 +39,20 @@ const UserMenu = (props) => {
 
 UserMenu.propTypes = {
   /* Actions */
-  toggleShowListOfDraftPosts,
+  toggleListOfDraftPosts,
 };
 
 function mapStateToProps() {
-  return {};
+  return {
+    app: {
+      listOfDraftPosts: {
+        collapsed: state.app.listOfDraftPosts.collapsed,
+      },
+    },
+  };
 }
 
 export default connect(
   mapStateToProps,
-  { toggleShowListOfDraftPosts, },
+  { toggleListOfDraftPosts, },
 )(UserMenu);
