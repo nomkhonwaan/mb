@@ -1,0 +1,83 @@
+.post-editor {
+  background: hsl(0, 0%, 100%);
+  bottom: 0;
+  display: grid;
+  grid-template-columns: 25.6rem auto;
+  grid-template-rows: 6.4rem auto;
+  left: 25.6rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 100;
+
+  > .header {
+    border-bottom: .1rem solid hsl(0, 0%, 93%);
+    height: 6.4rem;
+
+    > .toggle-mode-button {
+      cursor: pointer;
+      
+      .mode-name {
+        color: hsl(0, 0%, 50%);
+        font: normal 400 1.3rem 'Lato', sans-serif;
+        padding: 0 3.2rem;
+        text-transform: uppercase;
+      }
+    }
+
+    > .toggle-responsive-button {
+      flex-grow: 1;
+
+      .mobile, 
+      .tablet, 
+      .desktop {
+        color: hsl(0, 0%, 70%);
+        cursor: pointer;
+        display: flex;
+        padding: 0 .8rem;
+        vertical-align: bottom;
+
+        &.-selected { color: hsl(0, 0%, 50%); }
+      }
+
+      .mobile { font-size: 1.6rem; }
+      .tablet { font-size: 2.4rem; }
+      .desktop { font-size: 3.2rem; }
+    }
+
+    > .zoom {
+      margin-left: auto;
+
+      .zoom-percentage {
+        color: hsl(0, 0%, 50%);
+        font: normal 400 1.3rem 'Lato', sans-serif;
+        padding: 0 3.2rem;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  > .sidebar {
+    border-right: .1rem solid hsl(0, 0%, 93%);
+    grid-column: 1/2;
+
+    > .header {
+      border-bottom: .1rem solid hsl(0, 0%, 93%);
+      height: 6.4rem;
+
+      > .toggle-button {
+        color: hsl(0, 0%, 50%);
+        cursor: pointer;
+        padding: 0 3.2rem;
+        
+        .close {
+          font: normal 400 1.3rem 'Lato', sans-serif;
+          margin-right: 1.6rem;
+          text-transform: uppercase;
+        }
+
+        .fa-times { font-size: 1.6rem; }
+      }
+    }
+  }
+}

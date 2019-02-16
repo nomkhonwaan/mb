@@ -2,6 +2,13 @@
  * External Dependencies
  */
 import React from 'react';
+import queryString from 'query-string';
+
+/**
+ * Internal Dependencies
+ */
+import Header from './header';
+import Sidebar from './sidebar';
 
 /**
  * A Post editor page. 
@@ -9,11 +16,26 @@ import React from 'react';
  * @param {object} props 
  */
 const PostEditor = (props) => {
+  const params = queryString.parse(props.location.search);
+
   return (
     <div className="post-editor">
-      Post Editor
+      <Sidebar />
+
+      <Header />
     </div>
   );
 };
+
+
+/**
+ * Detects LIFF mode from query params.
+ * 
+ * @param {object} params 
+ */
+function isLIFF(params) {
+  return params.mode && params.mode.toLowerCase() === 'liff';
+}
+
 
 export default PostEditor;

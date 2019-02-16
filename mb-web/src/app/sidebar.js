@@ -30,7 +30,7 @@ const Sidebar = (props) => {
         </div>
       </header>
 
-      <nav>
+      <nav className="nav">
         <ul className="_list-unstyled _unpadding _unmargin">
           {
             props.items

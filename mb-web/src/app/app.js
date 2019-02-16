@@ -9,7 +9,6 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import gql from 'graphql-tag';
-import queryString from 'query-string';
 
 /**
  * Internal Dependencies
@@ -44,8 +43,6 @@ export const App = (props) => {
         (({ loading, err, data }) => {
           let categories = [];
 
-          const params = queryString.parse(props.location.search);
-
           if (data && data.categories) {
             categories = data.categories.map(({ name, slug }) => ({
               name,
@@ -57,26 +54,17 @@ export const App = (props) => {
             <div className={ classnames('app', {
               '-sidebar-collapsed': props.app.sidebar.collapsed,
             }) }>
-              {
-                isLIFF(params) ? null : ([
-                  <Sidebar 
-                    authService={ props.authService }
-                    items={ props.app.sidebar.items.concat(categories) }
-                    key="0"
-                  />,
+              <Sidebar 
+                authService={ props.authService }
+                items={ props.app.sidebar.items.concat(categories) }
+              />
 
-                  <PopupOverlay
-                    in={ !props.app.sidebar.collapsed }
-                    key="1"
-                    onClickBackground={ props.toggleSidebar }
-                  />,
-            
-                  <Header 
-                    key="2"
-                    userInfo={ data ? data.userInfo : null }
-                  />
-                ])
-              }
+              <PopupOverlay
+                in={ !props.app.sidebar.collapsed }
+                onClickBackground={ props.toggleSidebar }
+              />
+        
+              <Header userInfo={ data ? data.userInfo : null } />
         
               { renderRoutes(routes, { authService: props.authService }) }
             </div>
@@ -85,15 +73,6 @@ export const App = (props) => {
       }
     </Query>
   )
-}
-
-/**
- * Detects LIFF mode from query params.
- * 
- * @param {object} params 
- */
-function isLIFF(params) {
-  return params.mode && params.mode.toLowerCase() === 'liff';
 }
 
 App.propTypes = {

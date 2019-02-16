@@ -37,7 +37,7 @@ const UserMenu = (props) => {
                 { renderItems(props.app.userMenu.items.slice(0, 1), props.toggleUserMenu) }
 
                 <li 
-                    className="_flex _flex-justify-content-space-between"
+                    className="_flex _flex-justify-content-space-between _flex-vertical-align-middle"
                     onClick={ props.toggleListOfDraftPosts }
                 >
                     Display my draft Posts
@@ -77,6 +77,17 @@ function renderItems(items, onClickItem) {
 UserMenu.propTypes = {
   /* Properties */
   in: PropTypes.bool.isRequired,
+  app: PropTypes.shape({
+    listOfDraftPosts: PropTypes.shape({
+      collapsed: PropTypes.bool.isRequired,
+    }).isRequired,
+    userMenu: PropTypes.shape({
+      items: PropTypes.arrayOf(PropTypes.shape({
+        link: PropTypes.string.isRequired,
+        name: PropTypes.string.isRequired,
+      })).isRequired,
+    }).isRequired,
+  }).isRequired,
 
   /* Actions */
   toggleListOfDraftPosts: PropTypes.func.isRequired,
