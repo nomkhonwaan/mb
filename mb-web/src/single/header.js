@@ -7,7 +7,9 @@ import { connect } from 'react-redux';
 /**
  * Internal Dependencies
  */
+import { Text } from '../components/input';
 import ToggleSwitch from '../components/toggle-switch';
+import noop from '../noop';
 
 /**
  * A header of the Post editor.
@@ -28,19 +30,26 @@ const Header = (props) => {
       <div className="toggle-responsive-button _flex _flex-vertical-align-middle _flex-horizontal-align-center">
         <div className="_flex _flex-vertical-align-bottom">
           <span className="mobile">
-            <i class="fal fa-mobile-android"></i>
+            <i className="fal fa-mobile-android"></i>
           </span>
           <span className="tablet">
-            <i class="fal fa-tablet-android"></i>
+            <i className="fal fa-tablet-android"></i>
           </span>
           <span className="desktop -selected">
-            <i class="fal fa-desktop"></i>
+            <i className="fal fa-desktop"></i>
           </span>
         </div>
       </div>
 
       <div className="zoom _flex _flex-vertical-align-middle">
-        <span className="zoom-percentage">Zoom</span>
+        <span className="zoom-label">Zoom</span>
+        <span className="zoom-percentage">
+          <Text
+            className="_text-align-center"
+            onChange={ noop }
+            value="80%"
+          />
+        </span>
       </div>
     </div>
   );

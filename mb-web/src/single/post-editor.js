@@ -23,6 +23,12 @@ const PostEditor = (props) => {
       <Sidebar />
 
       <Header />
+
+      <div className="markdown-editor">
+      </div>
+
+      <div className="html-preview">
+      </div>
     </div>
   );
 };

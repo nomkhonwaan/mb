@@ -47,12 +47,17 @@
 
     > .zoom {
       margin-left: auto;
+      margin-right: 3.2rem;
 
-      .zoom-percentage {
+      .zoom-label {
         color: hsl(0, 0%, 50%);
         font: normal 400 1.3rem 'Lato', sans-serif;
-        padding: 0 3.2rem;
+        margin-right: 1.6rem;
         text-transform: uppercase;
+      }
+
+      .zoom-percentage {
+        width: 6.4rem;
       }
     }
   }
@@ -79,5 +84,10 @@
         .fa-times { font-size: 1.6rem; }
       }
     }
+  }
+
+  > .markdown-editor {
+    background: hsl(0, 0%, 20%);
+    min-height: 100vh;
   }
 }

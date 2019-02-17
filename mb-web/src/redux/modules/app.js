@@ -49,31 +49,7 @@ const initialState = {
       },
     ],
   },
-  userMenu: { 
-    collapsed: true, 
-    items: [
-      {
-        link: '/new-post',
-        name: 'Draft a new Post',
-      },
-      {
-        link: '/stats',
-        name: 'Stats',
-      },
-      {
-        link: '/me',
-        name: 'Profile',
-      },
-      {
-        link: '/settings',
-        name: 'Settings',
-      },
-      {
-        link: '/logout',
-        name: 'Logout',
-      },
-    ],
-  },
+  userMenu: { collapsed: true, },
 };
 
 /**

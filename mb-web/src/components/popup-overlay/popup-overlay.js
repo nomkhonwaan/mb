@@ -20,11 +20,11 @@ const PopupOverlay = (props) => {
       unmountOnExit
     >
       {
-        (status) => {
+        (state) => {
           return (
             <div
               className={ classnames('popup-overlay', {
-                [`-${status}`]: true,
+                [`-${state}`]: true,
               }) }
               onClick={ props.onClickBackground }
             >
