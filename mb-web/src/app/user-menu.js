@@ -25,7 +25,7 @@ const UserMenu = (props) => {
         in={ !props.app.userMenu.collapsed }
         timeout={ 400 }
         components={ [
-          <Link to="/new-post">Draft a new Post</Link>,
+          <Link onClick={ props.toggleUserMenu } to="/new-post">Draft a new Post</Link>,
           <span 
             className="_flex _flex-justify-content-space-between _flex-vertical-align-middle"
             onClick={ props.toggleListOfDraftPosts }>
@@ -33,11 +33,11 @@ const UserMenu = (props) => {
             <ToggleSwitch checked={ !props.app.listOfDraftPosts.collapsed } />
           </span>,
           <HorizontalSeparator />,
-          <Link to="/stats">Stats</Link>,
+          <Link onClick={ props.toggleUserMenu } to="/stats">Stats</Link>,
           <HorizontalSeparator />,
-          <Link to="/me">Profile</Link>,
-          <Link to="/settings">Settings</Link>,
-          <Link to="/logout">Logout</Link>,
+          <Link onClick={ props.toggleUserMenu } to="/me">Profile</Link>,
+          <Link onClick={ props.toggleUserMenu } to="/settings">Settings</Link>,
+          <Link onClick={ props.toggleUserMenu } to="/logout">Logout</Link>,
         ] }
       />
     </div>
