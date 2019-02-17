@@ -6,7 +6,7 @@ import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
 /**
- * An input text component.
+ * An input type text component.
  * 
  * @param {objct} props 
  */
@@ -24,7 +24,7 @@ const Text = (props) => {
 Text.propTypes = {
   /* Properties */
   className: PropTypes.string,
-  value: PropTypes.any,
+  value: PropTypes.string,
 
   /* Events */
   onChange: PropTypes.func,

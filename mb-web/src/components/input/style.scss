@@ -6,4 +6,12 @@
   font: normal 400 1.3rem 'Lato', sans-serif;
   height: 3.2rem;
   width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.-textarea {
+    height: 100%;
+  }
 }

@@ -1,9 +1,10 @@
-.post-editor {
+.admin-post {
   background: hsl(0, 0%, 100%);
   bottom: 0;
   display: grid;
   grid-template-columns: 25.6rem auto;
   grid-template-rows: 6.4rem auto;
+  min-height: 100vh;
   left: 25.6rem;
   position: absolute;
   right: 0;
@@ -16,12 +17,15 @@
 
     > .toggle-mode-button {
       cursor: pointer;
+      margin-left: 3.2rem;
       
       .mode-name {
         color: hsl(0, 0%, 50%);
         font: normal 400 1.3rem 'Lato', sans-serif;
-        padding: 0 3.2rem;
         text-transform: uppercase;
+
+        &:first-child { margin-right: 3.2rem; }
+        &:last-child { margin-left: 3.2rem; }
       }
     }
 
@@ -87,7 +91,16 @@
   }
 
   > .markdown-editor {
-    background: hsl(0, 0%, 20%);
-    min-height: 100vh;
+    background: hsl(0, 0%, 98%);
+    grid-column: 2/3;
+    padding: 3.2rem;
+
+    > .input.-textarea {
+      border: none;
+      border-radius: 0;
+      color: hsl(0, 0%, 20%);
+      font: normal 300 1.6rem 'Pridi', sans-serif;
+      padding: 3.2rem;
+    }
   }
 }

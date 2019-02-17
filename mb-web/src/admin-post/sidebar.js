@@ -19,6 +19,14 @@ const Sidebar = (props) => {
           <i className="fal fa-times" />
         </div>
       </header>
+
+      <div className="post-status"></div>
+
+      <div className="post-categories"></div>
+
+      <div className="post-tags"></div>
+
+      <div className="post-attachments"></div>
     </div>
   );
 };

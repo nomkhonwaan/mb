@@ -7,7 +7,7 @@ import React from 'react';
  * Internal Dependencies
  */
 import { Login, ProtectedRoute } from '../auth';
-import { PostEditor } from '../single';
+import AdminPost from '../admin-post';
 
 const routes = [
   // {
@@ -29,11 +29,11 @@ const routes = [
   // },
   {
     path: '/new-post',
-    component: (props) => (<ProtectedRoute { ...props } component={ PostEditor } />),
+    component: (props) => (<ProtectedRoute { ...props } component={ AdminPost } />),
   },
   {
     path: '/:year/:month/:date/:slug/edit',
-    component: (props) => (<ProtectedRoute { ...props } component={ PostEditor } />)
+    component: (props) => (<ProtectedRoute { ...props } component={ AdminPost } />)
   },
   // {
   //   path: '*',

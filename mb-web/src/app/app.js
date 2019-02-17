@@ -20,25 +20,33 @@ import { toggleSidebar } from '../redux/modules/app';
 import routes from './routes';
 
 /**
+ * An application query.
+ * <p>
+ * This query will query the following these
+ * - list of categories
+ * - user information (if logged in)
+ */
+const appQuery = gql`
+  query AppQuery {
+    categories {
+      name
+      slug
+    }
+    userInfo {
+      avatarUrl
+      displayName
+    }
+  }
+`;
+
+/**
  * The main application.
  *
  * @param {object} props
  */
 export const App = (props) => {
   return (
-    <Query
-      query={ gql`
-        {
-          categories {
-            name
-            slug
-          }
-          userInfo {
-            displayName
-            avatarUrl
-          }
-        }` }
-    >
+    <Query query={ appQuery }>
       {
         (({ loading, err, data }) => {
           let categories = [];
