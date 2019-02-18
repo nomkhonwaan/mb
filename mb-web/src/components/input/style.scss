@@ -1,0 +1,17 @@
+.input {
+  border: .1rem solid hsl(0, 0%, 93%);
+  border-radius: .2rem;
+  box-shadow: none;
+  color: hsl(0, 0%, 50%);
+  font: normal 400 1.3rem 'Lato', sans-serif;
+  height: 3.2rem;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  &.-textarea {
+    height: 100%;
+  }
+}

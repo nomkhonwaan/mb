@@ -4,15 +4,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
-import { Transition } from 'react-transition-group';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
 
 /**
  * Internal Dependencies
  */
+import PopupMenu, { HorizontalSeparator } from '../components/popup-menu';
 import ToggleSwitch from '../components/toggle-switch';
-import { toggleListOfDraftPosts } from '../redux/modules/app';
+import { toggleListOfDraftPosts, toggleUserMenu } from '../redux/modules/app';
 
 /**
  * A user's menu that will appear after logged in.
@@ -21,52 +20,44 @@ import { toggleListOfDraftPosts } from '../redux/modules/app';
  */
 const UserMenu = (props) => {
   return (
-    <Transition
-      in={ props.in }
-      mountOnEnter
-      timeout={ props.timeout || 400 }
-      unmountOnExit
-    >
-      {
-        (status) => {
-          return (
-            <div className={ classnames('user-menu', {
-              [`-${status}`]: true,
-            }) }>
-              <ul className="_list-unstyled _unmargin _unpadding">
-                <li><Link to="/new-post">Draft a new Post</Link></li>
-                <li 
-                    className="_flex _flex-justify-content-space-between"
-                    onClick={ props.toggleListOfDraftPosts }
-                >
-                    Display my draft Posts
-                    <ToggleSwitch checked={ !props.app.listOfDraftPosts.collapsed } />
-                </li>
-                
-                <li className="horizontal-line-separator"></li>
-
-                <li><Link to="/stats">Stats</Link></li>
-
-                <li className="horizontal-line-separator"></li>
-
-                <li><Link to="/me">Profile</Link></li>
-                <li><Link to="/settings">Settings</Link></li>
-                <li><Link to="/logout">Logout</Link></li>
-              </ul>
-            </div>
-          );
-        }
-      }
-    </Transition>
+    <div className="user-menu">
+      <PopupMenu
+        in={ !props.app.userMenu.collapsed }
+        timeout={ 400 }
+        components={ [
+          <Link onClick={ props.toggleUserMenu } to="/new-post">Draft a new Post</Link>,
+          <span 
+            className="_flex _flex-justify-content-space-between _flex-vertical-align-middle"
+            onClick={ props.toggleListOfDraftPosts }>
+            <span>Display my draft Posts</span>
+            <ToggleSwitch checked={ !props.app.listOfDraftPosts.collapsed } />
+          </span>,
+          <HorizontalSeparator />,
+          <Link onClick={ props.toggleUserMenu } to="/stats">Stats</Link>,
+          <HorizontalSeparator />,
+          <Link onClick={ props.toggleUserMenu } to="/me">Profile</Link>,
+          <Link onClick={ props.toggleUserMenu } to="/settings">Settings</Link>,
+          <Link onClick={ props.toggleUserMenu } to="/logout">Logout</Link>,
+        ] }
+      />
+    </div>
   );
 };
 
 UserMenu.propTypes = {
   /* Properties */
-  in: PropTypes.bool.isRequired,
+  app: PropTypes.shape({
+    listOfDraftPosts: PropTypes.shape({
+      collapsed: PropTypes.bool.isRequired,
+    }).isRequired,
+    userMenu: PropTypes.shape({
+      collapsed: PropTypes.bool.isRequired,
+    }).isRequired,
+  }).isRequired,
 
   /* Actions */
   toggleListOfDraftPosts: PropTypes.func.isRequired,
+  toggleUserMenu: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -75,11 +66,12 @@ function mapStateToProps(state) {
       listOfDraftPosts: {
         collapsed: state.app.listOfDraftPosts.collapsed,
       },
+      userMenu: state.app.userMenu,
     },
   };
 }
 
 export default connect(
   mapStateToProps,
-  { toggleListOfDraftPosts, },
+  { toggleListOfDraftPosts, toggleUserMenu },
 )(UserMenu);

@@ -1,0 +1,79 @@
+@import '../../style.scss';
+
+.popup-menu {
+  @keyframes slide-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(3.2rem);
+    }
+
+    to { opacity: 1; }
+  }
+
+  @keyframes slide-out-down {
+    from { opacity: 1; }
+
+    to {
+      opacity: 0;
+      transform: translateY(3.2rem);
+    }
+  }
+
+  background: hsl(0, 0%, 100%);
+  border: .1rem solid hsl(0, 0%, 93%);
+  border-radius: .2rem;
+  margin-top: .4rem;
+  width: calc(100vw - 6.4rem);
+  
+  @include sm { 
+    max-width: 30.4rem; 
+  }
+
+  &.-entering {
+    animation: slide-in-up .4s ease-in-out;
+    opacity: 1;
+  }
+
+  &.-entered { opacity: 1; }
+
+  &.-exiting {
+    animation: slide-out-down .4s ease-in-out;
+    opacity: 0;
+  }
+
+  &.-exited {
+    display: none;
+    opacity: 0; 
+  }
+
+  &:before {
+    background: hsl(0, 0%, 100%);
+    border: .1rem solid hsl(0, 0%, 93%);
+    border-right: none;
+    border-bottom: none;
+    content: '';
+    display: block;
+    height: .8rem;
+    margin: -.4rem .8rem 0 0;
+    position: absolute;
+    right: 0;
+    transform: rotate(45deg);
+    width: .8rem;
+  }
+
+  > ul > li {
+    color: hsl(0, 0%, 20%);
+    cursor: pointer;
+    font: normal 400 1.6rem 'Lato', sans-serif;
+    padding: 1.2rem 2.4rem;
+
+    &:first-child { margin-top: 1.2rem; }
+    &:last-child { margin-bottom: 1.2rem; }
+    
+    & > .horizontal-separator {
+      border-bottom: .1rem solid hsl(0, 0%, 93%);
+      display: block;
+      margin: 0 -2.4rem;
+    }
+  }
+}

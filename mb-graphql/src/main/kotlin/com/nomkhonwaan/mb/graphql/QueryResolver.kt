@@ -5,9 +5,7 @@ import com.nomkhonwaan.mb.auth.FindUserByIDQuery
 import com.nomkhonwaan.mb.auth.User
 import com.nomkhonwaan.mb.blog.category.Category
 import com.nomkhonwaan.mb.blog.category.FindAllCategoriesQuery
-import com.nomkhonwaan.mb.blog.post.FindAllDraftPostsQuery
-import com.nomkhonwaan.mb.blog.post.FindAllPublishedPostsQuery
-import com.nomkhonwaan.mb.blog.post.Post
+import com.nomkhonwaan.mb.blog.post.*
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.security.access.prepost.PreAuthorize
@@ -60,6 +58,20 @@ class QueryResolver(private val queryGateway: QueryGateway) : GraphQLQueryResolv
                 FindAllDraftPostsQuery(authorId, offset, limit),
                 ResponseTypes.multipleInstancesOf(Post::class.java)
         )
+    }
+
+    /**
+     * Finds a single Post by its ID.
+     *
+     * @param id An identifier of the Post
+     */
+    fun post(id: String): CompletableFuture<Post?> {
+        val authorId: String = SecurityContextHolder.getContext().authentication.principal as String
+
+        return queryGateway.query(FindPostByIdQuery(id), Post::class.java)
+                .thenApply {
+                    if (it.status == Status.PUBLISHED || it.authorId == authorId) it else null
+                }
     }
 
     /**
