@@ -17,13 +17,17 @@ class TextArea extends React.Component {
     this.onChange = this.onChange.bind(this);
     this.ref = React.createRef();
 
-    // The textarea height is 100% as default (fit with parent)
+    // Default, textarea height is 100% to fit its parent
     this.state = { height: '100%', };
   }
 
+  componentDidMount() {
+    // To ensure that the textarea height always fit to its content
+    this.setState({ height: this.ref.current.scrollHeight });
+  }
+
   onChange(event) {
-    // But when the textarea has been filled,
-    // then, set the textarea height to fit its content
+    // Set the textarea height to fit its content
     this.setState({ height: this.ref.current.scrollHeight });
 
     if (typeof this.props.onChange === 'function') {

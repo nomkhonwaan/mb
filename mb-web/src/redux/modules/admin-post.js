@@ -2,11 +2,13 @@
  * External Dependencies
  */
 import update from 'immutability-helper';
-// import { debounce, mapTo, mergeMap } from 'rxjs/operators';
-// import { ofType } from 'redux-observable';
+import { ofType } from 'redux-observable';
+import { from } from 'rxjs';
+import { debounceTime, mergeMap } from 'rxjs/operators';
 
 const CREATE_POST = 'CREATE_POST';
 const CHANGE_POST_CONTENT = 'CHANGE_POST_CONTENT';
+const CHANGE_POST_CONTENT_FULFILLED = 'CHANGE_POST_CONTENT_FULFILLED';
 
 /**
  * Create a new Post.
@@ -21,31 +23,55 @@ export function createPost(id) {
 }
 
 /**
- * Update Post's content.
+ * Update the Post's content.
  * 
  * @param {string} id
- * @param {string} content 
+ * @param {string} markdown 
  */
-export function changePostContent(id, content) {
+export function changePostContent(id, markdown, updatePostContent) {
   return {
     type: CHANGE_POST_CONTENT,
     id,
-    content,
+    markdown,
+    updatePostContent,
   };
 }
 
-// /**
-//  * Update Post's content.
-//  *  
-//  * @param {object} action$ 
-//  */
-// export function changePostContentEpic(action$) {
-//   return action$.pipe(
-//     ofType(CHANGE_POST_CONTENT),
-//     debounce(1000),
-//     mergeMap(({ id, content }) => changePostContent(id, content)),
-//   );
-// }
+/**
+ * Update the Post's content after after few seconds.
+ * 
+ * @param {string} id 
+ * @param {string} markdown 
+ */
+export function changePostContentFulfilled(id, markdown) {
+  return {
+    type: CHANGE_POST_CONTENT_FULFILLED,
+    id,
+    markdown,
+  };
+}
+
+/**
+ * This epic uses for delay sending mutation request to the server.
+ * 
+ * @param {object} action$ 
+ */
+export function changePostContentEpic(action$) {
+  return action$.pipe(
+    ofType(CHANGE_POST_CONTENT),
+    debounceTime(4000),
+    mergeMap(({ id, markdown, updatePostContent }) => {
+      // Perform GraphQL mutation for updating the Post's content
+      updatePostContent({ 
+        variables: { 
+          input: { id, markdown, }, 
+        }, 
+      });
+
+      return from(Promise.resolve(changePostContentFulfilled(id, markdown)));
+    }),
+  );
+}
 
 const initialState = {};
 
@@ -69,7 +95,8 @@ function adminPost(state = initialState, action) {
       return update(state, {
         [action.id]: {
           $set: {
-            content: action.content,
+            id: action.id,
+            markdown: action.markdown,
           },
         },
       });

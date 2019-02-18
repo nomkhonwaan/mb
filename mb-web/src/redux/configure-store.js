@@ -7,7 +7,7 @@ import { createEpicMiddleware } from 'redux-observable';
 /**
  * Internal Dependencies
  */
-import { rootReducers } from './modules/root';
+import { rootEpic, rootReducers } from './modules/root';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const epicMiddleware = createEpicMiddleware();
@@ -16,14 +16,18 @@ const epicMiddleware = createEpicMiddleware();
  * Creates new Redux which is embedded React router already. 
  */
 function configureStore() {
-  return createStore(
+  const store = createStore(
     rootReducers,
     composeEnhancers(
       applyMiddleware(
         epicMiddleware,
-      )
+      ),
     ),
   );
+
+  epicMiddleware.run(rootEpic);
+
+  return store;
 }
 
 export default configureStore;

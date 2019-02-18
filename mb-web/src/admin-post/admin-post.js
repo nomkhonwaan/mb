@@ -89,7 +89,7 @@ const AdminPost = (props) => {
 
                   <Header />
 
-                  <MarkdownEditor id={ id } content={ data.post.markdown } />
+                  <MarkdownEditor post={ { id, markdown: data.post.markdown } } />
                 </div>
               );
             }
