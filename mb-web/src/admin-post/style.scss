@@ -11,6 +11,44 @@
   top: 0;
   z-index: 100;
 
+  // @keyframes grow-in {
+  //   from { 
+  //     transform: scale(.8); 
+  //     opacity: 0;
+  //   }
+
+  //   to { 
+  //     transform: scale(1); 
+  //     opacity: 1;
+  //   }
+  // }
+
+  // @keyframes grow-out {
+  //   from { 
+  //     transform: scale(1);
+  //     opacity: 1;
+  //   }
+
+  //   to {
+  //     transform: scale(.8);
+  //     opacity: 0;
+  //   }
+  // }
+  
+  // &.-entering {
+  //   animation: grow-in .4s ease-in-out;
+  //   opacity: 1;
+  // }
+  
+  // &.-entered { opacity: 1; }
+
+  // &.-exiting { 
+  //   animation: grow-out .4s ease-in-out;
+  //   opacity: 0;
+  // }
+
+  // &.-exited { opacity: 0; }
+
   > .header {
     border-bottom: .1rem solid hsl(0, 0%, 93%);
     height: 6.4rem;

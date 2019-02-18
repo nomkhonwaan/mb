@@ -5,12 +5,24 @@ import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import gql from 'graphql-tag';
 
 /**
  * Internal Dependencies
  */
 import { TextArea } from '../components/input';
 import { changePostContent } from '../redux/modules/admin-post';
+
+/**
+ * An update Post content mutation.
+ */
+const updatePostContent = gql`
+  mutation UpdatePostContent($input: UpdatePostContentInput!) {
+    updatePostContent(input: $input) {
+      ...Post
+    }
+  }
+`;
 
 /**
  * A markdown text editor.

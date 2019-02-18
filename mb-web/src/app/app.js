@@ -48,7 +48,7 @@ export const App = (props) => {
   return (
     <Query query={ appQuery }>
       {
-        (({ loading, err, data }) => {
+        ({ loading, err, data }) => {
           let categories = [];
 
           if (data && data.categories) {
@@ -77,7 +77,7 @@ export const App = (props) => {
               { renderRoutes(routes, { authService: props.authService }) }
             </div>
           );
-        })
+        }
       }
     </Query>
   )

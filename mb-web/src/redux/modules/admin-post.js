@@ -5,11 +5,25 @@ import update from 'immutability-helper';
 // import { debounce, mapTo, mergeMap } from 'rxjs/operators';
 // import { ofType } from 'redux-observable';
 
+const CREATE_POST = 'CREATE_POST';
 const CHANGE_POST_CONTENT = 'CHANGE_POST_CONTENT';
+
+/**
+ * Create a new Post.
+ *
+ * @param {string} id 
+ */
+export function createPost(id) {
+  return {
+    type: CREATE_POST,
+    id,
+  };
+}
 
 /**
  * Update Post's content.
  * 
+ * @param {string} id
  * @param {string} content 
  */
 export function changePostContent(id, content) {
@@ -43,6 +57,14 @@ const initialState = {};
  */
 function adminPost(state = initialState, action) {
   switch (action.type) {
+    case CREATE_POST:
+      return update(state, {
+        [action.id]: {
+          $set: {
+            id: action.id,
+          },
+        },
+      });
     case CHANGE_POST_CONTENT:
       return update(state, {
         [action.id]: {

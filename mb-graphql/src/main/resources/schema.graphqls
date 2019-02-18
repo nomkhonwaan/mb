@@ -15,6 +15,9 @@ type Query {
     # Returns a list of draft Posts ordered by "createdAt" descending
     latestDraftPosts(offset: Int = 0, limit: Int = 5): [Post]!
 
+    # Finds a single Post by its ID
+    post(id: ID): Post
+
     # Returns a logged in user information
     userInfo: User
 }

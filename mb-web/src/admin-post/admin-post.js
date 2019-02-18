@@ -2,9 +2,9 @@
  * External Dependencies
  */
 import React from 'react';
-import { Mutation } from 'react-apollo';
-import { connect } from 'react-redux';
+import { Mutation, Query } from 'react-apollo';
 import gql from 'graphql-tag';
+import moment from 'moment';
 import PropTypes from 'prop-types';
 
 /**
@@ -13,73 +13,35 @@ import PropTypes from 'prop-types';
 import Header from './header';
 import Sidebar from './sidebar';
 import MarkdownEditor from './markdown-editor';
+import fragments from './fragments';
 
 /**
- * A reusable fragments.
+ * An administrator Post query.
  */
-const fragments = {
-  post: gql`
-    fragment Post on Post {
-      id
-      title
-      slug
-      status
-      markdown
-      html
-      author {
-        avatarUrl
-        displayName
-      }
-      categories {
-        name
-        slug
-      }
-      publishedAt
-      createdAt
-      updatedAt
-    }
-  `,
-};
-
-/**
- * A create Post mutation.
- */
-const createPost = gql`
-  mutation CreatePost {
-    createPost {
+const adminPostQuery = gql`
+  query AdminPostQuery($id: ID!) {
+    post(id: $id) {
       ...Post
     }
   }
-`;
 
-/**
- * An update Post content mutation.
- */
-const updatePostContent = gql`
-  mutation UpdatePostContent($input: UpdatePostContentInput!) {
-    updatePostContent(input: $input) {
-      ...Post
-    }
-  }
+  ${fragments.post}
 `;
 
 /**
  * An administrator Post mutation.
  * <p>
- * This contains the following these mutations
- * - createPost
- * - updatePostContent
+ * This mutation will create a new Post if the Post's ID not provided.
  */
 const adminPostMutation = gql`
-  # Mutations
-  ${createPost}
-  ${updatePostContent}
+  mutation CreatePost {
+    createPost {
+      ...Post
+    }
+  }
 
-  # Fragments
   ${fragments.post}
 `;
-
-console.log(adminPostMutation);
 
 /**
  * An administrator Post page.
@@ -90,51 +52,75 @@ console.log(adminPostMutation);
  * @param {object} props 
  */
 const AdminPost = (props) => {
-  // TODO: Find Post by id if `props.id` is exist
-  // TODO: Create a new Post if `props.id` is not exist
+  const { slug } = props.match.params;
+  const id = slug ? extractIdFromSlug(slug) : null;
+
+  if (!id) {
+    return (
+      <Mutation mutation={ adminPostMutation }>
+        {
+          (createPost, { loading, data }) =>  {
+            if (!loading) {
+              if (!data) {
+                createPost();
+              } else {
+                const { id, createdAt, } = data.createPost;
+
+                props.history.replace(`/${moment(createdAt).format('YYYY/MM/DD')}/${id}/edit`);
+              }
+            }
+
+            return null;
+          }
+        }
+      </Mutation>
+    );
+  }
+
   return (
-    // <Mutation mutation={ adminPostMutation }>
-    //   {
-    //     (a, b, c) => {
-    //       console.log(a, b, c);
+    <Query query={ adminPostQuery } variables={ { id } }>
+      {
+        ({ loading, err, data }) => {
+          if (!loading) {
+            if (data) {
+              return (
+                <div className="admin-post">
+                  <Sidebar />
 
-    //       return (
-            <div className="admin-post">
-              <Sidebar />
+                  <Header />
 
-              <Header />
+                  <MarkdownEditor id={ id } content={ data.post.markdown } />
+                </div>
+              );
+            }
+          }
 
-              <MarkdownEditor id={ props.post.id } content={ props.post.content } />
-            </div>
-    //       );
-    //     }
-    //   }
-    // </Mutation>
-    // <div className="admin-post">
-    //   <Sidebar />
-    
-    //   <Header />
-
-    //   <MarkdownEditor />
-    // </div>
+          return null;
+        }
+      }
+    </Query>
   );
 };
 
 AdminPost.propTypes = {
-  post: PropTypes.shape({
-    id: PropTypes.string,
-    content: PropTypes.string,
+  /* Properties */
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired,
+  }).isRequired,
+  match: PropTypes.shape({
+    params: PropTypes.shape({
+      slug: PropTypes.string,
+    }).isRequired,
   }).isRequired,
 };
 
-function mapStateToProps(state, ownProps) {
-  return {
-    post: {
-      id: '5c5d5d6e6cdce400010c86be',
-    },
-  };
+/**
+ * Extracts an ID from the slug string.
+ *
+ * @param {string} slug 
+ */
+function extractIdFromSlug(slug) {
+  return slug.split('-')[0];
 }
 
-export default connect(
-  mapStateToProps,
-)(AdminPost);
+export default AdminPost;

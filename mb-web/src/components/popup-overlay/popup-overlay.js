@@ -20,18 +20,16 @@ const PopupOverlay = (props) => {
       unmountOnExit
     >
       {
-        (state) => {
-          return (
-            <div
-              className={ classnames('popup-overlay', {
-                [`-${state}`]: true,
-              }) }
-              onClick={ props.onClickBackground }
-            >
-              { props.children }
-            </div>
-          );
-        }
+        (state) =>  (
+          <div
+            className={ classnames('popup-overlay', {
+              [`-${state}`]: true,
+            }) }
+            onClick={ props.onClickBackground }
+          >
+            { props.children }
+          </div>
+        )
       }
     </Transition>
   );

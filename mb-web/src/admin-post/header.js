@@ -2,7 +2,6 @@
  * External Dependencies
  */
 import React from 'react';
-import { connect } from 'react-redux';
 
 /**
  * Internal Dependencies
