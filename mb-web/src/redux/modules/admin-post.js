@@ -40,6 +40,22 @@ export function changePostContentFulfilled(id, markdown) {
   };
 }
 
+export function changePostTitle(id, title) {
+  return {
+    type: CHANGE_POST_TITLE,
+    id,
+    title,
+  };
+}
+
+export function changePostTitleFulfilled(id, title) {
+  return {
+    type: CHANGE_POST_TITLE_FULFILLED,
+    id,
+    title,
+  };
+}
+
 /**
  * This epic uses for delay sending mutation request to the server.
  * 
@@ -50,14 +66,29 @@ export function changePostContentEpic(action$) {
     ofType(CHANGE_POST_CONTENT),
     debounceTime(4000),
     mergeMap(({ id, markdown, updatePostContent }) => {
-      // Perform GraphQL mutation for updating the Post's content
-      updatePostContent({ 
-        variables: { 
-          input: { id, markdown, }, 
-        }, 
-      });
+      updatePostContent({ variables: { input: { id, markdown, }, }, });
 
-      return from(Promise.resolve(changePostContentFulfilled(id, markdown)));
+      // Extract title from the first line of the content
+      const title = markdown.split('\n')[0].replace(/((?!\w).)/, '').trim();
+
+      return from(Promise.resolve(changePostTitle(id, title)));
+    }),
+  );
+}
+
+/**
+ * The chain action that will perform after the Post's content has been changed.
+ * 
+ * @param {object} action$ 
+ */
+export function changePostTitleEpic(action$) {
+  return action$.pipe(
+    ofType(CHANGE_POST_TITLE),
+    debounceTime(4000),
+    mergeMap(({ id, title, updatePostTitle }) => {
+      updatePostTitle({ variables: { input: { id, title, }, }, });
+
+      return from(Promise.resolve(changePostTitleFulfilled(id, title)));
     }),
   );
 }
@@ -77,10 +108,10 @@ function adminPost(state = initialState, action) {
         id: { $set: action.id, },
         markdown: { $set: action.markdown, },
       });
-    case CHANGE_POST_CONTENT_FULFILLED:
+    case CHANGE_POST_TITLE:
       return update(state, {
         id: { $set: action.id, },
-        title: { $set: action.markdown.split('\n')[0].replace(/((?!\w).)/, '').trim(), },
+        title: { $set: action.title, },
       });
     default:
       return state;
