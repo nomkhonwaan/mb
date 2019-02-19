@@ -12,8 +12,8 @@ import PropTypes from 'prop-types';
  */
 import Header from './header';
 import Sidebar from './sidebar';
-import MarkdownEditor from './markdown-editor';
 import fragments from './fragments';
+import MarkdownEditor from './markdown-editor';
 
 /**
  * An administrator Post query.

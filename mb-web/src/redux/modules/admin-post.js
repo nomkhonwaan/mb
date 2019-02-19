@@ -6,21 +6,10 @@ import { ofType } from 'redux-observable';
 import { from } from 'rxjs';
 import { debounceTime, mergeMap } from 'rxjs/operators';
 
-const CREATE_POST = 'CREATE_POST';
+const CHANGE_POST_TITLE = 'CHANGE_POST_TITLE';
+const CHANGE_POST_TITLE_FULFILLED = 'CHANGE_POST_TITLE_FULFILLED';
 const CHANGE_POST_CONTENT = 'CHANGE_POST_CONTENT';
 const CHANGE_POST_CONTENT_FULFILLED = 'CHANGE_POST_CONTENT_FULFILLED';
-
-/**
- * Create a new Post.
- *
- * @param {string} id 
- */
-export function createPost(id) {
-  return {
-    type: CREATE_POST,
-    id,
-  };
-}
 
 /**
  * Update the Post's content.
@@ -83,22 +72,15 @@ const initialState = {};
  */
 function adminPost(state = initialState, action) {
   switch (action.type) {
-    case CREATE_POST:
-      return update(state, {
-        [action.id]: {
-          $set: {
-            id: action.id,
-          },
-        },
-      });
     case CHANGE_POST_CONTENT:
       return update(state, {
-        [action.id]: {
-          $set: {
-            id: action.id,
-            markdown: action.markdown,
-          },
-        },
+        id: { $set: action.id, },
+        markdown: { $set: action.markdown, },
+      });
+    case CHANGE_POST_CONTENT_FULFILLED:
+      return update(state, {
+        id: { $set: action.id, },
+        title: { $set: action.markdown.split('\n')[0].replace(/((?!\w).)/, '').trim(), },
       });
     default:
       return state;

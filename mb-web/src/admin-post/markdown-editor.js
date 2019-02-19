@@ -1,4 +1,4 @@
-/**
+  /**
  * External Dependencies
  */
 import React from 'react';
@@ -69,7 +69,7 @@ MarkdownEditor.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   return {
-    post: state.adminPost[ownProps.post.id] || ownProps.post,
+    post: state.adminPost.markdown ? state.adminPost : ownProps.post,
   };
 }
 
