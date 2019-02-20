@@ -8,8 +8,8 @@ import { debounceTime, map, mergeMap } from 'rxjs/operators';
 const CREATE_POST = 'CREATE_POST';
 const CREATE_POST_FULFILLED = 'CREATE_POST_FULFILLED';
 
-const EDIT_POST = 'EDIT_POST';
-const EDIT_POST_FULFILLED = 'EDIT_POST_FULFILLED';
+const START_EDITING_POST = 'START_EDITING_POST';
+const START_EDITING_POST_FULFILLED = 'START_EDITING_POST_FULFILLED';
 
 const UPDATE_POST_TITLE_FULFILLED = 'UPDATE_POST_TITLE_FULFILLED';
 
@@ -55,14 +55,12 @@ export function createPost() {
 /**
  * Creates a new Post successfully.
  * 
- * @param {string} id 
- * @param {string} createdAt 
+ * @param {object} post
  */
-export function createPostFulfilled(id, createdAt) {
+export function createPostFulfilled(post) {
   return {
     type: CREATE_POST_FULFILLED,
-    id,
-    createdAt,
+    post,
   };
 }
 
@@ -93,8 +91,8 @@ export function createPostEpic(action$, state$, dependencies) {
           'Authorization': `Bearer ${authService.getAccessToken()}`,
         })
         .pipe(
-          map(({ response: { data: { createPost: { id, createdAt } } } }) => 
-            createPostFulfilled(id, createdAt)
+          map(({ response: { data: { createPost: post } } }) => 
+            createPostFulfilled(post)
           ),
         ),
     ),
@@ -106,9 +104,9 @@ export function createPostEpic(action$, state$, dependencies) {
  * 
  * @param {string} id 
  */
-export function editPost(id) {
+export function startEditingPost(id) {
   return {
-    type: EDIT_POST,
+    type: START_EDITING_POST,
     id,
   };
 }
@@ -118,9 +116,9 @@ export function editPost(id) {
  * 
  * @param {object} post 
  */
-export function editPostFulfilled(post) {
+export function startEditingPostFulfilled(post) {
   return {
-    type: EDIT_POST_FULFILLED,
+    type: START_EDITING_POST_FULFILLED,
     post,
   };
 }
@@ -132,10 +130,10 @@ export function editPostFulfilled(post) {
  * @param {object} state$ 
  * @param {object} dependencies 
  */
-export function editPostEpic(action$, state$, dependencies) {
+export function startEditingPostEpic(action$, state$, dependencies) {
   const { apiClient, authService } = dependencies;
   const query = `
-    query EditPostQuery($id: ID!) {
+    query StartEditingPostQuery($id: ID!) {
       post(id: $id) {
         ...post
       }
@@ -145,7 +143,7 @@ export function editPostEpic(action$, state$, dependencies) {
   `;
 
   return action$.pipe(
-    ofType(EDIT_POST),
+    ofType(START_EDITING_POST),
     mergeMap(({ id }) =>
       apiClient
         .do(query, { id }, {
@@ -153,7 +151,7 @@ export function editPostEpic(action$, state$, dependencies) {
         })
         .pipe(
           map(({ response: { data: { post } } }) =>
-            editPostFulfilled(post)          
+            startEditingPostFulfilled(post)          
           ),
         ),
     ),
@@ -288,11 +286,7 @@ const initialState = {};
 function adminPost(state = initialState, action) {
   switch (action.type) {
     case CREATE_POST_FULFILLED:
-      return update(state, {
-        id: { $set: action.id },
-        createdAt: { $set: action.createdAt },
-      });
-    case EDIT_POST_FULFILLED:
+    case START_EDITING_POST_FULFILLED:
       return update(state, {
         $set: action.post,
       });
@@ -311,16 +305,6 @@ function adminPost(state = initialState, action) {
       return update(state, {
         html: { $set: action.html },
       });
-    // case CHANGE_POST_CONTENT:
-    //   return update(state, {
-    //     id: { $set: action.id, },
-    //     markdown: { $set: action.markdown, },
-    //   });
-    // case CHANGE_POST_TITLE:
-    //   return update(state, {
-    //     id: { $set: action.id, },
-    //     title: { $set: action.title, },
-    //   });
     default:
       return state;
   }

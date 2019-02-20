@@ -15,14 +15,14 @@ import Header from './header';
 import MarkdownEditor from './markdown-editor';
 import Sidebar from './sidebar';
 
-import { createPost, editPost } from '../redux/modules/admin-post';
+import { createPost, startEditingPost } from '../redux/modules/admin-post';
 
 class AdminPost extends React.Component {
   componentWillMount() {
     if (_.isEmpty(this.props.adminPost)) {
       this.props.createPost();
     } else {
-      this.props.editPost(this.props.adminPost.id);
+      this.props.startEditingPost(this.props.adminPost.id);
     }
   }
 
@@ -67,6 +67,7 @@ AdminPost.propTypes = {
 
   /* Actions */
   createPost: PropTypes.func.isRequired,
+  startEditingPost: PropTypes.func.isRequired,
 }
 
 function mapStateToProps(state, ownProps) {
@@ -77,12 +78,12 @@ function mapStateToProps(state, ownProps) {
     adminPost: _.isEmpty(state.adminPost) 
       ? id 
           ? { id } 
-          : null 
+          : {}
       : state.adminPost,
   };
 }
 
 export default withRouter(connect(
   mapStateToProps,
-  { createPost, editPost },
+  { createPost, startEditingPost },
 )(AdminPost));

@@ -9,7 +9,7 @@ import { combineEpics } from 'redux-observable';
  */
 import adminPost, { 
   createPostEpic,
-  editPostEpic,
+  startEditingPostEpic,
   updatePostContentEpic,
   updatePostTitleEpic,
 } from './admin-post';
@@ -17,12 +17,14 @@ import app, {
   fetchCategoriesEpic,
   fetchUserInfoEpic,
 } from './app';
+import single, { findPostByIdEpic } from './single';
 
 export const rootEpic = combineEpics(
   createPostEpic,
-  editPostEpic,
   fetchCategoriesEpic,
   fetchUserInfoEpic,
+  findPostByIdEpic,
+  startEditingPostEpic,
   updatePostContentEpic,
   updatePostTitleEpic,
 );
@@ -30,4 +32,5 @@ export const rootEpic = combineEpics(
 export const rootReducers = combineReducers({
   adminPost,
   app,
+  single,
 });
