@@ -1,7 +1,6 @@
 /**
  * External Dependencies
  */
-import _ from 'lodash';
 import React from 'react';
 import { connect } from 'react-redux';
 import { renderRoutes } from 'react-router-config';
@@ -15,7 +14,7 @@ import classnames from 'classnames';
 import PopupOverlay from '../components/popup-overlay';
 import Header from './header';
 import Sidebar from './sidebar';
-import { fetchAppQuery, toggleSidebar, toggleUserMenu } from '../redux/modules/app';
+import { fetchUserInfo, toggleSidebar, toggleUserMenu } from '../redux/modules/app';
 import routes from './routes';
 
 /**
@@ -23,42 +22,24 @@ import routes from './routes';
  *
  * @param {object} props
  */
-class App extends React.Component {
-  componentWillMount() {
-    if (this.props.authService.isAuthenticated()) {
-      this.props.fetchAppQuery();
-    }
-  }
+const App = (props) => {
+  return (
+    <div className={ classnames('app', {
+      '-sidebar-collapsed': props.app.sidebar.collapsed,
+    }) }>
+      <Sidebar authService={ props.authService } />
 
-  componentDidUpdate() {
-    if (this.props.authService.isAuthenticated()) {
-      // If the user has been redirected back from /login page,
-      // Will fetch an application query for the list of categories and user information
-      if (_.isEmpty(this.props.app.userInfo)) {
-        this.props.fetchAppQuery();
-      }
-    }
-  }
+      <PopupOverlay
+        in={ !props.app.sidebar.collapsed }
+        onClickBackground={ props.toggleSidebar }
+      />
 
-  render() {
-    return (
-      <div className={ classnames('app', {
-        '-sidebar-collapsed': this.props.app.sidebar.collapsed,
-      }) }>
-        <Sidebar authService={ this.props.authService } />
-  
-        <PopupOverlay
-          in={ !this.props.app.sidebar.collapsed }
-          onClickBackground={ this.props.toggleSidebar }
-        />
-  
-        <Header />
-  
-        { renderRoutes(routes, { authService: this.props.authService }) }
-      </div>
-    );
-  }
-}
+      <Header authService={ props.authService } />
+
+      { renderRoutes(routes, { authService: props.authService }) }
+    </div>
+  );
+};
 
 App.propTypes = {
   /* Properties */
@@ -74,7 +55,7 @@ App.propTypes = {
   authService: PropTypes.object.isRequired,
   
   /* Actions */
-  fetchAppQuery: PropTypes.func.isRequired,
+  fetchUserInfo: PropTypes.func.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
   toggleUserMenu: PropTypes.func.isRequired,
 };
@@ -87,5 +68,5 @@ function mapStateToProps(state) {
 
 export default withRouter(connect(
   mapStateToProps,
-  { fetchAppQuery, toggleSidebar, toggleUserMenu },
+  { fetchUserInfo, toggleSidebar, toggleUserMenu },
 )(App));

@@ -14,13 +14,15 @@ import adminPost, {
   updatePostTitleEpic,
 } from './admin-post';
 import app, {
-  fetchAppQueryEpic,
+  fetchCategoriesEpic,
+  fetchUserInfoEpic,
 } from './app';
 
 export const rootEpic = combineEpics(
   createPostEpic,
   editPostEpic,
-  fetchAppQueryEpic,
+  fetchCategoriesEpic,
+  fetchUserInfoEpic,
   updatePostContentEpic,
   updatePostTitleEpic,
 );
