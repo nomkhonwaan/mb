@@ -13,13 +13,10 @@ const TOGGLE_USER_MENU = 'TOGGLE_USER_MENU';
 
 /**
  * Fetches application information.
- * 
- * @param {string} query 
  */
-export function fetchAppQuery(query) {
+export function fetchAppQuery() {
   return {
     type: FETCH_APP_QUERY,
-    query,
   };
 }
 
@@ -46,20 +43,32 @@ export function fetchAppQueryFulfilled(categories, userInfo) {
  */
 export function fetchAppQueryEpic(action$, state$, dependencies) {
   const { apiClient, authService } = dependencies;
-
+  const query = `
+    query AppQuery {
+      categories {
+        name
+        slug
+      }
+      userInfo {
+        avatarUrl
+        displayName
+      }
+    }
+  `;
+  
   return action$.pipe(
     ofType(FETCH_APP_QUERY),
-    mergeMap(({ query }) => {
-      return apiClient
+    mergeMap(() =>
+      apiClient
         .do(query, {}, {
           'Authorization': `Bearer ${authService.getAccessToken()}`,
         })
         .pipe(
-          map(({ response: { data: { categories, userInfo } } }) => {
-            return fetchAppQueryFulfilled(categories, userInfo);
-          }),
-        );
-    }),
+          map(({ response: { data: { categories, userInfo } } }) =>
+            fetchAppQueryFulfilled(categories, userInfo)
+          ),
+        ),
+    ),
   );
 }
 

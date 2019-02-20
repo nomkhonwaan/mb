@@ -24,27 +24,9 @@ import routes from './routes';
  * @param {object} props
  */
 class App extends React.Component {
-  /**
-   * An application query that will do the following these
-   * - Get list of categories
-   * - Get user information (if user is logged in)
-   */
-  query = `
-    query AppQuery {
-      categories {
-        name
-        slug
-      }
-      userInfo {
-        avatarUrl
-        displayName
-      }
-    }
-  `;
-
   componentWillMount() {
     if (this.props.authService.isAuthenticated()) {
-      this.props.fetchAppQuery(this.query);
+      this.props.fetchAppQuery();
     }
   }
 
@@ -53,7 +35,7 @@ class App extends React.Component {
       // If the user has been redirected back from /login page,
       // Will fetch an application query for the list of categories and user information
       if (_.isEmpty(this.props.app.userInfo)) {
-        this.props.fetchAppQuery(this.query);
+        this.props.fetchAppQuery();
       }
     }
   }
