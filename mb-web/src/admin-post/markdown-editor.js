@@ -1,31 +1,15 @@
-/**
+  /**
  * External Dependencies
  */
 import React from 'react';
-import { Mutation } from 'react-apollo';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import gql from 'graphql-tag';
 
 /**
  * Internal Dependencies
  */
 import { TextArea } from '../components/input';
-import fragments from './fragments';
-import { changePostContent } from '../redux/modules/admin-post';
-
-/**
- * An update Post content mutation.
- */
-const updatePostContent = gql`
-  mutation UpdatePostContent($input: UpdatePostContentInput!) {
-    updatePostContent(input: $input) {
-      ...Post
-    }
-  }
-
-  ${fragments.post}
-`;
+import { updatePostContent } from '../redux/modules/admin-post';
 
 /**
  * A markdown text editor.
@@ -33,47 +17,36 @@ const updatePostContent = gql`
  * @param {object} props 
  */
 const MarkdownEditor = (props) => {
-  const { post: { id, markdown } } = props;
+  const { id, markdown } = props.adminPost;
 
   return (
-    <Mutation mutation={ updatePostContent }>
-      {
-        (updatePostContent, { loading, data }) => {
-          return (
-            <div className="markdown-editor">
-              <TextArea
-                onChange={ 
-                  (event) =>
-                    props.changePostContent(id, event.target.value, updatePostContent)
-                }
-                value={ markdown }
-              />
-            </div>
-          );
-        }
-      }
-    </Mutation>
+    <div className="markdown-editor">
+      <TextArea
+        onChange={ (event) => props.updatePostContent(id, event.target.value) }
+        value={ markdown }
+      />
+    </div>
   );
 };
 
 MarkdownEditor.propTypes = {
   /* Properties */
-  post: PropTypes.shape({
+  adminPost: PropTypes.shape({
     id: PropTypes.string.isRequired,
     markdown: PropTypes.string,
   }).isRequired,
 
   /* Actions */
-  changePostContent: PropTypes.func.isRequired,
+  updatePostContent: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state, ownProps) {
   return {
-    post: state.adminPost[ownProps.post.id] || ownProps.post,
+    adminPost: state.adminPost,
   };
 }
 
 export default connect(
   mapStateToProps,
-  { changePostContent, },
+  { updatePostContent, },
 )(MarkdownEditor);

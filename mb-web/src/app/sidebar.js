@@ -2,8 +2,9 @@
  * External Dependencies
  */
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 
@@ -33,7 +34,8 @@ const Sidebar = (props) => {
       <nav className="nav">
         <ul className="_list-unstyled _unpadding _unmargin">
           {
-            props.items
+            props.app.sidebar.items
+              .concat(props.app.categories.map(({ name, slug }) => ({ name, link: `/categories/${slug}` })))
               .filter(({ name }) => !props.authService.isAuthenticated() || name !== 'Login / Register')
               .map(({ name, link }, key) => (
                 <li
@@ -57,26 +59,41 @@ const Sidebar = (props) => {
 
 Sidebar.propTypes = {
   /* Properties */
+  app: PropTypes.shape({
+    categories: PropTypes.arrayOf(
+      PropTypes.shape({
+        name: PropTypes.string.isRequired,
+        slug: PropTypes.string.isRequired,
+      })
+    ),
+    sidebar: PropTypes.shape({
+      items: PropTypes.arrayOf(
+        PropTypes.shape({
+          link: PropTypes.string.isRequired,
+          name: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+    }).isRequired,
+  }).isRequired,
   authService: PropTypes.object.isRequired,
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      link: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-    })
-  ).isRequired,
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired,
   }).isRequired,
 
-  /* Actions */
+  /* Events */
   toggleSidebar: PropTypes.func.isRequired,
 };
 
-function mapStateToProps() {
-  return {};
+function mapStateToProps(state) {
+  return {
+    app: {
+      categories: state.app.categories,
+      sidebar: state.app.sidebar,
+    }
+  };
 }
 
 export default withRouter(connect(
   mapStateToProps,
-  { toggleSidebar, },
+  { toggleSidebar }
 )(Sidebar));

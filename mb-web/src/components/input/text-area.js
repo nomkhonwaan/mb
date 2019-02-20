@@ -11,23 +11,22 @@ import classnames from 'classnames';
  * @param {object} props
  */
 class TextArea extends React.Component {
+  state = {
+    height: '100%',
+  };
+
   constructor() {
     super();
 
     this.onChange = this.onChange.bind(this);
     this.ref = React.createRef();
-
-    // Default, textarea height is 100% to fit its parent
-    this.state = { height: '100%', };
   }
 
   componentDidMount() {
-    // To ensure that the textarea height always fit to its content
     this.setState({ height: this.ref.current.scrollHeight });
   }
-
+  
   onChange(event) {
-    // Set the textarea height to fit its content
     this.setState({ height: this.ref.current.scrollHeight });
 
     if (typeof this.props.onChange === 'function') {
@@ -41,7 +40,7 @@ class TextArea extends React.Component {
         className={ classnames('input -textarea', this.props.className) }
         onChange={ this.onChange }
         ref={ this.ref }
-        style={ { height: this.state.height, } }
+        style={ { height: this.state.height || 0 } }
         value={ this.props.value }
       />
     );

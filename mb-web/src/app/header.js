@@ -1,15 +1,16 @@
 /**
  * External Dependencies
  */
+import _ from 'lodash';
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 /**
  * Internal Dependencies
  */
-import { toggleSidebar, toggleUserMenu, } from '../redux/modules/app';
 import UserMenu from './user-menu';
+import { toggleSidebar, toggleUserMenu } from '../redux/modules/app';
 
 /**
  * An application header.
@@ -31,13 +32,13 @@ const Header = (props) => {
       </div>
 
       {
-        !props.userInfo ? null : [
+        _.isEmpty(props.app.userInfo) ? null : [
           <div 
             className="user-info _flex _flex-vertical-align-middle"
             key="0"
             onClick={ props.toggleUserMenu }
           >
-            <img className="avatar" alt={ props.userInfo.displayName } src={ props.userInfo.avatarUrl } />
+            <img className="avatar" alt={ props.app.userInfo.displayName } src={ props.app.userInfo.avatarUrl } />
           </div>,
           <UserMenu key="1" />,
         ]
@@ -49,16 +50,13 @@ const Header = (props) => {
 Header.propTypes = {
   /* Properties */
   app: PropTypes.shape({
-    listOfDraftPosts: PropTypes.shape({
-      collapsed: PropTypes.bool.isRequired,
-    }).isRequired,
+    userInfo: PropTypes.shape({
+      avatarUrl: PropTypes.string,
+      displayName: PropTypes.string,
+    }),
   }).isRequired,
-  userInfo: PropTypes.shape({
-    displayName: PropTypes.string.isRequired,
-    avatarUrl: PropTypes.string.isRequired,
-  }),
-
-  /* Actions */
+  
+  /* Events */
   toggleSidebar: PropTypes.func.isRequired,
   toggleUserMenu: PropTypes.func.isRequired,
 };
@@ -66,14 +64,12 @@ Header.propTypes = {
 function mapStateToProps(state) {
   return {
     app: {
-      listOfDraftPosts: {
-        collapsed: state.app.listOfDraftPosts.collapsed,
-      },
+      userInfo: state.app.userInfo,
     },
   };
 }
 
 export default connect(
   mapStateToProps,
-  { toggleSidebar, toggleUserMenu, },
+  { toggleSidebar, toggleUserMenu },
 )(Header);

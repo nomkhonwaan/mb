@@ -7,11 +7,22 @@ import { combineEpics } from 'redux-observable';
 /**
  * Internal Dependencies
  */
-import adminPost, { changePostContentEpic } from './admin-post';
-import app from './app';
+import adminPost, { 
+  createPostEpic,
+  editPostEpic,
+  updatePostContentEpic,
+  updatePostTitleEpic,
+} from './admin-post';
+import app, {
+  fetchAppQueryEpic,
+} from './app';
 
 export const rootEpic = combineEpics(
-  changePostContentEpic,
+  createPostEpic,
+  editPostEpic,
+  fetchAppQueryEpic,
+  updatePostContentEpic,
+  updatePostTitleEpic,
 );
 
 export const rootReducers = combineReducers({
