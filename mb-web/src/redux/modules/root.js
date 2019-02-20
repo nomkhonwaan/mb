@@ -11,20 +11,18 @@ import adminPost, {
   createPostEpic,
   editPostEpic,
   updatePostContentEpic,
-  // changePostContentEpic,
-  // changePostTitleEpic,
+  updatePostTitleEpic,
 } from './admin-post';
 import app, {
   fetchAppQueryEpic,
 } from './app';
 
 export const rootEpic = combineEpics(
-  // changePostContentEpic,
-  // changePostTitleEpic,
   createPostEpic,
   editPostEpic,
   fetchAppQueryEpic,
   updatePostContentEpic,
+  updatePostTitleEpic,
 );
 
 export const rootReducers = combineReducers({

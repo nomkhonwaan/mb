@@ -11,7 +11,6 @@ const CREATE_POST_FULFILLED = 'CREATE_POST_FULFILLED';
 const EDIT_POST = 'EDIT_POST';
 const EDIT_POST_FULFILLED = 'EDIT_POST_FULFILLED';
 
-const UPDATE_POST_TITLE = 'UPDATE_POST_TITLE';
 const UPDATE_POST_TITLE_FULFILLED = 'UPDATE_POST_TITLE_FULFILLED';
 
 const UPDATE_POST_CONTENT = 'UPDATE_POST_CONTENT';
@@ -161,12 +160,13 @@ export function editPostEpic(action$, state$, dependencies) {
   );
 }
 
-export function updatePostTitle(id, title) {
-  return {
-    type: UPDATE_POST_TITLE,
-  };
-}
-
+/**
+ * Update the Post's title successfully.
+ * 
+ * @param {string} id 
+ * @param {string} title 
+ * @param {string} slug 
+ */
 export function updatePostTitleFulfilled(id, title, slug) {
   return {
     type: UPDATE_POST_TITLE_FULFILLED,
@@ -176,6 +176,13 @@ export function updatePostTitleFulfilled(id, title, slug) {
   };
 }
 
+/**
+ * Performs an API call to the backend.
+ * 
+ * @param {object} action$ 
+ * @param {object} state$ 
+ * @param {object} dependencies 
+ */
 export function updatePostTitleEpic(action$, state$, dependencies) {
   const { apiClient, authService } = dependencies;
   const mutation = `
@@ -194,7 +201,7 @@ export function updatePostTitleEpic(action$, state$, dependencies) {
     mergeMap(({ id, markdown }) => 
       apiClient
         .do(mutation, { input: { id, title: markdown.split('\n')[0].replace(/((?!\w).)/, '').trim() } }, {
-          'Authorization': `${authService.getAccessToken()}`,
+          'Authorization': `Bearer ${authService.getAccessToken()}`,
         })
         .pipe(
           map(({ response: { data: { updatePostTitle: { id, title, slug } } } }) => 
@@ -271,103 +278,6 @@ export function updatePostContentEpic(action$, state$, dependencies) {
 }
 
 const initialState = {};
-
-// /**
-//  * External Dependencies
-//  */
-// import update from 'immutability-helper';
-// import { ofType } from 'redux-observable';
-// import { from } from 'rxjs';
-// import { debounceTime, mergeMap } from 'rxjs/operators';
-
-// const CHANGE_POST_TITLE = 'CHANGE_POST_TITLE';
-// const CHANGE_POST_TITLE_FULFILLED = 'CHANGE_POST_TITLE_FULFILLED';
-// const CHANGE_POST_CONTENT = 'CHANGE_POST_CONTENT';
-// const CHANGE_POST_CONTENT_FULFILLED = 'CHANGE_POST_CONTENT_FULFILLED';
-
-// /**
-//  * Update the Post's content.
-//  * 
-//  * @param {string} id
-//  * @param {string} markdown 
-//  */
-// export function changePostContent(id, markdown, updatePostContent) {
-//   return {
-//     type: CHANGE_POST_CONTENT,
-//     id,
-//     markdown,
-//     updatePostContent,
-//   };
-// }
-
-// /**
-//  * Update the Post's content after after few seconds.
-//  * 
-//  * @param {string} id 
-//  * @param {string} markdown 
-//  */
-// export function changePostContentFulfilled(id, markdown) {
-//   return {
-//     type: CHANGE_POST_CONTENT_FULFILLED,
-//     id,
-//     markdown,
-//   };
-// }
-
-// export function changePostTitle(id, title) {
-//   return {
-//     type: CHANGE_POST_TITLE,
-//     id,
-//     title,
-//   };
-// }
-
-// export function changePostTitleFulfilled(id, title) {
-//   return {
-//     type: CHANGE_POST_TITLE_FULFILLED,
-//     id,
-//     title,
-//   };
-// }
-
-// /**
-//  * This epic uses for delay sending mutation request to the server.
-//  * 
-//  * @param {object} action$ 
-//  */
-// export function changePostContentEpic(action$) {
-//   return action$.pipe(
-//     ofType(CHANGE_POST_CONTENT),
-//     debounceTime(4000),
-//     mergeMap(({ id, markdown, updatePostContent }) => {
-//       updatePostContent({ variables: { input: { id, markdown, }, }, });
-
-//       // Extract title from the first line of the content
-//       const title = markdown.split('\n')[0].replace(/((?!\w).)/, '').trim();
-
-//       return from(Promise.resolve(changePostTitle(id, title)));
-//     }),
-//   );
-// }
-
-// /**
-//  * The chain action that will perform after the Post's content has been changed.
-//  * 
-//  * @param {object} action$ 
-//  */
-// export function changePostTitleEpic(action$) {
-//   return action$.pipe(
-//     ofType(CHANGE_POST_TITLE),
-//     debounceTime(4000),
-//     mergeMap(({ id, title, updatePostTitle }) => {
-//       updatePostTitle({ variables: { input: { id, title, }, }, });
-
-//       return from(Promise.resolve(changePostTitleFulfilled(id, title)));
-//     }),
-//   );
-// }
-
-// const initialState = {};
 
 /**
  * A reducer of the administrator Post module.

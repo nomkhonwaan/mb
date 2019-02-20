@@ -167,7 +167,7 @@ class AdminPost extends React.Component {
   }
 
   render() {
-    if (_.isEmpty(this.props.adminPost)) {
+    if (!this.props.adminPost.status) {
       return null;
     }
 
@@ -200,7 +200,7 @@ AdminPost.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   const { slug } = ownProps.match.params;
-  const id = slug ? slug.split('-')[0] : null;
+  const id = slug ? /(.*-)?(.*)$/.exec(slug)[2] : null;
 
   return {
     adminPost: _.isEmpty(state.adminPost) 
