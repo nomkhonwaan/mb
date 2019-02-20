@@ -2,6 +2,7 @@
  * Internal Dependencies
  */
 import './style.css';
-import Button from './button';
+import ButtonGroup from './button-group';
+import OutlineButton from './outline-button';
 
-export { Button };
+export { ButtonGroup, OutlineButton };
