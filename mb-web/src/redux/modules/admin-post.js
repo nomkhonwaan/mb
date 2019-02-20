@@ -161,6 +161,50 @@ export function editPostEpic(action$, state$, dependencies) {
   );
 }
 
+export function updatePostTitle(id, title) {
+  return {
+    type: UPDATE_POST_TITLE,
+  };
+}
+
+export function updatePostTitleFulfilled(id, title, slug) {
+  return {
+    type: UPDATE_POST_TITLE_FULFILLED,
+    id,
+    title,
+    slug,
+  };
+}
+
+export function updatePostTitleEpic(action$, state$, dependencies) {
+  const { apiClient, authService } = dependencies;
+  const mutation = `
+    mutation UpdatePostTitle($input: UpdatePostTitleInput!) {
+      updatePostTitle(input: $input) {
+        ...post
+      }
+    }
+
+    ${fragments.post}
+  `;
+  
+  return action$.pipe(
+    ofType(UPDATE_POST_CONTENT),
+    debounceTime(8000),
+    mergeMap(({ id, markdown }) => 
+      apiClient
+        .do(mutation, { input: { id, title: markdown.split('\n')[0].replace(/((?!\w).)/, '').trim() } }, {
+          'Authorization': `${authService.getAccessToken()}`,
+        })
+        .pipe(
+          map(({ response: { data: { updatePostTitle: { id, title, slug } } } }) => 
+            updatePostTitleFulfilled(id, title, slug),
+          ),
+        ),
+    ),
+  );
+}
+
 /**
  * Updates the Post's content.
  * 
@@ -341,6 +385,12 @@ function adminPost(state = initialState, action) {
     case EDIT_POST_FULFILLED:
       return update(state, {
         $set: action.post,
+      });
+    case UPDATE_POST_TITLE_FULFILLED:
+      return update(state, {
+        id: { $set: action.id },
+        title: { $set: action.title },
+        slug: { $set: action.slug },
       });
     case UPDATE_POST_CONTENT:
       return update(state, {
