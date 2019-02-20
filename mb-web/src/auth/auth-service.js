@@ -144,7 +144,7 @@ class AuthService {
    * Checks whether the current time is past the access token's expiry time.
    */
   isAuthenticated() {
-    return this.getAccessToken() && Date.now() < (this.expiresAt || localStorage.getItem('expiresAt'));
+    return !!(this.getAccessToken() && Date.now() < (this.expiresAt || localStorage.getItem('expiresAt')));
   }
 
   /**

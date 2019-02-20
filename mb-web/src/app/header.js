@@ -2,13 +2,11 @@
  * External Dependencies
  */
 import React from 'react';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 /**
  * Internal Dependencies
  */
-import { toggleSidebar, toggleUserMenu, } from '../redux/modules/app';
 import UserMenu from './user-menu';
 
 /**
@@ -21,7 +19,7 @@ const Header = (props) => {
     <div className="header _flex">
       <div
         className="toggle-sidebar-button _flex _flex-vertical-align-middle"
-        onClick={ props.toggleSidebar }
+        onClick={ props.onClickToggleSidebarButton }
       >
         <i className="fal fa-bars" />
       </div>
@@ -35,7 +33,7 @@ const Header = (props) => {
           <div 
             className="user-info _flex _flex-vertical-align-middle"
             key="0"
-            onClick={ props.toggleUserMenu }
+            onClick={ props.onClickUserAvatar }
           >
             <img className="avatar" alt={ props.userInfo.displayName } src={ props.userInfo.avatarUrl } />
           </div>,
@@ -48,32 +46,14 @@ const Header = (props) => {
 
 Header.propTypes = {
   /* Properties */
-  app: PropTypes.shape({
-    listOfDraftPosts: PropTypes.shape({
-      collapsed: PropTypes.bool.isRequired,
-    }).isRequired,
-  }).isRequired,
   userInfo: PropTypes.shape({
-    displayName: PropTypes.string.isRequired,
-    avatarUrl: PropTypes.string.isRequired,
+    avatarUrl: PropTypes.string,
+    displayName: PropTypes.string,
   }),
 
-  /* Actions */
-  toggleSidebar: PropTypes.func.isRequired,
-  toggleUserMenu: PropTypes.func.isRequired,
+  /* Events */
+  onClickToggleSidebarButton: PropTypes.func,
+  onClickUserAvatar: PropTypes.func,
 };
 
-function mapStateToProps(state) {
-  return {
-    app: {
-      listOfDraftPosts: {
-        collapsed: state.app.listOfDraftPosts.collapsed,
-      },
-    },
-  };
-}
-
-export default connect(
-  mapStateToProps,
-  { toggleSidebar, toggleUserMenu, },
-)(Header);
+export default Header;

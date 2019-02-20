@@ -10,12 +10,21 @@ import { createEpicMiddleware } from 'redux-observable';
 import { rootEpic, rootReducers } from './modules/root';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-const epicMiddleware = createEpicMiddleware();
 
 /**
  * Creates new Redux which is embedded React router already. 
+ * 
+ * @param {ApiClient}   apiClient
+ * @param {AuthService} authService 
  */
-function configureStore() {
+function configureStore(apiClient, authService) {
+  const epicMiddleware = createEpicMiddleware({
+    dependencies: { 
+      apiClient,
+      authService,
+    },
+  });
+
   const store = createStore(
     rootReducers,
     composeEnhancers(

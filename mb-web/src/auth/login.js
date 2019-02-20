@@ -13,11 +13,7 @@ const Login = (props) => {
     props.authService.handleAuthentication()
       .then(() => {
         // Redirect to the previous. 
-        // <p>
-        // Why reload instead of replace? 
-        // Because, the Apollo client requires to setup optional headers  at ../index.js, 
-        // in the step before rendering any components.
-        window.location = props.authService.getPreviousPathname();
+        props.history.replace(props.authService.getPreviousPathname());
       })
       .catch((err) => {
         console.error(err);

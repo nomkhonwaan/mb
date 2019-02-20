@@ -2,15 +2,9 @@
  * External Dependencies
  */
 import React from 'react';
-import { Link, withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-
-/**
- * Internal Dependencies
- */
-import { toggleSidebar } from '../redux/modules/app';
 
 /**
  * An application sidebar.
@@ -23,7 +17,7 @@ const Sidebar = (props) => {
       <header className="header _flex _flex-horizontal-align-right">
         <div
           className="toggle-button _flex _flex-vertical-align-middle"
-          onClick={ props.toggleSidebar }
+          onClick={ props.onClickToggleButton }
         >
           <span className="close">Close</span>
           <i className="fal fa-times" />
@@ -34,14 +28,14 @@ const Sidebar = (props) => {
         <ul className="_list-unstyled _unpadding _unmargin">
           {
             props.items
-              .filter(({ name }) => !props.authService.isAuthenticated() || name !== 'Login / Register')
+              .filter(({ name }) => !props.isAuthenticated || name !== 'Login / Register')
               .map(({ name, link }, key) => (
                 <li
                   className={ classnames('nav-item', {
-                    '-selected': props.location.pathname === link,
+                    '-selected': props.currentPathname === link,
                   }) }
                   key={ key }
-                  onClick={ props.toggleSidebar }
+                  onClick={ props.onClickNavItem }
                 >
                   <Link to={ link } className="_color-inherit _text-undecorated">
                     { name }
@@ -57,26 +51,18 @@ const Sidebar = (props) => {
 
 Sidebar.propTypes = {
   /* Properties */
-  authService: PropTypes.object.isRequired,
+  currentPathname: PropTypes.string.isRequired,
   items: PropTypes.arrayOf(
     PropTypes.shape({
       link: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
     })
   ).isRequired,
-  location: PropTypes.shape({
-    pathname: PropTypes.string.isRequired,
-  }).isRequired,
+  isAuthenticated: PropTypes.bool.isRequired,
 
-  /* Actions */
-  toggleSidebar: PropTypes.func.isRequired,
+  /* Events */
+  onClickNavItem: PropTypes.func,
+  onClickToggleButton: PropTypes.func,
 };
 
-function mapStateToProps() {
-  return {};
-}
-
-export default withRouter(connect(
-  mapStateToProps,
-  { toggleSidebar, },
-)(Sidebar));
+export default Sidebar;

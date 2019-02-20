@@ -23,6 +23,27 @@ const updatePostContent = gql`
       ...Post
     }
   }
+`;
+
+/**
+ * An update Post title mutation.
+ */
+const updatePostTitle = gql`
+  mutation UpdatePostTitle($input: UpdatePostTitleInput!) {
+    updatePostTitle(input: $input) {
+      ...Post
+    }
+  }
+`;
+
+/**
+ * A markdown editor mutation which contains 
+ * - Update Post content mutation
+ * - Update Post title mutation
+ */
+const markdownEditorMutation = gql`
+  ${updatePostContent}
+  ${updatePostTitle}
 
   ${fragments.post}
 `;
@@ -36,7 +57,7 @@ const MarkdownEditor = (props) => {
   const { post: { id, markdown } } = props;
 
   return (
-    <Mutation mutation={ updatePostContent }>
+    <Mutation mutation={ markdownEditorMutation }>
       {
         (updatePostContent, { loading, data }) => {
           return (

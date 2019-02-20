@@ -2,13 +2,11 @@
  * External Dependencies
  */
 import React from 'react';
-import { Query } from 'react-apollo';
 import { connect } from 'react-redux';
 import { renderRoutes } from 'react-router-config';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import gql from 'graphql-tag';
 
 /**
  * Internal Dependencies
@@ -16,7 +14,7 @@ import gql from 'graphql-tag';
 import PopupOverlay from '../components/popup-overlay';
 import Header from './header';
 import Sidebar from './sidebar';
-import { toggleSidebar } from '../redux/modules/app';
+import { fetchAppQuery, toggleSidebar, toggleUserMenu } from '../redux/modules/app';
 import routes from './routes';
 
 /**
@@ -26,7 +24,7 @@ import routes from './routes';
  * - list of categories
  * - user information (if logged in)
  */
-const appQuery = gql`
+const query = `
   query AppQuery {
     categories {
       name
@@ -44,44 +42,102 @@ const appQuery = gql`
  *
  * @param {object} props
  */
-export const App = (props) => {
-  return (
-    <Query query={ appQuery }>
-      {
-        ({ loading, err, data }) => {
-          let categories = [];
+class App extends React.Component {
+  componentWillMount() {
+    this.props.fetchAppQuery(query);
+  }
 
-          if (data && data.categories) {
-            categories = data.categories.map(({ name, slug }) => ({
-              name,
-              link: `/categories/${slug}`,
-            }))
-          }
-
-          return (
-            <div className={ classnames('app', {
-              '-sidebar-collapsed': props.app.sidebar.collapsed,
-            }) }>
-              <Sidebar 
-                authService={ props.authService }
-                items={ props.app.sidebar.items.concat(categories) }
-              />
-
-              <PopupOverlay
-                in={ !props.app.sidebar.collapsed }
-                onClickBackground={ props.toggleSidebar }
-              />
-        
-              <Header userInfo={ data ? data.userInfo : null } />
-        
-              { renderRoutes(routes, { authService: props.authService }) }
-            </div>
-          );
-        }
-      }
-    </Query>
-  )
+  render() {
+    return (
+      <div className={ classnames('app', {
+        '-sidebar-collapsed': this.props.app.sidebar.collapsed,
+      }) }>
+        <Sidebar
+          currentPathname={ this.props.location.pathname }
+          items={ this.props.app.sidebar.items }
+          isAuthenticated={ this.props.authService.isAuthenticated() }
+          onClickToggleButton={ this.props.toggleSidebar }
+          onClickNavItem={ this.props.toggleSidebar }
+        />
+  
+        <PopupOverlay
+          in={ !this.props.app.sidebar.collapsed }
+          onClickBackground={ this.props.toggleSidebar }
+        />
+  
+        <Header
+          userInfo={ this.props.app.userInfo }
+          onClickToggleSidebarButton={ this.props.toggleSidebar }
+          onClickUserAvatar={ this.props.toggleUserMenu }
+        />
+  
+        { renderRoutes(routes, { authService: this.props.authService }) }
+      </div>
+    );
+  }
 }
+// export const App = (props) => {
+//   props.getUserInfo();
+
+//   return (
+//     <div className={ classnames('app', {
+//       '-sidebar-collapsed': props.app.sidebar.collapsed,
+//     }) }>
+//       <Sidebar
+//         currentPathname={ props.location.pathname }
+//         items={ props.app.sidebar.items }
+//         isAuthenticated={ props.authService.isAuthenticated() }
+//         onClickToggleButton={ props.toggleSidebar }
+//         onClickNavItem={ props.toggleSidebar }
+//       />
+
+//       <PopupOverlay
+//         in={ !props.app.sidebar.collapsed }
+//         onClickBackground={ props.toggleSidebar }
+//       />
+
+//       <Header userInfo={ null } />
+
+//       { renderRoutes(routes, { authService: props.authService }) }
+//     </div>
+//   );
+//   // return (
+//   //   <Query query={ appQuery }>
+//   //     {
+//   //       ({ loading, err, data }) => {
+//   //         let categories = [];
+
+//   //         if (data && data.categories) {
+//   //           categories = data.categories.map(({ name, slug }) => ({
+//   //             name,
+//   //             link: `/categories/${slug}`,
+//   //           }))
+//   //         }
+
+//   //         return (
+//   //           <div className={ classnames('app', {
+//   //             '-sidebar-collapsed': props.app.sidebar.collapsed,
+//   //           }) }>
+//   //             <Sidebar 
+//   //               authService={ props.authService }
+//   //               items={ props.app.sidebar.items.concat(categories) }
+//   //             />
+
+//   //             <PopupOverlay
+//   //               in={ !props.app.sidebar.collapsed }
+//   //               onClickBackground={ props.toggleSidebar }
+//   //             />
+        
+//   //             <Header userInfo={ data ? data.userInfo : null } />
+        
+//   //             { renderRoutes(routes, { authService: props.authService }) }
+//   //           </div>
+//   //         );
+//   //       }
+//   //     }
+//   //   </Query>
+//   // );
+// }
 
 App.propTypes = {
   /* Properties */
@@ -100,7 +156,9 @@ App.propTypes = {
   authService: PropTypes.object.isRequired,
   
   /* Actions */
+  fetchAppQuery: PropTypes.func.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
+  toggleUserMenu: PropTypes.func.isRequired,
 };
 
 function mapStateToProps(state) {
@@ -111,5 +169,5 @@ function mapStateToProps(state) {
 
 export default withRouter(connect(
   mapStateToProps,
-  { toggleSidebar, },
+  { fetchAppQuery, toggleSidebar, toggleUserMenu },
 )(App));
