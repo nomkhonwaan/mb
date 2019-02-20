@@ -4,6 +4,11 @@
 import React from 'react';
 
 /**
+ * Internal Dependencies
+ */
+import { Button } from '../components/button';
+
+/**
  * A sidbar of the Post editor.
  * 
  * @param {object} props 
@@ -20,7 +25,11 @@ const Sidebar = (props) => {
         </div>
       </header>
 
-      <div className="post-status"></div>
+      <div className="post-status">
+        <Button>
+          Published
+        </Button>
+      </div>
 
       <div className="post-categories"></div>
 
