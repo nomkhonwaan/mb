@@ -1,13 +1,16 @@
 /**
  * External Dependencies
  */
+import _ from 'lodash';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 /**
  * Internal Dependencies
  */
 import UserMenu from './user-menu';
+import { toggleSidebar, toggleUserMenu } from '../redux/modules/app';
 
 /**
  * An application header.
@@ -19,7 +22,7 @@ const Header = (props) => {
     <div className="header _flex">
       <div
         className="toggle-sidebar-button _flex _flex-vertical-align-middle"
-        onClick={ props.onClickToggleSidebarButton }
+        onClick={ props.toggleSidebar }
       >
         <i className="fal fa-bars" />
       </div>
@@ -29,13 +32,13 @@ const Header = (props) => {
       </div>
 
       {
-        !props.userInfo ? null : [
+        _.isEmpty(props.app.userInfo) ? null : [
           <div 
             className="user-info _flex _flex-vertical-align-middle"
             key="0"
-            onClick={ props.onClickUserAvatar }
+            onClick={ props.toggleUserMenu }
           >
-            <img className="avatar" alt={ props.userInfo.displayName } src={ props.userInfo.avatarUrl } />
+            <img className="avatar" alt={ props.app.userInfo.displayName } src={ props.app.userInfo.avatarUrl } />
           </div>,
           <UserMenu key="1" />,
         ]
@@ -46,14 +49,27 @@ const Header = (props) => {
 
 Header.propTypes = {
   /* Properties */
-  userInfo: PropTypes.shape({
-    avatarUrl: PropTypes.string,
-    displayName: PropTypes.string,
-  }),
-
+  app: PropTypes.shape({
+    userInfo: PropTypes.shape({
+      avatarUrl: PropTypes.string,
+      displayName: PropTypes.string,
+    }),
+  }).isRequired,
+  
   /* Events */
-  onClickToggleSidebarButton: PropTypes.func,
-  onClickUserAvatar: PropTypes.func,
+  toggleSidebar: PropTypes.func.isRequired,
+  toggleUserMenu: PropTypes.func.isRequired,
 };
 
-export default Header;
+function mapStateToProps(state) {
+  return {
+    app: {
+      userInfo: state.app.userInfo,
+    },
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { toggleSidebar, toggleUserMenu },
+)(Header);

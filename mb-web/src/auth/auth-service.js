@@ -144,7 +144,9 @@ class AuthService {
    * Checks whether the current time is past the access token's expiry time.
    */
   isAuthenticated() {
-    return !!(this.getAccessToken() && Date.now() < (this.expiresAt || localStorage.getItem('expiresAt')));
+    const expiresAt = parseInt(localStorage.getItem('expiresAt'), 10);
+
+    return !!(this.getAccessToken() && Date.now() < expiresAt);
   }
 
   /**
@@ -177,7 +179,7 @@ class AuthService {
   setSession(authResult) {
     // Sets the time that the access token will expire at
     this.accessToken = authResult.accessToken;
-    this.expiresAt = (authResult.expiresIn * 1000) + Date.now();
+    this.expiresAt = authResult.expiresIn * 1000 + Date.now();
     
     // Stores user's session to the localStorage
     localStorage.setItem('accessToken', this.accessToken);
