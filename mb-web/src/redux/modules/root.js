@@ -12,6 +12,7 @@ import adminPost, {
   startEditingPostEpic,
   updatePostContentEpic,
   updatePostTitleEpic,
+  updatePostStatusEpic,
 } from './admin-post';
 import app, {
   fetchCategoriesEpic,
@@ -27,6 +28,7 @@ export const rootEpic = combineEpics(
   startEditingPostEpic,
   updatePostContentEpic,
   updatePostTitleEpic,
+  updatePostStatusEpic,
 );
 
 export const rootReducers = combineReducers({

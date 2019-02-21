@@ -16,6 +16,9 @@ const UPDATE_POST_TITLE_FULFILLED = 'UPDATE_POST_TITLE_FULFILLED';
 const UPDATE_POST_CONTENT = 'UPDATE_POST_CONTENT';
 const UPDATE_POST_CONTENT_FULFILLED = 'UPDATE_POST_CONTENT_FULFILLED';
 
+const UPDATE_POST_STATUS = 'UPDATE_POST_STATUS';
+const UPDATE_POST_STATUS_FULFILLED = 'UPDATE_POST_STATUS_FULFILLED';
+
 /**
  * List of GraphQL's fragments
  */
@@ -275,6 +278,50 @@ export function updatePostContentEpic(action$, state$, dependencies) {
   );
 }
 
+export function updatePostStatus(id, status) {
+  return {
+    type: UPDATE_POST_STATUS,
+    id,
+    status,
+  };
+}
+
+export function updatePostStatusFulfilled(id, status) {
+  return {
+    type: UPDATE_POST_STATUS_FULFILLED,
+    id,
+    status,
+  };
+}
+
+export function updatePostStatusEpic(action$, state$, dependencies) {
+  const { apiClient, authService } = dependencies;
+  const mutation = `
+    mutation UpdatePostStatus($input: UpdatePostStatusInput!) {
+      updatePostStatus(input: $input) {
+        ...post
+      }
+    }
+
+    ${fragments.post}
+  `;
+
+  return action$.pipe(
+    ofType(UPDATE_POST_STATUS),
+    mergeMap(({ id, status }) =>
+      apiClient
+        .do(mutation, { input: { id, status } }, {
+          'Authorization': `Bearer ${authService.getAccessToken()}`,
+        })
+        .pipe(
+          map(({ response: { data: { updatePostStatus: { id, status } } } }) =>
+            updatePostStatusFulfilled(id, status),
+          ),
+        ),
+    ),
+  );
+}
+
 const initialState = {};
 
 /**
@@ -303,7 +350,13 @@ function adminPost(state = initialState, action) {
       });
     case UPDATE_POST_CONTENT_FULFILLED:
       return update(state, {
+        id: { $set: action.id },
         html: { $set: action.html },
+      });
+    case UPDATE_POST_STATUS_FULFILLED:
+      return update(state, {
+        id: { $set: action.id },
+        status: { $set: action.status },
       });
     default:
       return state;

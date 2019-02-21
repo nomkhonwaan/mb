@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
  */
 import { ButtonGroup } from '../components/button';
 import { HorizontalSeparator } from '../components/popup-menu';
+import { updatePostStatus } from '../redux/modules/admin-post';
 
 /**
  * A sidbar of the Post editor.
@@ -17,6 +18,8 @@ import { HorizontalSeparator } from '../components/popup-menu';
  * @param {object} props 
  */
 const Sidebar = (props) => {
+  const { id, status } = props.adminPost;
+
   return (
     <div className="sidebar">
       <header className="header _flex _flex-horizontal-align-right">
@@ -31,14 +34,14 @@ const Sidebar = (props) => {
       <div className="status">
         <ButtonGroup
           components={ [
-            <span>Draft</span>,
-            <span>Published</span>,
+            <span onClick={ () => props.updatePostStatus(id, 'DRAFT') }>Draft</span>,
+            <span onClick={ () => props.updatePostStatus(id, 'PUBLISHED') }>Published</span>,
             <HorizontalSeparator />,
-            <span className="_text-color-red">Delete</span>
+            <span className="_text-danger">Delete</span>
           ] }
           primary
         >
-          { props.adminPost.status }
+          { status }
         </ButtonGroup>
       </div>
 
@@ -67,5 +70,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  { updatePostStatus },
 )(Sidebar);
