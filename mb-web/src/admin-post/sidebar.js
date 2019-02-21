@@ -28,13 +28,13 @@ const Sidebar = (props) => {
         </div>
       </header>
 
-      <div className="post-status">
+      <div className="status">
         <ButtonGroup
           components={ [
-            'Draft',
-            'Published',
+            <span>Draft</span>,
+            <span>Published</span>,
             <HorizontalSeparator />,
-            'Delete'
+            <span className="_text-color-red">Delete</span>
           ] }
           primary
         >
@@ -42,11 +42,11 @@ const Sidebar = (props) => {
         </ButtonGroup>
       </div>
 
-      <div className="post-categories"></div>
+      <div className="categories"></div>
 
-      <div className="post-tags"></div>
+      <div className="tags"></div>
 
-      <div className="post-attachments"></div>
+      <div className="attachments"></div>
     </div>
   );
 };

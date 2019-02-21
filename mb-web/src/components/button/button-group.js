@@ -41,12 +41,17 @@ class ButtonGroup extends React.Component {
         className={ classnames('button', '-group', {
           '-popup-menu-collapsed': this.state.popupMenu.collapsed,
           '-primary': this.props.primary,
-        }) }
+        }, '_flex', '_flex-vertical-align-middle') }
         
         onClick={ this.onTogglePopupMenu }
       >
-        { this.props.children }
-        <i className="fal fa-angle-down" />
+        <span className="_flex _flex-1"></span>
+        <span className="_margin-auto">
+          { this.props.children }
+        </span>
+        <span className="_flex _flex-1 _flex-horizontal-align-right">
+          <i className="fal fa-angle-down _flex _z-index-99" />
+        </span>
         { this.renderPopupMenu() }
       </button>
     );

@@ -11,7 +11,7 @@
 ._flex-left { margin-right: auto!important; }
 ._flex-right { margin-left: auto!important; }
 ._flex-horizontal-align-left {
-  &:not(._flex-direction-column) { ustify-content: flex-start!important; }
+  &:not(._flex-direction-column) { justify-content: flex-start!important; }
   &._flex-direction-column { align-items: flex-start!important; }
 }
 ._flex-horizontal-align-center {
@@ -37,6 +37,7 @@
 ._flex-justify-content-space-between { justify-content: space-between; }
 ._flex-direction-column { flex-direction: column!important; }
 ._flex-direction-row { flex-direction: row!important; }
+._flex-1 { flex: 1!important; }
 
 ._color-inherit { color: inherit!important; }
 
@@ -52,11 +53,16 @@
 ._text-align-right { text-align: right!important; }
 ._text-align-justify { text-align: justify!important; }
 
+._text-color-red { color: hsl(4, 90%, 58%)!important; }
+
+._margin-auto { margin: auto!important; }
 ._unmargin { margin: 0!important; }
 ._unpadding { padding: 0!important; }
 
 ._lowercase { text-transform: lowercase!important; }
 ._uppercase { text-transform: uppercase!important; }
+
+._z-index-99 { z-index: 99!important; }
 
 ._narrow {
   padding: 0 3.2rem;

@@ -1,31 +1,54 @@
 .button {
   border: none;
   color: hsl(0, 0%, 100%);
+  cursor: pointer;
   font: normal 400 1.3rem 'Lato', sans-serif;
   height: 3.2rem;
-  margin: 0 3.2rem;
+  margin: 0 1.6rem;
+  padding: 0 1.6rem;
   position: relative;
-  width: calc(100% - 6.4rem);
-
-  &:before,
-  &:after {
+  width: calc(100% - 3.2rem);
+  
+  &:before, &:after {
     border-radius: 50%;
     content: '';
     display: block;
     height: 3.2rem;
-    position: absolute;
     top: 0;
+    position: absolute;
     width: 3.2rem;
   }
 
-  &:before { left: -1.6rem; }
-  &:after { right: -1.6rem; }
+  &:before {
+    left: -1.6rem;
+  }
+
+  &:after {
+    right: -1.6rem;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &.-group {
+    padding: 0;
+    
+    > .popup-menu {
+      left: -1.6rem;
+      position: absolute;
+      text-align: left;
+      top: 4.8rem;
+      width: calc(100% + 3.2rem);
+
+      &:before { margin-right: 1.2rem; }
+    }
+  }
 
   &.-primary {
     background: hsl(201, 98%, 41%);
 
-    &:before,
-    &:after {
+    &:before, &:after {
       background: hsl(201, 98%, 41%);
     }
   }
