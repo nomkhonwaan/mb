@@ -1,7 +1,7 @@
 /**
  * External Dependencies
  */
-import React from 'react':
+import React from 'react';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 import update from 'immutability-helper';
@@ -22,11 +22,13 @@ class ButtonGroup extends React.Component {
   };
   
   constructor() {
+    super();
+
     this.onTogglePopupMenu = this.onTogglePopupMenu.bind(this);
   }
   
   onTogglePopupMenu() {
-    this setState(update(this.state, {
+    this.setState(update(this.state, {
       popupMenu: {
         $toggle: [ 'collapsed' ],
       },
@@ -36,17 +38,15 @@ class ButtonGroup extends React.Component {
   render() {
     return (
       <button
-        classNameclassName={ classnames('button', '-group', {
-          ['-popup-menu-collapsed']: this.state.popupMenu.collapsed,
+        className={ classnames('button', '-group', {
+          '-popup-menu-collapsed': this.state.popupMenu.collapsed,
+          '-primary': this.props.primary,
         }) }
         
-        onClick={ onClick }
+        onClick={ this.onTogglePopupMenu }
       >
-        { props.children }
-        <i
-          classNameclassName="fal fa-angle-down"
-          onClick={ this.onTogglePopupMenu }
-        />
+        { this.props.children }
+        <i className="fal fa-angle-down" />
         { this.renderPopupMenu() }
       </button>
     );
@@ -70,9 +70,7 @@ ButtonGroup.propTypes = {
     PropTypes.node, 
     PropTypes.func 
   ]).isRequired,
-  
-  /* Events */
-  onClick: PropTypes.func,
+  primary: PropTypes.bool,
 };
 
 export default ButtonGroup;

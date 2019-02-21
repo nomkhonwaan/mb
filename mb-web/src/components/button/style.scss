@@ -1,5 +1,32 @@
 .button {
+  border: none;
+  color: hsl(0, 0%, 100%);
+  font: normal 400 1.3rem 'Lato', sans-serif;
+  height: 3.2rem;
+  margin: 0 3.2rem;
+  position: relative;
+  width: calc(100% - 6.4rem);
+
+  &:before,
+  &:after {
+    border-radius: 50%;
+    content: '';
+    display: block;
+    height: 3.2rem;
+    position: absolute;
+    top: 0;
+    width: 3.2rem;
+  }
+
+  &:before { left: -1.6rem; }
+  &:after { right: -1.6rem; }
+
   &.-primary {
     background: hsl(201, 98%, 41%);
+
+    &:before,
+    &:after {
+      background: hsl(201, 98%, 41%);
+    }
   }
 }

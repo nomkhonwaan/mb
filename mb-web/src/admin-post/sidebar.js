@@ -2,11 +2,14 @@
  * External Dependencies
  */
 import React from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 /**
  * Internal Dependencies
  */
-import { Button } from '../components/button';
+import { ButtonGroup } from '../components/button';
+import { HorizontalSeparator } from '../components/popup-menu';
 
 /**
  * A sidbar of the Post editor.
@@ -26,9 +29,17 @@ const Sidebar = (props) => {
       </header>
 
       <div className="post-status">
-        <Button>
-          Published
-        </Button>
+        <ButtonGroup
+          components={ [
+            'Draft',
+            'Published',
+            <HorizontalSeparator />,
+            'Delete'
+          ] }
+          primary
+        >
+          { props.adminPost.status }
+        </ButtonGroup>
       </div>
 
       <div className="post-categories"></div>
@@ -40,4 +51,21 @@ const Sidebar = (props) => {
   );
 };
 
-export default Sidebar;
+Sidebar.propTypes = {
+  adminPost: PropTypes.shape({
+    status: PropTypes.oneOf([
+      'DRAFT',
+      'PUBLISHED',
+    ]).isRequired,
+  }).isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    adminPost: state.adminPost,
+  };
+}
+
+export default connect(
+  mapStateToProps
+)(Sidebar);

@@ -11,9 +11,11 @@ import PropTypes from 'prop-types';
 /**
  * Internal Dependencies
  */
+import Title from '../components/title';
 import Header from './header';
 import MarkdownEditor from './markdown-editor';
 import Sidebar from './sidebar';
+
 
 import { createPost, startEditingPost } from '../redux/modules/admin-post';
 
@@ -44,6 +46,14 @@ class AdminPost extends React.Component {
 
     return (
       <div className="admin-post">
+        <Title>
+          {
+            _.isEmpty(this.props.adminPost)
+              ? 'Draft a new Post'
+              : `Editing ${this.props.adminPost.title}`
+          }
+        </Title>
+
         <Sidebar />
 
         <Header />
