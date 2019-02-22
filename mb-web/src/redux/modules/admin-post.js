@@ -198,7 +198,7 @@ export function updatePostTitleEpic(action$, state$, dependencies) {
   
   return action$.pipe(
     ofType(UPDATE_POST_CONTENT),
-    debounceTime(8000),
+    debounceTime(4000),
     mergeMap(({ id, markdown }) => 
       apiClient
         .do(mutation, { input: { id, title: markdown.split('\n')[0].replace(/((?!\w).)/, '').trim() } }, {
@@ -263,7 +263,7 @@ export function updatePostContentEpic(action$, state$, dependencies) {
 
   return action$.pipe(
     ofType(UPDATE_POST_CONTENT),
-    debounceTime(8000),
+    debounceTime(4000),
     mergeMap(({ id, markdown }) =>
       apiClient
         .do(mutation, { input: { id, markdown } }, {
