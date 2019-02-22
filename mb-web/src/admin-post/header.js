@@ -11,7 +11,7 @@ import ToggleSwitch from '../components/toggle-switch';
 import noop from '../noop';
 
 /**
- * A header of the Post editor.
+ * A header of the Post editor page.
  *
  * @param {object} props 
  */

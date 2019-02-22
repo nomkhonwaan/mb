@@ -5,7 +5,7 @@ import React from 'react';
 import { Helmet } from 'react-helmet';
 
 /**
- * A title of the document.
+ * A title of the document that concatenates with the default word.
  * 
  * @param {object} props 
  */

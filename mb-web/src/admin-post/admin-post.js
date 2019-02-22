@@ -15,10 +15,11 @@ import Title from '../components/title';
 import Header from './header';
 import MarkdownEditor from './markdown-editor';
 import Sidebar from './sidebar';
-
-
 import { createPost, startEditingPost } from '../redux/modules/admin-post';
 
+/**
+ * The Post editor page.
+ */
 class AdminPost extends React.Component {
   componentWillMount() {
     if (_.isEmpty(this.props.adminPost)) {

@@ -13,7 +13,7 @@ import { HorizontalSeparator } from '../components/popup-menu';
 import { updatePostStatus } from '../redux/modules/admin-post';
 
 /**
- * A sidbar of the Post editor.
+ * A sidebar of the Post editor page.
  * 
  * @param {object} props 
  */

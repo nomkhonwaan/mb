@@ -1,0 +1,9 @@
+.recent-posts {
+  grid-column: 2/3;
+  grid-row: 2/3;
+
+  > .section-title {
+    color: hsl(0, 0%, 30%);
+    font: normal 400 2.2rem 'Lato', sans-serif;
+  }
+}

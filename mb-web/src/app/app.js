@@ -18,7 +18,7 @@ import { fetchUserInfo, toggleSidebar, toggleUserMenu } from '../redux/modules/a
 import routes from './routes';
 
 /**
- * The main application.
+ * The root of www.nomkhonwaan.com application.
  *
  * @param {object} props
  */
