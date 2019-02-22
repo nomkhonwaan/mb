@@ -3,7 +3,7 @@
  */
 import update from 'immutability-helper';
 import { ofType } from 'redux-observable';
-import { debounceTime, map, mergeMap } from 'rxjs/operators';
+import { debounceTime, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 const CREATE_POST = 'CREATE_POST';
 const CREATE_POST_FULFILLED = 'CREATE_POST_FULFILLED';
@@ -195,13 +195,16 @@ export function updatePostTitleEpic(action$, state$, dependencies) {
 
     ${fragments.post}
   `;
-  
+  const extractTitle = (markdown) => markdown.split('\n')[0].replace(/((?!\w).)/, '').trim();
+
   return action$.pipe(
     ofType(UPDATE_POST_CONTENT),
     debounceTime(4000),
-    mergeMap(({ id, markdown }) => 
+    withLatestFrom(state$),
+    filter(([{ markdown }, { adminPost }]) => !adminPost.slug || adminPost.title !== extractTitle(markdown)),
+    mergeMap(([{ id, markdown }]) =>
       apiClient
-        .do(mutation, { input: { id, title: markdown.split('\n')[0].replace(/((?!\w).)/, '').trim() } }, {
+        .do(mutation, { input: { id, title: extractTitle(markdown) } }, {
           'Authorization': `Bearer ${authService.getAccessToken()}`,
         })
         .pipe(
