@@ -5,31 +5,88 @@ import update from 'immutability-helper';
 import { ofType } from 'redux-observable';
 import { map, mergeMap } from 'rxjs/operators';
 
-const FETCH_APP_QUERY = 'FETCH_APP_QUERY';
-const FETCH_APP_QUERY_FULFILLED = 'FETCH_APP_QUERY_FULFILLED';
+const FETCH_CATEGORIES = 'FETCH_CATEGORIES';
+const FETCH_CATEGORIES_FULFILLED = 'FETCH_CATEGORIES_FULFILLED';
+
+const FETCH_USER_INFO = 'FETCH_USER_INFO';
+const FETCH_USER_INFO_FULFILLED = 'FETCH_USER_INFO_FULFILLED';
+
 const TOGGLE_LIST_OF_DRAFT_POSTS = 'TOGGLE_LIST_OF_DRAFT_POSTS';
+
 const TOGGLE_SIDEBAR = 'TOGGLE_SIDEBAR';
+
 const TOGGLE_USER_MENU = 'TOGGLE_USER_MENU';
 
 /**
- * Fetches application information.
+ * Fetches list of categories.
  */
-export function fetchAppQuery() {
+export function fetchCategories() {
   return {
-    type: FETCH_APP_QUERY,
+    type: FETCH_CATEGORIES,
   };
 }
 
 /**
- * Fetches application information successfully.
+ * Fetches list of categories successfully.
  * 
- * @param {array<object>} categories 
+ * @param {array<object} categories 
+ */
+export function fetchCategoriesFulfilled(categories) {
+  return {
+    type: FETCH_CATEGORIES_FULFILLED,
+    categories,
+  };
+}
+
+/**
+ * Performs an API call to the backend.
+ * 
+ * @param {object} action$ 
+ * @param {object} state$ 
+ * @param {object} dependencies 
+ */
+export function fetchCategoriesEpic(action$, state$, dependencies) {
+  const { apiClient } = dependencies;
+  const query = `
+    query FetchCategories {
+      categories {
+        name
+        slug
+      }
+    }
+  `;
+
+  return action$.pipe(
+    ofType(FETCH_CATEGORIES),
+    mergeMap(() =>
+      apiClient
+        .do(query)
+        .pipe(
+          map(({ response: { data: { categories } } }) =>
+            fetchCategoriesFulfilled(categories),
+          ),
+        ),
+    ),
+  );
+}
+
+/**
+ * Fetches user information.
+ */
+export function fetchUserInfo() {
+  return {
+    type: FETCH_USER_INFO,
+  };
+}
+
+/**
+ * Fetches user information successfully.
+ * 
  * @param {object} userInfo 
  */
-export function fetchAppQueryFulfilled(categories, userInfo) {
+export function fetchUserInfoFulfilled(userInfo) {
   return {
-    type: FETCH_APP_QUERY_FULFILLED,
-    categories,
+    type: FETCH_USER_INFO_FULFILLED,
     userInfo,
   };
 }
@@ -41,14 +98,10 @@ export function fetchAppQueryFulfilled(categories, userInfo) {
  * @param {object} state$ 
  * @param {object} dependencies 
  */
-export function fetchAppQueryEpic(action$, state$, dependencies) {
+export function fetchUserInfoEpic(action$, state$, dependencies) {
   const { apiClient, authService } = dependencies;
   const query = `
-    query AppQuery {
-      categories {
-        name
-        slug
-      }
+    query FetchUserInfo {
       userInfo {
         avatarUrl
         displayName
@@ -57,15 +110,15 @@ export function fetchAppQueryEpic(action$, state$, dependencies) {
   `;
   
   return action$.pipe(
-    ofType(FETCH_APP_QUERY),
+    ofType(FETCH_USER_INFO),
     mergeMap(() =>
       apiClient
         .do(query, {}, {
           'Authorization': `Bearer ${authService.getAccessToken()}`,
         })
         .pipe(
-          map(({ response: { data: { categories, userInfo } } }) =>
-            fetchAppQueryFulfilled(categories, userInfo)
+          map(({ response: { data: { userInfo } } }) =>
+            fetchUserInfoFulfilled(userInfo),
           ),
         ),
     ),
@@ -125,11 +178,14 @@ const initialState = {
  */
 function app(state = initialState, action) {
   switch (action.type) {
-    case FETCH_APP_QUERY_FULFILLED:
+    case FETCH_CATEGORIES_FULFILLED:
       return update(state, {
-        categories: {
+        categories: { 
           $set: action.categories,
         },
+      });
+    case FETCH_USER_INFO_FULFILLED:
+      return update(state, {
         userInfo: {
           $set: action.userInfo,
         },

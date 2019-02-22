@@ -9,23 +9,30 @@ import { combineEpics } from 'redux-observable';
  */
 import adminPost, { 
   createPostEpic,
-  editPostEpic,
+  startEditingPostEpic,
   updatePostContentEpic,
   updatePostTitleEpic,
+  updatePostStatusEpic,
 } from './admin-post';
 import app, {
-  fetchAppQueryEpic,
+  fetchCategoriesEpic,
+  fetchUserInfoEpic,
 } from './app';
+import single, { findPostByIdEpic } from './single';
 
 export const rootEpic = combineEpics(
   createPostEpic,
-  editPostEpic,
-  fetchAppQueryEpic,
+  fetchCategoriesEpic,
+  fetchUserInfoEpic,
+  findPostByIdEpic,
+  startEditingPostEpic,
   updatePostContentEpic,
   updatePostTitleEpic,
+  updatePostStatusEpic,
 );
 
 export const rootReducers = combineReducers({
   adminPost,
   app,
+  single,
 });

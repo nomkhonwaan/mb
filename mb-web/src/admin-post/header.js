@@ -19,14 +19,14 @@ const Header = (props) => {
   return (
     <div className="header _flex">
       <div
-        className="toggle-mode-button _flex _flex-vertical-align-middle"
+        className="toggle-mode-button _flex _flex-1 _flex-vertical-align-middle"
       >
         <span className="mode-name">Editor</span>
         <ToggleSwitch />
         <span className="mode-name">Preview</span>
       </div>
 
-      <div className="toggle-responsive-button _flex _flex-vertical-align-middle _flex-horizontal-align-center">
+      <div className="toggle-responsive-button _flex _flex-horizontal-align-center _flex-vertical-align-middle _margin-auto">
         <div className="_flex _flex-vertical-align-bottom">
           <span className="mobile">
             <i className="fal fa-mobile-android"></i>
@@ -40,7 +40,7 @@ const Header = (props) => {
         </div>
       </div>
 
-      <div className="zoom _flex _flex-vertical-align-middle">
+      <div className="zoom _flex _flex-1 _flex-horizontal-align-right _flex-vertical-align-middle">
         <span className="zoom-label">Zoom</span>
         <span className="zoom-percentage">
           <Text

@@ -3,18 +3,21 @@
  */
 import update from 'immutability-helper';
 import { ofType } from 'redux-observable';
-import { debounceTime, map, mergeMap } from 'rxjs/operators';
+import { debounceTime, filter, map, mergeMap, withLatestFrom } from 'rxjs/operators';
 
 const CREATE_POST = 'CREATE_POST';
 const CREATE_POST_FULFILLED = 'CREATE_POST_FULFILLED';
 
-const EDIT_POST = 'EDIT_POST';
-const EDIT_POST_FULFILLED = 'EDIT_POST_FULFILLED';
+const START_EDITING_POST = 'START_EDITING_POST';
+const START_EDITING_POST_FULFILLED = 'START_EDITING_POST_FULFILLED';
 
 const UPDATE_POST_TITLE_FULFILLED = 'UPDATE_POST_TITLE_FULFILLED';
 
 const UPDATE_POST_CONTENT = 'UPDATE_POST_CONTENT';
 const UPDATE_POST_CONTENT_FULFILLED = 'UPDATE_POST_CONTENT_FULFILLED';
+
+const UPDATE_POST_STATUS = 'UPDATE_POST_STATUS';
+const UPDATE_POST_STATUS_FULFILLED = 'UPDATE_POST_STATUS_FULFILLED';
 
 /**
  * List of GraphQL's fragments
@@ -55,14 +58,12 @@ export function createPost() {
 /**
  * Creates a new Post successfully.
  * 
- * @param {string} id 
- * @param {string} createdAt 
+ * @param {object} post
  */
-export function createPostFulfilled(id, createdAt) {
+export function createPostFulfilled(post) {
   return {
     type: CREATE_POST_FULFILLED,
-    id,
-    createdAt,
+    post,
   };
 }
 
@@ -93,8 +94,8 @@ export function createPostEpic(action$, state$, dependencies) {
           'Authorization': `Bearer ${authService.getAccessToken()}`,
         })
         .pipe(
-          map(({ response: { data: { createPost: { id, createdAt } } } }) => 
-            createPostFulfilled(id, createdAt)
+          map(({ response: { data: { createPost: post } } }) => 
+            createPostFulfilled(post)
           ),
         ),
     ),
@@ -106,9 +107,9 @@ export function createPostEpic(action$, state$, dependencies) {
  * 
  * @param {string} id 
  */
-export function editPost(id) {
+export function startEditingPost(id) {
   return {
-    type: EDIT_POST,
+    type: START_EDITING_POST,
     id,
   };
 }
@@ -118,9 +119,9 @@ export function editPost(id) {
  * 
  * @param {object} post 
  */
-export function editPostFulfilled(post) {
+export function startEditingPostFulfilled(post) {
   return {
-    type: EDIT_POST_FULFILLED,
+    type: START_EDITING_POST_FULFILLED,
     post,
   };
 }
@@ -132,10 +133,10 @@ export function editPostFulfilled(post) {
  * @param {object} state$ 
  * @param {object} dependencies 
  */
-export function editPostEpic(action$, state$, dependencies) {
+export function startEditingPostEpic(action$, state$, dependencies) {
   const { apiClient, authService } = dependencies;
   const query = `
-    query EditPostQuery($id: ID!) {
+    query StartEditingPostQuery($id: ID!) {
       post(id: $id) {
         ...post
       }
@@ -145,7 +146,7 @@ export function editPostEpic(action$, state$, dependencies) {
   `;
 
   return action$.pipe(
-    ofType(EDIT_POST),
+    ofType(START_EDITING_POST),
     mergeMap(({ id }) =>
       apiClient
         .do(query, { id }, {
@@ -153,7 +154,7 @@ export function editPostEpic(action$, state$, dependencies) {
         })
         .pipe(
           map(({ response: { data: { post } } }) =>
-            editPostFulfilled(post)          
+            startEditingPostFulfilled(post)          
           ),
         ),
     ),
@@ -194,13 +195,16 @@ export function updatePostTitleEpic(action$, state$, dependencies) {
 
     ${fragments.post}
   `;
-  
+  const extractTitle = (markdown) => markdown.split('\n')[0].replace(/((?!\w).)/, '').trim();
+
   return action$.pipe(
     ofType(UPDATE_POST_CONTENT),
-    debounceTime(8000),
-    mergeMap(({ id, markdown }) => 
+    debounceTime(4000),
+    withLatestFrom(state$),
+    filter(([{ markdown }, { adminPost }]) => !adminPost.slug || adminPost.title !== extractTitle(markdown)),
+    mergeMap(([{ id, markdown }]) =>
       apiClient
-        .do(mutation, { input: { id, title: markdown.split('\n')[0].replace(/((?!\w).)/, '').trim() } }, {
+        .do(mutation, { input: { id, title: extractTitle(markdown) } }, {
           'Authorization': `Bearer ${authService.getAccessToken()}`,
         })
         .pipe(
@@ -262,7 +266,7 @@ export function updatePostContentEpic(action$, state$, dependencies) {
 
   return action$.pipe(
     ofType(UPDATE_POST_CONTENT),
-    debounceTime(8000),
+    debounceTime(4000),
     mergeMap(({ id, markdown }) =>
       apiClient
         .do(mutation, { input: { id, markdown } }, {
@@ -271,6 +275,50 @@ export function updatePostContentEpic(action$, state$, dependencies) {
         .pipe(
           map(({ response: { data: { updatePostContent: { id, markdown, html } } } }) =>
             updatePostContentFulfilled(id, markdown, html)
+          ),
+        ),
+    ),
+  );
+}
+
+export function updatePostStatus(id, status) {
+  return {
+    type: UPDATE_POST_STATUS,
+    id,
+    status,
+  };
+}
+
+export function updatePostStatusFulfilled(id, status) {
+  return {
+    type: UPDATE_POST_STATUS_FULFILLED,
+    id,
+    status,
+  };
+}
+
+export function updatePostStatusEpic(action$, state$, dependencies) {
+  const { apiClient, authService } = dependencies;
+  const mutation = `
+    mutation UpdatePostStatus($input: UpdatePostStatusInput!) {
+      updatePostStatus(input: $input) {
+        ...post
+      }
+    }
+
+    ${fragments.post}
+  `;
+
+  return action$.pipe(
+    ofType(UPDATE_POST_STATUS),
+    mergeMap(({ id, status }) =>
+      apiClient
+        .do(mutation, { input: { id, status } }, {
+          'Authorization': `Bearer ${authService.getAccessToken()}`,
+        })
+        .pipe(
+          map(({ response: { data: { updatePostStatus: { id, status } } } }) =>
+            updatePostStatusFulfilled(id, status),
           ),
         ),
     ),
@@ -288,11 +336,7 @@ const initialState = {};
 function adminPost(state = initialState, action) {
   switch (action.type) {
     case CREATE_POST_FULFILLED:
-      return update(state, {
-        id: { $set: action.id },
-        createdAt: { $set: action.createdAt },
-      });
-    case EDIT_POST_FULFILLED:
+    case START_EDITING_POST_FULFILLED:
       return update(state, {
         $set: action.post,
       });
@@ -309,18 +353,14 @@ function adminPost(state = initialState, action) {
       });
     case UPDATE_POST_CONTENT_FULFILLED:
       return update(state, {
+        id: { $set: action.id },
         html: { $set: action.html },
       });
-    // case CHANGE_POST_CONTENT:
-    //   return update(state, {
-    //     id: { $set: action.id, },
-    //     markdown: { $set: action.markdown, },
-    //   });
-    // case CHANGE_POST_TITLE:
-    //   return update(state, {
-    //     id: { $set: action.id, },
-    //     title: { $set: action.title, },
-    //   });
+    case UPDATE_POST_STATUS_FULFILLED:
+      return update(state, {
+        id: { $set: action.id },
+        status: { $set: action.status },
+      });
     default:
       return state;
   }

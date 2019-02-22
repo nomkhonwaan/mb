@@ -10,42 +10,64 @@ import { connect } from 'react-redux';
  * Internal Dependencies
  */
 import UserMenu from './user-menu';
-import { toggleSidebar, toggleUserMenu } from '../redux/modules/app';
+import { 
+  fetchUserInfo, 
+  toggleSidebar, 
+  toggleUserMenu,
+} from '../redux/modules/app';
 
 /**
  * An application header.
  * 
  * @param {object} props 
  */
-const Header = (props) => {
-  return (
-    <div className="header _flex">
-      <div
-        className="toggle-sidebar-button _flex _flex-vertical-align-middle"
-        onClick={ props.toggleSidebar }
-      >
-        <i className="fal fa-bars" />
-      </div>
+class Header extends React.Component {
+  componentWillMount() {
+    if (this.props.authService.isAuthenticated()) {
+      this.props.fetchUserInfo();
+    }
+  }
 
-      <div className="toggle-search-dialog-button _flex _flex-vertical-align-middle">
-        <i className="fal fa-search" />
-      </div>
-
-      {
-        _.isEmpty(props.app.userInfo) ? null : [
-          <div 
-            className="user-info _flex _flex-vertical-align-middle"
-            key="0"
-            onClick={ props.toggleUserMenu }
-          >
-            <img className="avatar" alt={ props.app.userInfo.displayName } src={ props.app.userInfo.avatarUrl } />
-          </div>,
-          <UserMenu key="1" />,
-        ]
+  componentDidUpdate(prevProps) {
+    if (this.props.authService.isAuthenticated()) {
+      // If the user has been redirected back from /login page,
+      // Will fetch an application query for the list of categories and user information
+      if (_.isEmpty(this.props.app.userInfo)) {
+        this.props.fetchUserInfo();
       }
-    </div>
-  );
-};
+    }
+  }
+
+  render() {
+    return (
+      <div className="header _flex">
+        <div
+          className="toggle-sidebar-button _flex _flex-vertical-align-middle"
+          onClick={ this.props.toggleSidebar }
+        >
+          <i className="fal fa-bars" />
+        </div>
+
+        <div className="toggle-search-dialog-button _flex _flex-vertical-align-middle">
+          <i className="fal fa-search" />
+        </div>
+
+        {
+          _.isEmpty(this.props.app.userInfo) ? null : [
+            <div 
+              className="user-info _flex _flex-vertical-align-middle"
+              key="0"
+              onClick={ this.props.toggleUserMenu }
+            >
+              <img className="avatar" alt={ this.props.app.userInfo.displayName } src={ this.props.app.userInfo.avatarUrl } />
+            </div>,
+            <UserMenu key="1" />,
+          ]
+        }
+      </div>
+    );
+  }
+}
 
 Header.propTypes = {
   /* Properties */
@@ -57,6 +79,7 @@ Header.propTypes = {
   }).isRequired,
   
   /* Events */
+  fetchUserInfo: PropTypes.func.isRequired,
   toggleSidebar: PropTypes.func.isRequired,
   toggleUserMenu: PropTypes.func.isRequired,
 };
@@ -71,5 +94,5 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps,
-  { toggleSidebar, toggleUserMenu },
+  { fetchUserInfo, toggleSidebar, toggleUserMenu },
 )(Header);
