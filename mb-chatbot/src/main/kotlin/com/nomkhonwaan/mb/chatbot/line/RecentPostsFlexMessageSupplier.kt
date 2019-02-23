@@ -17,6 +17,8 @@ import java.time.format.DateTimeFormatter
 
 /**
  * Supplies a reply message for the [KeywordReplyMessage.RECENT_POSTS] message.
+ * <p>
+ * This class might be failed if the size of the list of Posts does not equal five.
  */
 class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<FlexMessage> {
     companion object {
@@ -67,6 +69,7 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
      */
     private fun createHeroBlock(post: Post): Image {
         return Image.builder()
+                // TODO: Replace with actual Post's featured image
                 .url("https://placekitten.com/600/390")
                 .action(URIAction(post.title,
                         "https://www.nomkhonwaan.com/${post.buildUri()}"))
@@ -84,47 +87,71 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
                 .layout(FlexLayout.HORIZONTAL)
                 .spacing(FlexMarginSize.MD)
                 .contents(listOf(
-                        Box.builder()
-                                .layout(FlexLayout.VERTICAL)
-                                .flex(1)
-                                .contents(listOf(
-                                        Image.builder()
-                                                .url("https://placekitten.com/160/107")
-                                                .aspectMode(Image.ImageAspectMode.Cover)
-                                                .aspectRatio(Image.ImageAspectRatio.R4TO3)
-                                                .gravity(FlexGravity.BOTTOM)
-                                                .size(Image.ImageSize.SM)
-                                                .build(),
-                                        Image.builder()
-                                                .url("https://placekitten.com/160/107")
-                                                .aspectMode(Image.ImageAspectMode.Cover)
-                                                .aspectRatio(Image.ImageAspectRatio.R4TO3)
-                                                .margin(FlexMarginSize.MD)
-                                                .size(Image.ImageSize.SM)
-                                                .build()
-                                ))
+                        createLeftBodyBlock(posts),
+                        createRightBodyBlock(posts)
+                ))
+                .build()
+    }
+
+    /**
+     * Creates and returns a left body block.
+     * <p>
+     * The left body block will create a small thumbnail from the second and the fourth Posts.
+     */
+    private fun createLeftBodyBlock(posts: List<Post>): Box {
+        return Box.builder()
+                .layout(FlexLayout.VERTICAL)
+                .flex(1)
+                .contents(listOf(
+                        Image.builder()
+                                // TODO: Replace with actual Post's featured image
+                                .url("https://placekitten.com/160/107")
+                                .action(URIAction(posts[0].title,
+                                        "https://www.nomkhonwaan.com/${posts[0].buildUri()}"))
+                                .aspectMode(Image.ImageAspectMode.Cover)
+                                .aspectRatio(Image.ImageAspectRatio.R4TO3)
+                                .gravity(FlexGravity.BOTTOM)
+                                .size(Image.ImageSize.SM)
                                 .build(),
-                        Box.builder()
-                                .layout(FlexLayout.VERTICAL)
-                                .flex(2)
-                                .contents(posts.mapIndexed { index: Int, post: Post ->
-                                    Text.builder()
-                                            .text(post.title)
-                                            .action(URIAction(post.title,
-                                                    "https://www.nomkhonwaan.com/${post.buildUri()}"))
-                                            .flex(if (index == 0 || index == posts.size - 1) 1 else 2)
-                                            .gravity(
-                                                    when (index) {
-                                                        0 -> FlexGravity.TOP
-                                                        posts.size - 1 -> FlexGravity.BOTTOM
-                                                        else -> FlexGravity.CENTER
-                                                    }
-                                            )
-                                            .size(FlexFontSize.XS)
-                                            .build()
-                                })
+                        Image.builder()
+                                // TODO: Replace with actual Post's featured image
+                                .url("https://placekitten.com/160/107")
+                                .action(URIAction(posts[2].title,
+                                        "https://www.nomkhonwaan.com/${posts[2].buildUri()}"))
+                                .aspectMode(Image.ImageAspectMode.Cover)
+                                .aspectRatio(Image.ImageAspectRatio.R4TO3)
+                                .margin(FlexMarginSize.MD)
+                                .size(Image.ImageSize.SM)
                                 .build()
                 ))
+                .build()
+    }
+
+    /**
+     * Creates and returns a right body block.
+     * <p>
+     * The right body block will create a small text from the second until the fifth Posts.
+     */
+    private fun createRightBodyBlock(posts: List<Post>): Box {
+        return Box.builder()
+                .layout(FlexLayout.VERTICAL)
+                .flex(2)
+                .contents(posts.mapIndexed { index: Int, post: Post ->
+                    Text.builder()
+                            .text(post.title)
+                            .action(URIAction(post.title,
+                                    "https://www.nomkhonwaan.com/${post.buildUri()}"))
+                            .flex(if (index == 0 || index == posts.size - 1) 1 else 2)
+                            .gravity(
+                                    when (index) {
+                                        0 -> FlexGravity.TOP
+                                        posts.size - 1 -> FlexGravity.BOTTOM
+                                        else -> FlexGravity.CENTER
+                                    }
+                            )
+                            .size(FlexFontSize.XS)
+                            .build()
+                })
                 .build()
     }
 
