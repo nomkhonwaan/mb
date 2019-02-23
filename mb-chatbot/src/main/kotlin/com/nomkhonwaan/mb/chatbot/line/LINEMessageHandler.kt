@@ -8,6 +8,10 @@ import com.linecorp.bot.model.event.message.TextMessageContent
 import com.linecorp.bot.model.message.Message
 import com.linecorp.bot.spring.boot.annotation.EventMapping
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler
+import com.nomkhonwaan.mb.blog.post.FindAllPublishedPostsQuery
+import com.nomkhonwaan.mb.blog.post.Post
+import org.axonframework.messaging.responsetypes.ResponseTypes
+import org.axonframework.queryhandling.QueryGateway
 
 /**
  * A LINE messaging handler.
@@ -18,7 +22,10 @@ import com.linecorp.bot.spring.boot.annotation.LineMessageHandler
  * See more handled messages on [KeywordReplyMessage] class.
  */
 @LineMessageHandler
-class LINEMessageHandler(private val lineMessagingClient: LineMessagingClient) {
+class LINEMessageHandler(
+        private val lineMessagingClient: LineMessagingClient,
+        private val queryGateway: QueryGateway
+) {
     /**
      * Handles text message content that has been sent to the LINE bot.
      *
@@ -39,7 +46,14 @@ class LINEMessageHandler(private val lineMessagingClient: LineMessagingClient) {
     private fun handleTextContent(replyToken: String, event: Event, content: TextMessageContent) {
         when (content.text) {
             KeywordReplyMessage.RECENT_POSTS.text -> {
-                reply(replyToken, RecentPostsFlexMessageSupplier().invoke())
+                queryGateway
+                        .query(
+                                FindAllPublishedPostsQuery(0, 5),
+                                ResponseTypes.multipleInstancesOf(Post::class.java)
+                        )
+                        .thenApply {
+                            reply(replyToken, RecentPostsFlexMessageSupplier(it).invoke())
+                        }
             }
         }
     }
