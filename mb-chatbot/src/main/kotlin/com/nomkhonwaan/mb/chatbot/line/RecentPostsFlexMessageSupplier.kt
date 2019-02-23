@@ -71,7 +71,7 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
         return Image.builder()
                 // TODO: Replace with actual Post's featured image
                 .url("https://placekitten.com/600/390")
-                .action(URIAction(post.title,
+                .action(URIAction(post.title?.substring(0, 40),
                         "https://www.nomkhonwaan.com/${post.buildUri()}"))
                 .aspectMode(Image.ImageAspectMode.Cover)
                 .aspectRatio(Image.ImageAspectRatio.R20TO13)
@@ -106,7 +106,7 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
                         Image.builder()
                                 // TODO: Replace with actual Post's featured image
                                 .url("https://placekitten.com/160/107")
-                                .action(URIAction(posts[0].title,
+                                .action(URIAction(posts[0].title?.substring(0, 40),
                                         "https://www.nomkhonwaan.com/${posts[0].buildUri()}"))
                                 .aspectMode(Image.ImageAspectMode.Cover)
                                 .aspectRatio(Image.ImageAspectRatio.R4TO3)
@@ -116,7 +116,7 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
                         Image.builder()
                                 // TODO: Replace with actual Post's featured image
                                 .url("https://placekitten.com/160/107")
-                                .action(URIAction(posts[2].title,
+                                .action(URIAction(posts[2].title?.substring(0, 40),
                                         "https://www.nomkhonwaan.com/${posts[2].buildUri()}"))
                                 .aspectMode(Image.ImageAspectMode.Cover)
                                 .aspectRatio(Image.ImageAspectRatio.R4TO3)
@@ -139,7 +139,7 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
                 .contents(posts.mapIndexed { index: Int, post: Post ->
                     Text.builder()
                             .text(post.title)
-                            .action(URIAction(post.title,
+                            .action(URIAction(post.title?.substring(0, 40),
                                     "https://www.nomkhonwaan.com/${post.buildUri()}"))
                             .flex(if (index == 0 || index == posts.size - 1) 1 else 2)
                             .gravity(
