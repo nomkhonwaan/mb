@@ -8,6 +8,7 @@ import org.springframework.context.annotation.ComponentScan
     "com.nomkhonwaan.mb.autoconfigure",
     "com.nomkhonwaan.mb.auth",
     "com.nomkhonwaan.mb.blog",
+    "com.nomkhonwaan.mb.chatbot",
     "com.nomkhonwaan.mb.graphql",
     "com.nomkhonwaan.mb.notification"
 ])

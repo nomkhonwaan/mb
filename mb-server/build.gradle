@@ -5,6 +5,7 @@ repositories {
 dependencies {
     implementation(project(':mb-autoconfigure'))
     implementation(project(':mb-blog'))
+    implementation(project(':mb-chatbot'))
     implementation(project(':mb-graphql'))
     implementation(project(':mb-notification'))
     
