@@ -2,10 +2,7 @@ package com.nomkhonwaan.mb.chatbot.line
 
 import com.linecorp.bot.model.action.URIAction
 import com.linecorp.bot.model.message.FlexMessage
-import com.linecorp.bot.model.message.flex.component.Box
-import com.linecorp.bot.model.message.flex.component.Button
-import com.linecorp.bot.model.message.flex.component.Image
-import com.linecorp.bot.model.message.flex.component.Text
+import com.linecorp.bot.model.message.flex.component.*
 import com.linecorp.bot.model.message.flex.container.Bubble
 import com.linecorp.bot.model.message.flex.unit.FlexFontSize
 import com.linecorp.bot.model.message.flex.unit.FlexGravity
@@ -20,7 +17,7 @@ import java.time.format.DateTimeFormatter
  * <p>
  * This class might be failed if the size of the list of Posts does not equal five.
  */
-class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<FlexMessage> {
+class RecentPostsFlexMessageSupplier(private val posts: List<Post>) : Supplier<FlexMessage> {
     companion object {
         /**
          * Returns a URI of the Post which composes with [Post.publishedAt] or [Post.createdAt] and [Post.slug].
@@ -34,17 +31,14 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
     }
 
     override fun invoke(): FlexMessage {
-        val bubbleBuilder: Bubble.BubbleBuilder = Bubble.builder()
+        val bubble: Bubble = Bubble.builder()
                 .header(createHeaderBlock())
+                .hero(createHeroBlock(posts[0]))
+                .body(createBodyBlock(posts.slice(1 until posts.size)))
+                .footer(createFooterBlock())
+                .build()
 
-        posts.filterNotNull().also {
-            bubbleBuilder.hero(createHeroBlock(it[0]))
-            bubbleBuilder.body(createBodyBlock(it.slice(1 until it.size)))
-        }
-
-        bubbleBuilder.footer(createFooterBlock())
-
-        return FlexMessage(KeywordReplyMessage.RECENT_POSTS.text, bubbleBuilder.build())
+        return FlexMessage(KeywordReplyMessage.RECENT_POSTS.text, bubble)
     }
 
     /**
@@ -71,7 +65,7 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
         return Image.builder()
                 // TODO: Replace with actual Post's featured image
                 .url("https://placekitten.com/600/390")
-                .action(URIAction(post.title?.substring(0, 40),
+                .action(URIAction(post.title?.take(40),
                         "https://www.nomkhonwaan.com/${post.buildUri()}"))
                 .aspectMode(Image.ImageAspectMode.Cover)
                 .aspectRatio(Image.ImageAspectRatio.R20TO13)
@@ -106,7 +100,7 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
                         Image.builder()
                                 // TODO: Replace with actual Post's featured image
                                 .url("https://placekitten.com/160/107")
-                                .action(URIAction(posts[0].title?.substring(0, 40),
+                                .action(URIAction(posts[0].title?.take(40),
                                         "https://www.nomkhonwaan.com/${posts[0].buildUri()}"))
                                 .aspectMode(Image.ImageAspectMode.Cover)
                                 .aspectRatio(Image.ImageAspectRatio.R4TO3)
@@ -116,7 +110,7 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
                         Image.builder()
                                 // TODO: Replace with actual Post's featured image
                                 .url("https://placekitten.com/160/107")
-                                .action(URIAction(posts[2].title?.substring(0, 40),
+                                .action(URIAction(posts[2].title?.take(40),
                                         "https://www.nomkhonwaan.com/${posts[2].buildUri()}"))
                                 .aspectMode(Image.ImageAspectMode.Cover)
                                 .aspectRatio(Image.ImageAspectRatio.R4TO3)
@@ -133,25 +127,34 @@ class RecentPostsFlexMessageSupplier(private val posts: List<Post?>) : Supplier<
      * The right body block will create a small text from the second until the fifth Posts.
      */
     private fun createRightBodyBlock(posts: List<Post>): Box {
+        val contents: MutableList<FlexComponent> = mutableListOf()
+
+        posts.forEachIndexed { index: Int, post: Post ->
+            if (index != 0) {
+                contents.add(Separator.builder().build())
+            }
+
+            val text: Text = Text.builder()
+                    .text(post.title)
+                    .action(URIAction(post.title?.take(40),
+                            "https://www.nomkhonwaan.com/${post.buildUri()}"))
+                    .flex(if (index == 0 || index == posts.size - 1) 1 else 2)
+                    .gravity(
+                            when (index) {
+                                0 -> FlexGravity.TOP
+                                posts.size - 1 -> FlexGravity.BOTTOM
+                                else -> FlexGravity.CENTER
+                            }
+                    )
+                    .size(FlexFontSize.XS)
+                    .build()
+            contents.add(text)
+        }
+
         return Box.builder()
                 .layout(FlexLayout.VERTICAL)
                 .flex(2)
-                .contents(posts.mapIndexed { index: Int, post: Post ->
-                    Text.builder()
-                            .text(post.title)
-                            .action(URIAction(post.title?.substring(0, 40),
-                                    "https://www.nomkhonwaan.com/${post.buildUri()}"))
-                            .flex(if (index == 0 || index == posts.size - 1) 1 else 2)
-                            .gravity(
-                                    when (index) {
-                                        0 -> FlexGravity.TOP
-                                        posts.size - 1 -> FlexGravity.BOTTOM
-                                        else -> FlexGravity.CENTER
-                                    }
-                            )
-                            .size(FlexFontSize.XS)
-                            .build()
-                })
+                .contents(contents)
                 .build()
     }
 

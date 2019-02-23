@@ -52,7 +52,9 @@ class LINEMessageHandler(
                                 ResponseTypes.multipleInstancesOf(Post::class.java)
                         )
                         .thenApply {
-                            reply(replyToken, RecentPostsFlexMessageSupplier(it).invoke())
+                            if (it.isNotEmpty()) {
+                                reply(replyToken, RecentPostsFlexMessageSupplier(it).invoke())
+                            }
                         }
             }
         }
