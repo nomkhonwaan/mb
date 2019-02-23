@@ -9,14 +9,15 @@ axon:
     mongo:
       databaseName: nomkhonwaan_com
 
-firebase:
-  dynamic-links:
-    domain: https://nomkhonwaan.page.link
-
 graphiql:
   mapping: /
 
 line:
+  bot:
+    channel-token: ${LINE_BOT_CHANNEL_TOKEN}
+    channel-secret: ${LINE_BOT_CHANNEL_SECRET}
+    handler:
+      path: /chatbot/line/callback
   notify:
     url: https://notify-api.line.me
     token: ${LINE_NOTIFY_TOKEN}

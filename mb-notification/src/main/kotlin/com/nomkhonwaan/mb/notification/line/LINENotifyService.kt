@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.notification
+package com.nomkhonwaan.mb.notification.line
 
 import io.reactivex.Observable
 import retrofit2.http.Field

@@ -3,6 +3,7 @@ rootProject.name = 'mb'
 include('mb-auth')
 include('mb-autoconfigure')
 include('mb-blog')
+include('mb-chatbot')
 include('mb-common')
 include('mb-graphql')
 include('mb-notification')

@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.notification
+package com.nomkhonwaan.mb.notification.line
 
 /**
  * A LINE notify response.
