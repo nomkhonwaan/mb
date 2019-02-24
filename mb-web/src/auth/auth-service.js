@@ -122,6 +122,8 @@ class AuthService {
     if (previousPathname) {
       this.previousPathname = previousPathname
       localStorage.setItem('previousPathname', this.previousPathname);
+    } else {
+      localStorage.removeItem('previousPathname');
     }
     
     this.auth0.authorize();

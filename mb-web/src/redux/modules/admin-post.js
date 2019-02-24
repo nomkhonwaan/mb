@@ -31,10 +31,6 @@ const fragments = {
       status
       markdown
       html
-      author {
-        avatarUrl
-        displayName
-      }
       categories {
         name
         slug
@@ -154,7 +150,7 @@ export function startEditingPostEpic(action$, state$, dependencies) {
         })
         .pipe(
           map(({ response: { data: { post } } }) =>
-            startEditingPostFulfilled(post)          
+            startEditingPostFulfilled(post),       
           ),
         ),
     ),
@@ -274,7 +270,7 @@ export function updatePostContentEpic(action$, state$, dependencies) {
         })
         .pipe(
           map(({ response: { data: { updatePostContent: { id, markdown, html } } } }) =>
-            updatePostContentFulfilled(id, markdown, html)
+            updatePostContentFulfilled(id, markdown, html),
           ),
         ),
     ),

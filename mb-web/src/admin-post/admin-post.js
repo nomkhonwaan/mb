@@ -49,9 +49,9 @@ class AdminPost extends React.Component {
       <div className="admin-post">
         <Title>
           {
-            _.isEmpty(this.props.adminPost)
-              ? 'Draft a new Post'
-              : `Editing ${this.props.adminPost.title}`
+            this.props.adminPost.title
+              ? `Editing ${this.props.adminPost.title}`
+              : 'Draft a new Post'
           }
         </Title>
 

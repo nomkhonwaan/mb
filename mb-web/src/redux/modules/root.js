@@ -18,11 +18,13 @@ import app, {
   fetchCategoriesEpic,
   fetchUserInfoEpic,
 } from './app';
+import recentPosts, { fetchLatestPublishedPostsEpic } from './recent-posts';
 import single, { findPostByIdEpic } from './single';
 
 export const rootEpic = combineEpics(
   createPostEpic,
   fetchCategoriesEpic,
+  fetchLatestPublishedPostsEpic,
   fetchUserInfoEpic,
   findPostByIdEpic,
   startEditingPostEpic,
@@ -34,5 +36,6 @@ export const rootEpic = combineEpics(
 export const rootReducers = combineReducers({
   adminPost,
   app,
+  recentPosts,
   single,
 });

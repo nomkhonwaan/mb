@@ -4,7 +4,20 @@
 
   .section-title {
     color: hsl(0, 0%, 30%);
+    display: inline-block;
     font: normal 400 2.2rem 'Lato', sans-serif;
+    margin-top: 8rem;
+    position: relative;
     text-transform: uppercase;
+
+    &:after {
+      border-bottom: .1rem solid hsl(0, 0%, 50%);
+      bottom: -1.6rem;
+      content: '';
+      display: block;
+      left: 0;
+      position: absolute;
+      width: 80%;
+    }
   }
 }
