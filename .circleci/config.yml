@@ -128,24 +128,24 @@ workflows:
       - mb-server_build_to_docker:
           requires:
             - mb-server_build_to_jar
-#          filters:
-#            branches:
-#              only:
-#                - master
-#      - hold:
-#          type: approval
-#          filters:
-#            branches:
-#              only:
-#                - master
+          filters:
+            branches:
+              only:
+                - master
+      - hold:
+          type: approval
+          filters:
+            branches:
+              only:
+                - master
       - mb-server_deploy_to_docker_deploy_webhook:
           requires:
             - mb-server_build_to_docker
-#            - hold
-#          filters:
-#            branches:
-#              only:
-#                - master
+            - hold
+          filters:
+            branches:
+              only:
+                - master
   mb-web_workflow:
     jobs:
       - mb-web_install
