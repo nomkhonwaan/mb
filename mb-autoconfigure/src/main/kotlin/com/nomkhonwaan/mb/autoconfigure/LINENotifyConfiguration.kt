@@ -1,6 +1,6 @@
 package com.nomkhonwaan.mb.autoconfigure
 
-import com.nomkhonwaan.mb.notification.LINENotifyService
+import com.nomkhonwaan.mb.notification.line.LINENotifyService
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import org.springframework.beans.factory.annotation.Value

@@ -4,7 +4,7 @@
 import { ajax } from 'rxjs/ajax';
 
 /**
- * A wrapper class of RxJS AJAX that dealing with GraphQL server.
+ * An API client for dealing with GraphQL server.
  */
 class ApiClient {
   constructor(builder) {

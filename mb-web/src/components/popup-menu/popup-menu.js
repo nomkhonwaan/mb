@@ -6,6 +6,11 @@ import { Transition }  from 'react-transition-group';
 import classnames from 'classnames';
 import PropTypes from 'prop-types';
 
+/**
+ * A popup-menu component.
+ * 
+ * @param {object} props 
+ */
 const PopupMenu = (props) => {
   return (
     <Transition

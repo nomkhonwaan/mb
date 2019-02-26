@@ -6,15 +6,16 @@ import React from 'react';
 /**
  * Internal Dependencies
  */
-import { Login, ProtectedRoute } from '../auth';
 import AdminPost from '../admin-post';
+import { Login, ProtectedRoute } from '../auth';
+import RecentPosts from '../recent-posts';
 
 const routes = [
-  // {
-  //   path: '/',
-  //   exact: true,
-  //   component: RecentPosts,
-  // },
+  {
+    path: '/',
+    exact: true,
+    component: RecentPosts,
+  },
   {
     path: '/login',
     component: Login,
