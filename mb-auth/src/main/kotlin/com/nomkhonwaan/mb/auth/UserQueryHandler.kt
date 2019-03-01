@@ -6,6 +6,7 @@ import com.auth0.exception.APIException
 import com.auth0.exception.Auth0Exception
 import com.auth0.net.Request
 import com.nomkhonwaan.mb.common.messaging.user.FindUserByIDQuery
+import com.nomkhonwaan.mb.common.messaging.user.User
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.stereotype.Component

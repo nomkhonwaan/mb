@@ -1,6 +1,6 @@
 package com.nomkhonwaan.mb.graphql
 
-import com.nomkhonwaan.mb.blog.post.Status
+import com.nomkhonwaan.mb.common.messaging.post.Status
 
 /**
  * An Input class for updating Post title.

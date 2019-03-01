@@ -8,6 +8,7 @@ dependencies {
     implementation(project(':mb-chatbot'))
     implementation(project(':mb-graphql'))
     implementation(project(':mb-notification'))
+    implementation(project(':mb-restful'))
     
     implementation('org.springframework.boot:spring-boot-starter-web')
 }

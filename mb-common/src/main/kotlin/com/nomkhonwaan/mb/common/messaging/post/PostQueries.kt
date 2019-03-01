@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.blog.post
+package com.nomkhonwaan.mb.common.messaging.post
 
 /**
  * Finds a single Post by its ID Query.

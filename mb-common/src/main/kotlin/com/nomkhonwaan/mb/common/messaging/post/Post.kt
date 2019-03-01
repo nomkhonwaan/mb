@@ -1,6 +1,6 @@
-package com.nomkhonwaan.mb.blog.post
+package com.nomkhonwaan.mb.common.messaging.post
 
-import com.nomkhonwaan.mb.blog.category.Category
+import com.nomkhonwaan.mb.common.messaging.category.Category
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.DBRef
 import org.springframework.data.mongodb.core.mapping.Document

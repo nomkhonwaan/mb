@@ -10,7 +10,8 @@ import org.springframework.context.annotation.ComponentScan
     "com.nomkhonwaan.mb.blog",
     "com.nomkhonwaan.mb.chatbot",
     "com.nomkhonwaan.mb.graphql",
-    "com.nomkhonwaan.mb.notification"
+    "com.nomkhonwaan.mb.notification",
+    "com.nomkhonwaan.mb.restful"
 ])
 @SpringBootApplication
 class Application

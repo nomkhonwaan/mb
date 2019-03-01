@@ -3,7 +3,6 @@ repositories {
 }
 
 dependencies {
-    implementation(project(':mb-blog'))
     implementation(project(':mb-common'))
     
     implementation('com.google.apis:google-api-services-firebasedynamiclinks:v1-rev874-1.25.0')

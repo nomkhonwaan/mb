@@ -1,5 +1,7 @@
 package com.nomkhonwaan.mb.blog.post
 
+import com.nomkhonwaan.mb.common.messaging.post.Post
+import com.nomkhonwaan.mb.common.messaging.post.Status
 import org.springframework.data.domain.Pageable
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.data.mongodb.repository.Query

@@ -8,8 +8,8 @@ import com.linecorp.bot.model.message.flex.unit.FlexFontSize
 import com.linecorp.bot.model.message.flex.unit.FlexGravity
 import com.linecorp.bot.model.message.flex.unit.FlexLayout
 import com.linecorp.bot.model.message.flex.unit.FlexMarginSize
-import com.nomkhonwaan.mb.blog.post.Post
 import com.nomkhonwaan.mb.common.function.Supplier
+import com.nomkhonwaan.mb.common.messaging.post.Post
 import java.time.format.DateTimeFormatter
 
 /**

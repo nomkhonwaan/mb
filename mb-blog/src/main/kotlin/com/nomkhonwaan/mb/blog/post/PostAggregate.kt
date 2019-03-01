@@ -1,14 +1,14 @@
 package com.nomkhonwaan.mb.blog.post
 
 import com.github.slugify.Slugify
-import com.nomkhonwaan.mb.blog.category.Category
+import com.nomkhonwaan.mb.common.messaging.category.Category
+import com.nomkhonwaan.mb.common.messaging.post.*
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.spring.stereotype.Aggregate
 import org.bson.types.ObjectId
-import org.commonmark.node.Node
 import org.commonmark.parser.Parser
 import org.commonmark.renderer.html.HtmlRenderer
 import java.time.ZonedDateTime

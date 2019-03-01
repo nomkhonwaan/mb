@@ -1,8 +1,12 @@
 package com.nomkhonwaan.mb.blog.category
 
-import com.nomkhonwaan.mb.blog.post.Post
 import com.nomkhonwaan.mb.blog.post.PostRepository
-import com.nomkhonwaan.mb.blog.post.Status
+import com.nomkhonwaan.mb.common.messaging.category.Category
+import com.nomkhonwaan.mb.common.messaging.category.FindAllCategoriesQuery
+import com.nomkhonwaan.mb.common.messaging.category.FindAllPublishedPostsBelongingTo
+import com.nomkhonwaan.mb.common.messaging.category.FindCategoryByIdQuery
+import com.nomkhonwaan.mb.common.messaging.post.Post
+import com.nomkhonwaan.mb.common.messaging.post.Status
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.data.domain.PageRequest

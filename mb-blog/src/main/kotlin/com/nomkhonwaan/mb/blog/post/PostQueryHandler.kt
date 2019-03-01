@@ -1,5 +1,6 @@
 package com.nomkhonwaan.mb.blog.post
 
+import com.nomkhonwaan.mb.common.messaging.post.*
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.data.domain.PageRequest

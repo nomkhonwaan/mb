@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.blog.category
+package com.nomkhonwaan.mb.common.messaging.category
 
 /**
  * Finds all categories Query.
