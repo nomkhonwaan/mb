@@ -1,6 +1,6 @@
 package com.nomkhonwaan.mb.common.messaging.post
 
-import com.nomkhonwaan.mb.common.cqrs.Command
+import com.nomkhonwaan.mb.common.messaging.Command
 import com.nomkhonwaan.mb.common.messaging.category.Category
 
 /**

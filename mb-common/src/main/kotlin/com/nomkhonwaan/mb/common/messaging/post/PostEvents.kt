@@ -1,6 +1,6 @@
 package com.nomkhonwaan.mb.common.messaging.post
 
-import com.nomkhonwaan.mb.common.cqrs.Event
+import com.nomkhonwaan.mb.common.messaging.Event
 import com.nomkhonwaan.mb.common.messaging.category.Category
 import java.time.ZonedDateTime
 
