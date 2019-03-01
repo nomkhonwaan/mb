@@ -4,11 +4,12 @@ import com.auth0.client.mgmt.ManagementAPI
 import com.auth0.client.mgmt.filter.UserFilter
 import com.auth0.exception.APIException
 import com.auth0.exception.Auth0Exception
-import com.auth0.json.mgmt.users.User as Auth0User
 import com.auth0.net.Request
+import com.nomkhonwaan.mb.common.messaging.user.FindUserByIDQuery
 import org.axonframework.queryhandling.QueryHandler
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration
 import org.springframework.stereotype.Component
+import com.auth0.json.mgmt.users.User as Auth0User
 
 /**
  * A query handler of the User.
@@ -28,7 +29,13 @@ class UserQueryHandler(private val managementAPI: ManagementAPI) {
         val request: Request<Auth0User> = managementAPI.users().get(query.id, UserFilter())
 
         return try {
-            User(request.execute())
+            val user: Auth0User = request.execute()
+
+            return User.Builder
+                    .withId(user.id)
+                    .withAvatarUrl(user.picture)
+                    .withDisplayName(user.name)
+                    .build()
         } catch (err: APIException) {
             null
         } catch (err: Auth0Exception) {

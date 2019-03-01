@@ -7,13 +7,40 @@ import com.auth0.json.mgmt.users.User as Auth0User
  * <p>
  * This entity should create from the returned of the Auth0 user information API.
  */
-data class User(private val user: Auth0User) {
-    val id: String
-        get() = user.id
+data class User(
+        val id: String,
+        val avatarUrl: String,
+        val displayName: String
+) {
+    /**
+     * The Builder class of the User.
+     */
+    companion object Builder {
+        private lateinit var id: String
+        private lateinit var avatarUrl: String
+        private lateinit var displayName: String
 
-    val displayName: String
-        get() = user.name
+        fun withId(id: String): Builder {
+            this.id = id
+            return this
+        }
 
-    val avatarUrl: String
-        get() = user.picture
+        fun withAvatarUrl(avatarUrl: String): Builder {
+            this.avatarUrl = avatarUrl
+            return this
+        }
+
+        fun withDisplayName(displayName: String): Builder {
+            this.displayName = displayName
+            return this
+        }
+
+        fun build(): User {
+            return User(
+                    this.id,
+                    this.avatarUrl,
+                    this.displayName
+            )
+        }
+    }
 }
