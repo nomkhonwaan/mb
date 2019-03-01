@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.blog.category
+package com.nomkhonwaan.mb.common.messaging.category
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.mongodb.core.mapping.Document

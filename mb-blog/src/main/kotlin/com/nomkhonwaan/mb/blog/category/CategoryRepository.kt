@@ -1,5 +1,6 @@
 package com.nomkhonwaan.mb.blog.category
 
+import com.nomkhonwaan.mb.common.messaging.category.Category
 import org.springframework.data.mongodb.repository.MongoRepository
 
 /**

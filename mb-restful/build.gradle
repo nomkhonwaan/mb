@@ -1,0 +1,9 @@
+repositories {
+    jcenter()
+}
+
+dependencies {
+    implementation(project(':mb-common'))
+    
+    implementation('org.springframework.boot:spring-boot-starter-web')
+}

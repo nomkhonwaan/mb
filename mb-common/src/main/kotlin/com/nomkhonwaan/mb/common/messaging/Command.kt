@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.common.cqrs
+package com.nomkhonwaan.mb.common.messaging
 
 import org.axonframework.modelling.command.TargetAggregateIdentifier
 
@@ -10,4 +10,4 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier
  *
  * @param id An identifier of the Command
  */
-abstract class  Command<T: Any>(@TargetAggregateIdentifier open val id: T)
+abstract class Command<T : Any>(@TargetAggregateIdentifier open val id: T)

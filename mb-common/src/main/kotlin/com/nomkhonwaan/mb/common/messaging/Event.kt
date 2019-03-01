@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.common.cqrs
+package com.nomkhonwaan.mb.common.messaging
 
 /**
  * An abstraction class of the Event.
@@ -8,4 +8,4 @@ package com.nomkhonwaan.mb.common.cqrs
  *
  * @param id An identifier of the Event
  */
-abstract class Event<T: Any>(open val id: T)
+abstract class Event<T : Any>(open val id: T)

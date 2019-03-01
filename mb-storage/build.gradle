@@ -1,0 +1,13 @@
+repositories {
+    jcenter()
+}
+
+dependencyManagement {
+    imports {
+        mavenBom('com.amazonaws:aws-java-sdk-bom:1.11.475')
+    }
+}
+
+dependencies {
+    implementation('com.amazonaws:aws-java-sdk-s3')
+}

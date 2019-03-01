@@ -1,9 +1,9 @@
 package com.nomkhonwaan.mb.graphql
 
 import com.coxautodev.graphql.tools.GraphQLResolver
-import com.nomkhonwaan.mb.auth.FindUserByIDQuery
-import com.nomkhonwaan.mb.auth.User
-import com.nomkhonwaan.mb.blog.post.Post
+import com.nomkhonwaan.mb.common.messaging.post.Post
+import com.nomkhonwaan.mb.common.messaging.user.FindUserByIDQuery
+import com.nomkhonwaan.mb.common.messaging.user.User
 import com.nomkhonwaan.mb.common.time.toRFC3339
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.stereotype.Component

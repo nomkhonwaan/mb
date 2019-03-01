@@ -1,4 +1,4 @@
-package com.nomkhonwaan.mb.auth
+package com.nomkhonwaan.mb.common.messaging.user
 
 /**
  * Finds a single User by their ID Query.

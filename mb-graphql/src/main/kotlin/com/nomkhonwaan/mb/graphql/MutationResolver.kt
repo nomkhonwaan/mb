@@ -1,7 +1,7 @@
 package com.nomkhonwaan.mb.graphql
 
 import com.coxautodev.graphql.tools.GraphQLMutationResolver
-import com.nomkhonwaan.mb.blog.post.*
+import com.nomkhonwaan.mb.common.messaging.post.*
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.security.access.prepost.PreAuthorize

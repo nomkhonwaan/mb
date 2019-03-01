@@ -1,9 +1,9 @@
 package com.nomkhonwaan.mb.graphql
 
 import com.coxautodev.graphql.tools.GraphQLResolver
-import com.nomkhonwaan.mb.blog.category.Category
-import com.nomkhonwaan.mb.blog.category.FindAllPublishedPostsBelongingTo
-import com.nomkhonwaan.mb.blog.post.Post
+import com.nomkhonwaan.mb.common.messaging.category.Category
+import com.nomkhonwaan.mb.common.messaging.category.FindAllPublishedPostsBelongingTo
+import com.nomkhonwaan.mb.common.messaging.post.Post
 import org.axonframework.messaging.responsetypes.ResponseTypes
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.stereotype.Component

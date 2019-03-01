@@ -1,7 +1,9 @@
 package com.nomkhonwaan.mb.blog.post
 
-import com.nomkhonwaan.mb.blog.category.Category
-import com.nomkhonwaan.mb.blog.category.FindCategoryByIdQuery
+import com.nomkhonwaan.mb.common.messaging.category.Category
+import com.nomkhonwaan.mb.common.messaging.category.FindCategoryByIdQuery
+import com.nomkhonwaan.mb.common.messaging.post.CompleteVerifyCategoryIdsCommand
+import com.nomkhonwaan.mb.common.messaging.post.VerifyCategoryIdsStartedEvent
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.modelling.saga.SagaEventHandler
 import org.axonframework.modelling.saga.StartSaga

@@ -3,8 +3,6 @@ repositories {
 }
 
 dependencies {
-    implementation(project(':mb-auth'))
-    implementation(project(':mb-blog'))
     implementation(project(':mb-common'))
 
     implementation('com.graphql-java:graphql-java-tools:5.2.0')

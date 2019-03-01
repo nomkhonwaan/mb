@@ -1,7 +1,7 @@
-package com.nomkhonwaan.mb.blog.post
+package com.nomkhonwaan.mb.common.messaging.post
 
-import com.nomkhonwaan.mb.blog.category.Category
-import com.nomkhonwaan.mb.common.cqrs.Command
+import com.nomkhonwaan.mb.common.messaging.Command
+import com.nomkhonwaan.mb.common.messaging.category.Category
 
 /**
  * A Post creation Command.
