@@ -5,5 +5,9 @@ repositories {
 dependencies {
     implementation(project(':mb-common'))
     
+    implementation('org.axonframework:axon-spring-boot-starter:4.0.3') {
+        exclude(group: 'org.axonframework', module: 'axon-server-connector')
+    }
     implementation('org.springframework.boot:spring-boot-starter-web')
+    implementation('org.springframework.security:spring-security-core')
 }

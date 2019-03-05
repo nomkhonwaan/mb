@@ -22,21 +22,6 @@ import kotlin.streams.toList
 @Saga
 @EnableAutoConfiguration
 class PostSagaManager() {
-
-    /**
-     * A secondary constructor that enables injection on [commandGateway] and [queryGateway].
-     * <p>
-     * This constructor purposes for allowing mocked commandGateway and queryGateway to be injected,
-     * this will benefit for the unit testing.
-     *
-     * @param commandGateway A CommandGateway object for dealing with the command message bus
-     * @param queryGateway   A QueryGateway object for dealing with the query message bus
-     */
-    constructor(commandGateway: CommandGateway, queryGateway: QueryGateway) : this() {
-        this.commandGateway = commandGateway
-        this.queryGateway = queryGateway
-    }
-
     /**
      * An inject of the command gateway.
      * <p>
@@ -52,6 +37,20 @@ class PostSagaManager() {
      */
     @Autowired
     private lateinit var queryGateway: QueryGateway
+
+    /**
+     * A secondary constructor that enables injection on [commandGateway] and [queryGateway].
+     * <p>
+     * This constructor purposes for allowing mocked commandGateway and queryGateway to be injected,
+     * this will benefit for the unit testing.
+     *
+     * @param commandGateway A CommandGateway object for dealing with the command message bus
+     * @param queryGateway   A QueryGateway object for dealing with the query message bus
+     */
+    constructor(commandGateway: CommandGateway, queryGateway: QueryGateway) : this() {
+        this.commandGateway = commandGateway
+        this.queryGateway = queryGateway
+    }
 
     /**
      * Handles list of Category IDs verification Event.
