@@ -19,14 +19,14 @@ data class UploadFileCommand(
 ) : Command<String>(id)
 
 /**
- * A complete file uploading Command.
+ * A complete Attachment uploading Command.
  *
  * @param id An identifier of the Attachment
  */
 data class CompleteFileUploadingCommand(override val id: String) : Command<String>(id)
 
 /**
- * A rollback file uploading Command.
+ * A rollback Attachment uploading Command.
  * <p>
  * This command for rollback uploaded file in the storage server in case of failure.
  *
