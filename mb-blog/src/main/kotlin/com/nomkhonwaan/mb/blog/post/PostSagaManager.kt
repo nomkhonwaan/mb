@@ -23,7 +23,7 @@ import kotlin.streams.toList
 @EnableAutoConfiguration
 class PostSagaManager() {
     /**
-     * An inject of the command gateway.
+     * An injection of the command gateway.
      * <p>
      * NOTE: this property can not inject via class constructor due to unable to initiate class object.
      */

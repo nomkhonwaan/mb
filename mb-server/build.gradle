@@ -10,6 +10,7 @@ dependencies {
     implementation(project(':mb-graphql'))
     implementation(project(':mb-notification'))
     implementation(project(':mb-restful'))
+    implementation(project(':mb-storage'))
     
     implementation('org.springframework.boot:spring-boot-starter-web')
 }

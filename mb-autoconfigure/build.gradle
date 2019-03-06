@@ -5,6 +5,7 @@ repositories {
 dependencies {
     implementation(project(':mb-notification'))
 
+    implementation('com.amazonaws:aws-java-sdk-s3')
     implementation('com.auth0:auth0:1.10.0')
     implementation('com.squareup.retrofit2:converter-gson:2.5.0')
     implementation('com.squareup.retrofit2:retrofit:2.5.0')
