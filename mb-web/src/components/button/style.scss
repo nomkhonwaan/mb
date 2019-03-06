@@ -19,17 +19,10 @@
     width: 3.2rem;
   }
 
-  &:before {
-    left: -1.6rem;
-  }
+  &:before { left: -1.6rem; }
+  &:after { right: -1.6rem; }
 
-  &:after {
-    right: -1.6rem;
-  }
-
-  &:focus {
-    outline: none;
-  }
+  &:focus { outline: none; }
 
   &.-group {
     padding: 0;
