@@ -18,13 +18,17 @@ data class UploadingFileEvent(
 ) : Event<String>(id)
 
 /**
- * A successful uploading file Event.
+ * An Attachment uploaded Event.
+ * <p>
+ * This Event will be fired once the uploading process has been completed.
  *
  * @param id An identifier of the Attachment
  */
 data class FileUploadedEvent(override val id: String) : Event<String>(id)
 
 /**
- *
+ * A rolling-back uploaded Attachment Event.
+ * <p>
+ * This Event will be fired once the uploading process has been failed.
  */
-data class RollingbackUploadedFileEvent(override val id: String, val path: String) : Event<String>(id)
+ data class RollingbackUploadedFileEvent(override val id: String, val path: String) : Event<String>(id)
