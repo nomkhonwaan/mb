@@ -21,9 +21,9 @@ class StorageAggregate() {
      * @param command A Command for uploading Attachment
      */
     @CommandHandler
-    constructor(command: UploadFileCommand) : this() {
+    constructor(command: UploadAttachmentCommand) : this() {
         AggregateLifecycle.apply(
-                UploadingFileEvent(
+                UploadingAttachmentEvent(
                         command.id,
                         command.inputStream,
                         command.size,
@@ -38,9 +38,9 @@ class StorageAggregate() {
      * @param command A Command for file uploaded successfully
      */
     @CommandHandler
-    fun handle(command: CompleteFileUploadingCommand) {
+    fun handle(command: CompleteAttachmentUploadingCommand) {
         AggregateLifecycle.apply(
-                FileUploadedEvent(
+                AttachmentUploadedEvent(
                         command.id
                 )
         )
@@ -52,7 +52,7 @@ class StorageAggregate() {
      * @param command A Command for rolling-back uploaded file
      */
     @CommandHandler
-    fun handle(command: RollbackFileUploadingCommand) {
+    fun handle(command: RollbackUploadedAttachmentCommand) {
         AggregateLifecycle.apply(
                 RollingbackUploadedFileEvent(
                         command.id,
@@ -67,7 +67,7 @@ class StorageAggregate() {
      * @param event An Event of the Attachment uploading Command
      */
     @EventSourcingHandler
-    fun on(event: UploadingFileEvent) {
+    fun on(event: UploadingAttachmentEvent) {
         id = event.id
     }
 }

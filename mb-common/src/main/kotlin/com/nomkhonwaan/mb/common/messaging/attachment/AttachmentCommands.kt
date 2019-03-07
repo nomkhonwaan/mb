@@ -11,7 +11,7 @@ import java.io.InputStream
  * @param size        A size of the uploaded file
  * @param path        A path that the file will be uploaded to
  */
-data class UploadFileCommand(
+data class UploadAttachmentCommand(
         override val id: String,
         val inputStream: InputStream,
         val size: Long,
@@ -23,14 +23,12 @@ data class UploadFileCommand(
  *
  * @param id An identifier of the Attachment
  */
-data class CompleteFileUploadingCommand(override val id: String) : Command<String>(id)
+data class CompleteAttachmentUploadingCommand(override val id: String) : Command<String>(id)
 
 /**
- * A rollback Attachment uploading Command.
- * <p>
- * This command for rollback uploaded file in the storage server in case of failure.
+ * A rollback an uploaded Attachment Command.
  *
  * @param id   An identifier of the Attachment
  * @param path A path that the file belongs to
  */
-data class RollbackFileUploadingCommand(override val id: String, val path: String) : Command<String>(id)
+data class RollbackUploadedAttachmentCommand(override val id: String, val path: String) : Command<String>(id)

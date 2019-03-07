@@ -55,7 +55,7 @@ class StorageSagaManager() {
      */
     @StartSaga
     @SagaEventHandler(associationProperty = "id")
-    fun handle(event: UploadingFileEvent) {
+    fun handle(event: UploadingAttachmentEvent) {
         try {
             amazonS3.putObject(
                     "nomkhonwaan-com",
@@ -64,9 +64,9 @@ class StorageSagaManager() {
                     ObjectMetadata().apply { contentLength = event.size }
             )
 
-            commandGateway.send<Unit>(CompleteFileUploadingCommand(event.id))
+            commandGateway.send<Unit>(CompleteAttachmentUploadingCommand(event.id))
         } catch (err: AmazonS3Exception) {
-            commandGateway.send<Unit>(RollbackFileUploadingCommand(event.id, event.path))
+            commandGateway.send<Unit>(RollbackUploadedAttachmentCommand(event.id, event.path))
         }
     }
 

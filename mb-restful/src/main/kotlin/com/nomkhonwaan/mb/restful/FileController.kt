@@ -2,7 +2,7 @@ package com.nomkhonwaan.mb.restful
 
 import com.nomkhonwaan.mb.common.messaging.attachment.Attachment
 import com.nomkhonwaan.mb.common.messaging.attachment.FindAttachmentByIdQuery
-import com.nomkhonwaan.mb.common.messaging.attachment.UploadFileCommand
+import com.nomkhonwaan.mb.common.messaging.attachment.UploadAttachmentCommand
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.queryhandling.QueryGateway
 import org.springframework.http.HttpStatus
@@ -42,7 +42,7 @@ class FileController(
 
         return ResponseEntity.ok(
                 commandGateway
-                        .send<String>(UploadFileCommand(filename, multipartFile.inputStream, multipartFile.size, authorId))
+                        .send<String>(UploadAttachmentCommand(filename, multipartFile.inputStream, multipartFile.size, authorId))
                         .thenCompose {
                             queryGateway.query(FindAttachmentByIdQuery("$authorId/$it"), Attachment::class.java)
                         }
