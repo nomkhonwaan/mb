@@ -54,7 +54,7 @@ class StorageAggregate() {
     @CommandHandler
     fun handle(command: RollbackUploadedAttachmentCommand) {
         AggregateLifecycle.apply(
-                RollingbackUploadedFileEvent(
+                RollbackUploadedAttachmentEvent(
                         command.id,
                         command.path
                 )

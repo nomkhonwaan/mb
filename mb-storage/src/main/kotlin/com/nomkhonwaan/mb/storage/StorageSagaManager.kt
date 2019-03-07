@@ -79,7 +79,7 @@ class StorageSagaManager() {
      */
     @EndSaga
     @SagaEventHandler(associationProperty = "id")
-    fun handle(event: RollingbackUploadedFileEvent) {
+    fun handle(event: RollbackUploadedAttachmentEvent) {
         try {
             // TODO: handles file deleting on Amazon S3
         } catch (err: AmazonS3Exception) {

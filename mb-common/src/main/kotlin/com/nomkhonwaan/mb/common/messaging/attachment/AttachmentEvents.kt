@@ -27,8 +27,8 @@ data class UploadingAttachmentEvent(
 data class AttachmentUploadedEvent(override val id: String) : Event<String>(id)
 
 /**
- * A rolling-back uploaded Attachment Event.
+ * A rollback uploaded Attachment Event.
  * <p>
  * This Event will be fired once the uploading process has been failed.
  */
- data class RollingbackUploadedFileEvent(override val id: String, val path: String) : Event<String>(id)
+ data class RollbackUploadedAttachmentEvent(override val id: String, val path: String) : Event<String>(id)
