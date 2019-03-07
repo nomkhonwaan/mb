@@ -6,6 +6,7 @@ import org.axonframework.eventsourcing.EventSourcingHandler
 import org.axonframework.modelling.command.AggregateIdentifier
 import org.axonframework.modelling.command.AggregateLifecycle
 import org.axonframework.spring.stereotype.Aggregate
+import org.bson.types.ObjectId
 
 /**
  * An aggregation of the Attachment.
@@ -16,6 +17,11 @@ class StorageAggregate() {
     private lateinit var id: String
 
     /**
+     * An original filename
+     */
+    private lateinit var filename: String
+
+    /**
      * Handles Attachment uploading Command.
      *
      * @param command A Command for uploading Attachment
@@ -24,7 +30,8 @@ class StorageAggregate() {
     constructor(command: UploadAttachmentCommand) : this() {
         AggregateLifecycle.apply(
                 UploadingAttachmentEvent(
-                        command.id,
+                        if (command.id.isNotBlank()) command.id else ObjectId.get().toHexString(),
+                        command.filename,
                         command.inputStream,
                         command.size,
                         command.path
@@ -52,9 +59,9 @@ class StorageAggregate() {
      * @param command A Command for rolling-back uploaded file
      */
     @CommandHandler
-    fun handle(command: RollbackUploadedAttachmentCommand) {
+    fun handle(command: RollbackAttachmentCommand) {
         AggregateLifecycle.apply(
-                RollbackUploadedAttachmentEvent(
+                AttachmentRolledbackEvent(
                         command.id,
                         command.path
                 )
@@ -69,5 +76,6 @@ class StorageAggregate() {
     @EventSourcingHandler
     fun on(event: UploadingAttachmentEvent) {
         id = event.id
+        filename = event.filename
     }
 }

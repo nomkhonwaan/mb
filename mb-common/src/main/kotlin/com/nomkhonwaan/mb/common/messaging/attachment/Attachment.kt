@@ -1,5 +1,7 @@
 package com.nomkhonwaan.mb.common.messaging.attachment
 
+import java.io.InputStream
+
 /**
  * An entity of the Attachment.
  * <p>
@@ -11,9 +13,15 @@ data class Attachment(val id: String) {
      */
     companion object Builder {
         private lateinit var id: String
+        private lateinit var content: InputStream
 
         fun withId(id: String): Builder {
             this.id = id
+            return this
+        }
+
+        fun withContent(content: InputStream): Builder {
+            this.content = content
             return this
         }
 

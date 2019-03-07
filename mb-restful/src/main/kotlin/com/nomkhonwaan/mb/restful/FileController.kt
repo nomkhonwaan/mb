@@ -42,9 +42,20 @@ class FileController(
 
         return ResponseEntity.ok(
                 commandGateway
-                        .send<String>(UploadAttachmentCommand(filename, multipartFile.inputStream, multipartFile.size, authorId))
-                        .thenCompose {
-                            queryGateway.query(FindAttachmentByIdQuery("$authorId/$it"), Attachment::class.java)
+                        .send<String>(
+                                UploadAttachmentCommand(
+                                        "",
+                                        filename,
+                                        multipartFile.inputStream,
+                                        multipartFile.size,
+                                        authorId
+                                )
+                        )
+                        .thenApply {
+                            queryGateway
+                                    .subscriptionQuery(FindAttachmentByIdQuery("$authorId/$it"), Attachment::class.java, Attachment::class.java)
+                                    .updates()
+                                    .blockFirst()
                         }
         )
     }

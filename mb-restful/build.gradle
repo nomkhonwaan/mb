@@ -5,6 +5,7 @@ repositories {
 dependencies {
     implementation(project(':mb-common'))
     
+    implementation('io.projectreactor:reactor-core:3.2.5.RELEASE')
     implementation('org.axonframework:axon-spring-boot-starter:4.0.3') {
         exclude(group: 'org.axonframework', module: 'axon-server-connector')
     }

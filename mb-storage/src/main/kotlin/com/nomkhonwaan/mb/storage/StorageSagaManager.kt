@@ -3,7 +3,10 @@ package com.nomkhonwaan.mb.storage
 import com.amazonaws.services.s3.AmazonS3
 import com.amazonaws.services.s3.model.AmazonS3Exception
 import com.amazonaws.services.s3.model.ObjectMetadata
-import com.nomkhonwaan.mb.common.messaging.attachment.*
+import com.nomkhonwaan.mb.common.messaging.attachment.AttachmentRolledbackEvent
+import com.nomkhonwaan.mb.common.messaging.attachment.CompleteAttachmentUploadingCommand
+import com.nomkhonwaan.mb.common.messaging.attachment.RollbackAttachmentCommand
+import com.nomkhonwaan.mb.common.messaging.attachment.UploadingAttachmentEvent
 import org.axonframework.commandhandling.gateway.CommandGateway
 import org.axonframework.modelling.saga.EndSaga
 import org.axonframework.modelling.saga.SagaEventHandler
@@ -66,24 +69,19 @@ class StorageSagaManager() {
 
             commandGateway.send<Unit>(CompleteAttachmentUploadingCommand(event.id))
         } catch (err: AmazonS3Exception) {
-            commandGateway.send<Unit>(RollbackUploadedAttachmentCommand(event.id, event.path))
+            commandGateway.send<Unit>(RollbackAttachmentCommand(event.id, event.path))
         }
     }
 
     /**
-     * Handles Attachment rolling-back Event.
+     * Handles Attachment rolled-back Event.
      * <p>
-     * Will check on the storage server and delete if exists.
+     * Will check and delete on the storage server in case of failure.
      *
      * @param event A rolling-back uploaded Attachment Event
      */
     @EndSaga
     @SagaEventHandler(associationProperty = "id")
-    fun handle(event: RollbackUploadedAttachmentEvent) {
-        try {
-            // TODO: handles file deleting on Amazon S3
-        } catch (err: AmazonS3Exception) {
-
-        }
+    fun handle(event: AttachmentRolledbackEvent) {
     }
 }
