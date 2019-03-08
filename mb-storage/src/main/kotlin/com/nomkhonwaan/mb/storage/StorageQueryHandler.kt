@@ -27,8 +27,6 @@ class StorageQueryHandler(private val amazonS3: AmazonS3) {
         return try {
             val s3Object: S3Object = amazonS3.getObject("nomkhonwaan-com", query.id)
 
-            println(s3Object.objectMetadata)
-
             Attachment
                     .withId(s3Object.key)
                     .withContent(s3Object.objectContent)

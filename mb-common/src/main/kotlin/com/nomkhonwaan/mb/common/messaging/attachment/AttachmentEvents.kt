@@ -7,14 +7,12 @@ import java.io.InputStream
  * An uploading Attachment Event.
  *
  * @param id          An identifier of the Attachment
- * @param filename    An original filename
  * @param inputStream An uploaded file input stream
  * @param size        A size of the uploaded file
  * @param path        A path that the file will be uploaded to
  */
 data class UploadingAttachmentEvent(
         override val id: String,
-        val filename: String,
         val inputStream: InputStream,
         val size: Long,
         val path: String
