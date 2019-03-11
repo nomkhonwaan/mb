@@ -24,12 +24,15 @@ class StorageQueryHandler(private val amazonS3: AmazonS3) {
      */
     @QueryHandler
     fun handle(query: FindAttachmentByIdQuery): Attachment? {
+        val bucket = "nomkhonwaan-com"
+
         return try {
-            val s3Object: S3Object = amazonS3.getObject("nomkhonwaan-com", query.id)
+            val s3Object: S3Object = amazonS3.getObject(bucket, query.id)
 
             Attachment
                     .withId(s3Object.key)
                     .withContent(s3Object.objectContent)
+                    .withUrl("https://$bucket.s3.amazonaws.com/${s3Object.key}")
                     .build()
         } catch (err: AmazonS3Exception) {
             null

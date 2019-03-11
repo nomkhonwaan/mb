@@ -14,6 +14,7 @@ data class Attachment(val id: String) {
     companion object Builder {
         private lateinit var id: String
         private lateinit var content: InputStream
+        private lateinit var url: String
 
         fun withId(id: String): Builder {
             this.id = id
@@ -22,6 +23,11 @@ data class Attachment(val id: String) {
 
         fun withContent(content: InputStream): Builder {
             this.content = content
+            return this
+        }
+
+        fun withUrl(url: String): Builder {
+            this.url = url
             return this
         }
 
