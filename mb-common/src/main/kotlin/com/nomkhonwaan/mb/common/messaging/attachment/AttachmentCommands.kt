@@ -17,18 +17,3 @@ data class UploadAttachmentCommand(
         val size: Long,
         val path: String
 ) : Command<String>(id)
-
-/**
- * A complete Attachment uploading Command.
- *
- * @param id An identifier of the Attachment
- */
-data class CompleteAttachmentUploadingCommand(override val id: String) : Command<String>(id)
-
-/**
- * A rollback an uploaded Attachment Command.
- *
- * @param id   An identifier of the Attachment
- * @param path A path that the file belongs to
- */
-data class RollbackAttachmentCommand(override val id: String, val path: String) : Command<String>(id)

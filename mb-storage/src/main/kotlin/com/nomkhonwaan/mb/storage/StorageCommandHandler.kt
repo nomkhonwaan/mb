@@ -1,5 +1,8 @@
 package com.nomkhonwaan.mb.storage
 
+import com.amazonaws.services.s3.AmazonS3
+import com.amazonaws.services.s3.model.AmazonS3Exception
+import com.amazonaws.services.s3.model.ObjectMetadata
 import com.nomkhonwaan.mb.common.messaging.attachment.*
 import org.axonframework.commandhandling.CommandHandler
 import org.axonframework.eventhandling.EventBus
@@ -14,7 +17,10 @@ import org.springframework.stereotype.Component
  */
 @Component
 @EnableAutoConfiguration
-class StorageCommandHandler(private val eventBus: EventBus) {
+class StorageCommandHandler(
+        private val eventBus: EventBus,
+        private val amazonS3: AmazonS3
+) {
     /**
      * Handles an Attachment uploading Command.
      *
@@ -30,30 +36,23 @@ class StorageCommandHandler(private val eventBus: EventBus) {
                         command.path
                 )
         ))
-    }
 
-    /**
-     * Handles an Attachment uploading successfully Command.
-     *
-     * @param command A Command for confirm that the Attachment has been uploaded successfully.
-     */
-    @CommandHandler
-    fun handle(command: CompleteAttachmentUploadingCommand) {
-        eventBus.publish(GenericEventMessage.asEventMessage<AttachmentUploadedEvent>(AttachmentUploadedEvent(command.id)))
-    }
+        try {
+            amazonS3.putObject(
+                    "nomkhonwaan-com",
+                    "${command.path}/${command.id}",
+                    command.inputStream,
+                    ObjectMetadata().apply { contentLength = command.size }
+            )
 
-    /**
-     * Handles an Attachment rolling-back Command.
-     *
-     * @param command A Command for rolling-back an uploaded Attachment
-     */
-    @CommandHandler
-    fun handle(command: RollbackAttachmentCommand) {
-        eventBus.publish(GenericEventMessage.asEventMessage<AttachmentRolledbackEvent>(
-                AttachmentRolledbackEvent(
-                        command.id,
-                        command.path
-                )
-        ))
+            eventBus.publish(GenericEventMessage.asEventMessage<AttachmentUploadedEvent>(AttachmentUploadedEvent(command.id)))
+        } catch (err: AmazonS3Exception) {
+            eventBus.publish(GenericEventMessage.asEventMessage<AttachmentRolledbackEvent>(
+                    AttachmentRolledbackEvent(
+                            command.id,
+                            command.path
+                    )
+            ))
+        }
     }
 }
