@@ -49,6 +49,11 @@ type Mutation {
     #updatePostTags(input: UpdatePostTagsInput!): Post
 }
 
+# An artifact that attaches to the Post such as featured image, file, etc.
+type Attachment {
+    id: ID!
+}
+
 # A group of Posts regarded as having particular shared characteristics
 type Category {
     id: ID!
@@ -112,6 +117,14 @@ type User {
 enum Status {
     DRAFT
     PUBLISHED
+}
+
+# An input type for add an Attachment to the Post
+input AddPostAttachmentInput {
+    id: ID!
+
+    # An identifier of the Attachment
+    attachmentId!
 }
 
 # An input type for updating Post title
