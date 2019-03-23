@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+._flex { display: flex!important; }
+._flex-inline { display: inline-flex!important; }
+
+._lowercase { text-transform: lowercase!important; }
+._uppercase { text-transform: uppercase!important; }
+
+._text-left { text-align: left!important; }
+._text-right { text-align: right!important; }
+._text-center { text-align: center!important; }
+._text-justify { text-align: justify!important; }
+
+._unmargin { margin: 0!important; }
+._unpadding { padding: 0!important; }
+
+._list-unstyled {
+  @extend ._unmargin;
+  @extend ._unpadding;
+
+  list-style: none!important;
+}
+
+html, body { font-size: 62.5%; }
+
+a, a:focus, a:hover, a:visited {
+  color: inherit;
+  text-decoration: none;
+}
