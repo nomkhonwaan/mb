@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, HostBinding } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 
 @Component({
@@ -7,22 +7,20 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   styleUrls: ['./dialog.component.scss'],
   animations: [
     trigger('fadeInOut', [
-      state('in', style({ opacity: .16 })),
-      state('out', style({ opacity: 0 })),
-      transition(':enter', animate('.4s ease-in-out')),
-      transition(':leave', animate('.4s ease-in-out'))
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('.4s ease-in-out', style({ opacity: .16 }))
+      ]),
+      transition(':leave', [
+        animate('.4s ease-in-out', style({ opacity: 0 }))
+      ])
     ])
-  ],
-  host: {
-    '[@animation]'
-  }
+  ]
 })
 export class DialogComponent implements OnInit {
-  state: string = 'fade-in';
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() { }
 
 }

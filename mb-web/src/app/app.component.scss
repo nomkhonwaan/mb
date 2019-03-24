@@ -1,13 +1,7 @@
 :host {
   display: grid;
   grid-template: 6.4rem auto / 25.6rem auto;
-  transform: translateX(0);
-  transition: transform .4s ease-in-out;
   width: calc(100% + 25.6rem);
-}
-
-:host(.-sidebar-collapsed) {
-  transform: translateX(-25.6rem);
 }
 
 .sidebar {
