@@ -1,0 +1,19 @@
+// @keyframes fade-in {
+//   from { opacity: 0; }
+//   to { opacity: .16; }
+// }
+
+// @keyframes fade-out {
+//   from { opacity: .16; }
+//   to { opacity: 0; }
+// }
+
+:host {
+  // animation: fade-in .4s ease-in-out;
+  background: hsl(0, 0%, 20%);
+  height: 100vh;
+  opacity: .16;
+  position: absolute;
+  left: 25.6rem;
+  width: 100%;
+}

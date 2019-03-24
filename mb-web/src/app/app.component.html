@@ -1,6 +1,8 @@
 <div class="sidebar">
   <header>
-    <app-button [icon]="faTimes" [ltr]="true">{{'close' | uppercase}}</app-button>
+    <app-button [icon]="faTimes" [ltr]="true" (click)="sidebarCollapsed = !sidebarCollapsed">
+      {{'close' | uppercase}}
+    </app-button>
   </header>
 
   <nav>
@@ -14,6 +16,8 @@
     </ul>
   </nav>
 </div>
+
+<app-dialog *ngIf="!sidebarCollapsed"></app-dialog>
 
 <div class="navbar">
   <app-button [icon]="faBars" [noText]="true" (click)="sidebarCollapsed = !sidebarCollapsed"></app-button>

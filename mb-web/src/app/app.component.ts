@@ -14,5 +14,5 @@ export class AppComponent {
   faSearch: IconDefinition = faSearch;
   faTimes: IconDefinition = faTimes;
 
-  sidebarCollapsed: boolean = false;
+  sidebarCollapsed: boolean = true;
 }
