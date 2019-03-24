@@ -1,0 +1,23 @@
+:host {
+  align-items: center;
+  background: none;
+  border: none;
+  color: hsl(0, 0%, 50%);
+  cursor: pointer;
+  display: inline-flex;
+  font: normal 400 1.3rem 'Lato', sans-serif;
+
+  &.-icon {
+    fa-icon {
+      font-size: 1.6rem;
+      margin-right: 1.6rem;
+    }
+  }
+
+  &.-icon.-ltr {
+    fa-icon {
+      margin-left: 1.6rem;
+      margin-right: 0;
+    }
+  }
+}

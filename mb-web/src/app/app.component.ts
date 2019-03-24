@@ -11,5 +11,6 @@ import { faTimes, IconDefinition } from '@fortawesome/pro-light-svg-icons';
 })
 export class AppComponent {
   faTimes: IconDefinition = faTimes;
+
   sidebarCollapsed: boolean = false;
 }
