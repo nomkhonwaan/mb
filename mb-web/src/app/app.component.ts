@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { faTimes, IconDefinition } from '@fortawesome/pro-light-svg-icons';
+import { faBars, faSearch, faTimes, IconDefinition } from '@fortawesome/pro-light-svg-icons';
 
 @Component({
   selector: 'app-root',
@@ -10,6 +10,8 @@ import { faTimes, IconDefinition } from '@fortawesome/pro-light-svg-icons';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  faBars: IconDefinition = faBars;
+  faSearch: IconDefinition = faSearch;
   faTimes: IconDefinition = faTimes;
 
   sidebarCollapsed: boolean = false;

@@ -7,6 +7,7 @@ import { IconDefinition } from '@fortawesome/fontawesome-svg-core';
   host: {
     '[class.-icon]': 'icon',
     '[class.-ltr]': 'ltr',
+    '[class.-no-text]': 'noText'
   },
   styleUrls: ['./button.component.scss']
 })
@@ -17,6 +18,9 @@ export class ButtonComponent implements OnInit {
 
   @Input()
   ltr: boolean = false;
+
+  @Input()
+  noText: boolean = false;
 
   constructor() {}
 

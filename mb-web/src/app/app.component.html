@@ -16,7 +16,9 @@
 </div>
 
 <div class="navbar">
+  <app-button [icon]="faBars" [noText]="true" (click)="sidebarCollapsed = !sidebarCollapsed"></app-button>
 
+  <app-button style="margin-left:auto" [icon]="faSearch" [noText]="true"></app-button>
 </div>
 
 <!-- <router-outlet></router-outlet> -->

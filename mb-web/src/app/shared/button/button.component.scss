@@ -6,6 +6,7 @@
   cursor: pointer;
   display: inline-flex;
   font: normal 400 1.3rem 'Lato', sans-serif;
+  padding: 0 3.2rem;
 
   &.-icon {
     fa-icon {
@@ -17,6 +18,13 @@
   &.-icon.-ltr {
     fa-icon {
       margin-left: 1.6rem;
+      margin-right: 0;
+    }
+  }
+
+  &.-icon.-no-text {
+    fa-icon {
+      font-size: 2.2rem;
       margin-right: 0;
     }
   }
