@@ -1,4 +1,18 @@
-<div>
-  <app-button>Test</app-button>
-  <router-outlet></router-outlet>
+<div class="sidebar">
+  <header>
+    <app-button [icon]="faTimes" [ltr]="true">close</app-button>
+  </header>
+
+  <nav>
+    <ul class="_list-unstyled">
+      <li>
+        <a [routerLink]="['']" routerLinkActive="-actived">Home</a>
+      </li>
+      <li>
+        <a [routerLink]="['/login']" routerLinkActive="-actived">Login / Register</a>
+      </li>
+    </ul>
+  </nav>
 </div>
+
+<router-outlet></router-outlet>
