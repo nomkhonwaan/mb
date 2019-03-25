@@ -11,23 +11,23 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
       state('void', style({ opacity: 0 })),
       transition(':enter', [
         style({ opacity: 0 }),
-        animate('.4s ease-in-out', style({ opacity: .16 }))
+        animate('.4s ease-in-out')
       ]),
       transition(':leave',
         animate('.4s ease-in-out', style({ opacity: 0 }))
       )
     ])
-  ]
+  ],
+  host: {
+    '[@fadeInOut]': 'state'
+  }
 })
 export class DialogComponent implements OnInit {
+
+  state: boolean = true;
 
   constructor() { }
 
   ngOnInit() { }
-
-  @HostBinding('@fadeInOut')
-  get fadeInOut(): string {
-    return '';
-  }
 
 }
