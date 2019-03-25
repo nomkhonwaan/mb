@@ -22,7 +22,11 @@
   list-style: none!important;
 }
 
-html, body { font-size: 62.5%; }
+html, body {
+  font-size: 62.5%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
 
 a, a:focus, a:hover, a:visited {
   color: inherit;

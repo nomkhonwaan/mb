@@ -22,11 +22,32 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 })
 export class AppComponent {
 
+  /**
+   * A FontAwesome icon for displaying at .navbar as a sidebar toggle button.
+   */
   faBars: IconDefinition = faBars;
+
+  /**
+   * A FontAwesome icon for displaying at .navbar as a search button.
+   */
   faSearch: IconDefinition = faSearch;
+
+  /**
+   * A FontAwesome icon for displaying at .sidebar as an "x" button.
+   */
   faTimes: IconDefinition = faTimes;
 
+  /**
+   * A .sidebar expansion state.
+   */
   @HostBinding('@slideInOut')
   sidebarExpanded: boolean = false;
+
+  /**
+   * Toggles sidebar expansion state.
+   */
+  toggleSidebar() {
+    this.sidebarExpanded = !this.sidebarExpanded;
+  }
 
 }

@@ -1,6 +1,6 @@
 <div class="sidebar">
   <header>
-    <app-button [icon]="faTimes" [ltr]="true" (click)="sidebarExpanded = !sidebarExpanded">
+    <app-button [icon]="faTimes" [ltr]="true" (click)="toggleSidebar()">
       {{'close' | uppercase}}
     </app-button>
   </header>
@@ -17,10 +17,10 @@
   </nav>
 </div>
 
-<app-dialog *ngIf="sidebarExpanded"></app-dialog>
+<app-dialog *ngIf="sidebarExpanded" (click)="toggleSidebar()"></app-dialog>
 
 <div class="navbar">
-  <app-button [icon]="faBars" [noText]="true" (click)="sidebarExpanded = !sidebarExpanded"></app-button>
+  <app-button [icon]="faBars" [noText]="true" (click)="toggleSidebar()"></app-button>
 
   <app-button style="margin-left:auto" [icon]="faSearch" [noText]="true"></app-button>
 </div>
