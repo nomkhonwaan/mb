@@ -7,6 +7,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
   styleUrls: ['./dialog.component.scss'],
   animations: [
     trigger('fadeInOut', [
+      state('false', style({ opacity: 0 })),
       transition('* => true', [
         style({ opacity: 0 }),
         animate('.4s ease-in-out')
