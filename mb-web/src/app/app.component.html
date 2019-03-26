@@ -17,7 +17,7 @@
   </nav>
 </div>
 
-<app-dialog *ngIf="sidebarExpanded" (click)="toggleSidebar()"></app-dialog>
+<app-dialog *ngIf="sidebarExpanded" (onClose)="toggleSidebar()"></app-dialog>
 
 <div class="navbar">
   <app-button [icon]="faBars" [noText]="true" (click)="toggleSidebar()"></app-button>

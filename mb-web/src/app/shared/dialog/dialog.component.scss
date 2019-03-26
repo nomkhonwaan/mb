@@ -1,7 +1,14 @@
 :host {
-  background: hsl(0, 0%, 20%);
   height: 100vh;
   position: absolute;
   left: 25.6rem;
+  width: 100%;
+}
+
+.backdrop {
+  background: hsl(0, 0%, 20%);
+  cursor: pointer;
+  height: 100%;
+  opacity: .16;
   width: 100%;
 }
