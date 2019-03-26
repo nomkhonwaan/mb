@@ -11,13 +11,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
         style({ opacity: 0 }),
         animate('.4s ease-in-out')
       ]),
-      transition(':leave',
+      transition('true => false',
         animate('.4s ease-in-out', style({ opacity: 0 }))
       )
     ])
   ]
 })
-export class DialogComponent implements OnInit, OnDestroy {
+export class DialogComponent implements OnInit {
 
   /**
    * A callback function that fires after backdrop has been closed.
@@ -36,20 +36,5 @@ export class DialogComponent implements OnInit, OnDestroy {
     // For trigger fade-in transition. I'm not sure why direct assign value doesn't work.
     setTimeout(() => this.show = true, 0);
   }
-
-  ngOnDestroy(): void {
-
-  }
-
-  // ngOnDestroy(): void {
-  //   console.log('test');
-  // }
-
-  // close(): void {
-  //   setTimeout(() => {
-  //     this.show = false;
-  //     // this.onClose.emit();
-  //   }, 0);
-  // }
 
 }
