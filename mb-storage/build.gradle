@@ -2,12 +2,9 @@ repositories {
     jcenter()
 }
 
-dependencyManagement {
-    imports {
-        mavenBom('com.amazonaws:aws-java-sdk-bom:1.11.475')
-    }
-}
-
 dependencies {
+    implementation(project(':mb-common'))
+
     implementation('com.amazonaws:aws-java-sdk-s3')
+    implementation('org.axonframework:axon-spring:4.0.3')
 }

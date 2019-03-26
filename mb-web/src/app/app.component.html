@@ -1,0 +1,28 @@
+<div class="sidebar">
+  <header>
+    <app-button [icon]="faTimes" [ltr]="true" (click)="toggleSidebar()">
+      {{'close' | uppercase}}
+    </app-button>
+  </header>
+
+  <nav>
+    <ul class="_list-unstyled">
+      <li>
+        <a [routerLink]="['']" routerLinkActive="-actived">Home</a>
+      </li>
+      <li>
+        <a [routerLink]="['/login']" routerLinkActive="-actived">Login / Register</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<app-dialog *ngIf="sidebarExpanded" (onClose)="toggleSidebar()"></app-dialog>
+
+<div class="navbar">
+  <app-button [icon]="faBars" [noText]="true" (click)="toggleSidebar()"></app-button>
+
+  <app-button style="margin-left:auto" [icon]="faSearch" [noText]="true"></app-button>
+</div>
+
+<!-- <router-outlet></router-outlet> -->

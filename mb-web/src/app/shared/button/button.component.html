@@ -1,0 +1,11 @@
+<fa-icon
+  *ngIf="icon && !ltr"
+  [icon]="icon">
+</fa-icon>
+
+<ng-content></ng-content>
+
+<fa-icon
+  *ngIf="icon && ltr"
+  [icon]="icon">
+</fa-icon>

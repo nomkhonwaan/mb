@@ -32,7 +32,7 @@ class UserQueryHandler(private val managementAPI: ManagementAPI) {
         return try {
             val user: Auth0User = request.execute()
 
-            return User.Builder
+            return User
                     .withId(user.id)
                     .withAvatarUrl(user.picture)
                     .withDisplayName(user.name)

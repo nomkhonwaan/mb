@@ -7,11 +7,7 @@
   height: 3.2rem;
   width: 100%;
 
-  &:focus {
-    outline: none;
-  }
+  &:focus { outline: none; }
 
-  &.-textarea {
-    min-height: 100%;
-  }
+  &.-textarea { min-height: 100%; }
 }

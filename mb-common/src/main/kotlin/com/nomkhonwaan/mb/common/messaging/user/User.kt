@@ -3,7 +3,7 @@ package com.nomkhonwaan.mb.common.messaging.user
 /**
  * An entity of the User.
  * <p>
- * This entity should create from the returned of the Auth0 user information API.
+ * This entity should create from the [Builder] class.
  */
 data class User(
         val id: String,
@@ -34,11 +34,7 @@ data class User(
         }
 
         fun build(): User {
-            return User(
-                    this.id,
-                    this.avatarUrl,
-                    this.displayName
-            )
+            return User(id, avatarUrl, displayName)
         }
     }
 }

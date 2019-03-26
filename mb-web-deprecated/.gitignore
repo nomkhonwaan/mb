@@ -1,0 +1,9 @@
+### CSS ###
+
+# Sass output
+*.css
+
+### Node ### 
+
+# Local NPM configuration
+.npmrc

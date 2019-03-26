@@ -1,0 +1,34 @@
+@import url("https://fonts.googleapis.com/css?family=Athiti:500|Lato:300,400,400i|Pridi:300,500&subset=thai");
+@import url("~bootstrap/dist/css/bootstrap-reboot.css");
+
+._flex { display: flex!important; }
+._flex-inline { display: inline-flex!important; }
+
+._lowercase { text-transform: lowercase!important; }
+._uppercase { text-transform: uppercase!important; }
+
+._text-left { text-align: left!important; }
+._text-right { text-align: right!important; }
+._text-center { text-align: center!important; }
+._text-justify { text-align: justify!important; }
+
+._unmargin { margin: 0!important; }
+._unpadding { padding: 0!important; }
+
+._list-unstyled {
+  @extend ._unmargin;
+  @extend ._unpadding;
+
+  list-style: none!important;
+}
+
+html, body {
+  font-size: 62.5%;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a, a:focus, a:hover, a:visited {
+  color: inherit;
+  text-decoration: none;
+}
