@@ -1,27 +1,38 @@
-import { Component, HostBinding } from '@angular/core';
-import { faBars, faSearch, faTimes, IconDefinition } from '@fortawesome/pro-light-svg-icons';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { Component, HostBinding } from "@angular/core";
+import {
+  faBars,
+  faSearch,
+  faTimes,
+  IconDefinition
+} from "@fortawesome/pro-light-svg-icons";
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from "@angular/animations";
+import { environment } from "../environments/environment";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"],
   animations: [
-    trigger('slideInOut', [
-      state('true', style({ transform: 'translateX(0)' })),
-      state('false', style({ transform: 'translateX(-25.6rem)' })),
-      transition('false => true', [
-        style({ transform: 'translateX(-25.6rem)' }),
-        animate('.4s ease-in-out', style({ transform: 'translateX(0)' }))
+    trigger("slideInOut", [
+      state("true", style({ transform: "translateX(0)" })),
+      state("false", style({ transform: "translateX(-25.6rem)" })),
+      transition("false => true", [
+        style({ transform: "translateX(-25.6rem)" }),
+        animate(".4s ease-in-out", style({ transform: "translateX(0)" }))
       ]),
-      transition('true => false', [
-        animate('.4s ease-in-out', style({ transform: 'translateX(-25.6rem)' }))
+      transition("true => false", [
+        animate(".4s ease-in-out", style({ transform: "translateX(-25.6rem)" }))
       ])
     ])
   ]
 })
 export class AppComponent {
-
   /**
    * A FontAwesome icon for displaying at .navbar as a sidebar toggle button.
    */
@@ -40,7 +51,7 @@ export class AppComponent {
   /**
    * A .sidebar expansion state.
    */
-  @HostBinding('@slideInOut')
+  @HostBinding("@slideInOut")
   sidebarExpanded: boolean = false;
 
   /**
@@ -49,5 +60,4 @@ export class AppComponent {
   toggleSidebar() {
     this.sidebarExpanded = !this.sidebarExpanded;
   }
-
 }
