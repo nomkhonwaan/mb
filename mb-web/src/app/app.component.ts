@@ -1,10 +1,3 @@
-import { Component, HostBinding } from "@angular/core";
-import {
-  faBars,
-  faSearch,
-  faTimes,
-  IconDefinition
-} from "@fortawesome/pro-light-svg-icons";
 import {
   animate,
   state,
@@ -12,12 +5,17 @@ import {
   transition,
   trigger
 } from "@angular/animations";
-import { environment } from "../environments/environment";
+import { Component, HostBinding } from "@angular/core";
+import {
+  faBars,
+  faSearch,
+  faTimes,
+  IconDefinition
+} from "@fortawesome/pro-light-svg-icons";
+
+import { AuthService } from './auth/auth.service';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"],
   animations: [
     trigger("slideInOut", [
       state("true", style({ transform: "translateX(0)" })),
@@ -30,7 +28,10 @@ import { environment } from "../environments/environment";
         animate(".4s ease-in-out", style({ transform: "translateX(-25.6rem)" }))
       ])
     ])
-  ]
+  ],
+  selector: "app-root",
+  styleUrls: ["./app.component.scss"],
+  templateUrl: "./app.component.html"
 })
 export class AppComponent {
   /**
@@ -53,6 +54,8 @@ export class AppComponent {
    */
   @HostBinding("@slideInOut")
   sidebarExpanded: boolean = false;
+
+  constructor(private authService: AuthService) { }
 
   /**
    * Toggles sidebar expansion state.
