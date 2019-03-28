@@ -1,12 +1,14 @@
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
+import { WebAuth } from 'auth0-js';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
   private idToken: string;
   private accessToken: string;
   private expiresAt: number;
 
-  constructor(public router: Router) {}
-
+  constructor(private router: Router, private webAuth: WebAuth) { }
 }
