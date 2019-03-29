@@ -5,6 +5,7 @@ import { WebAuth } from 'auth0-js';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { RecentPostsComponent } from './recent-posts/recent-posts.component';
 import { SharedModule } from './shared/shared.module';
@@ -26,6 +27,7 @@ const webAuth = {
 @NgModule({
   declarations: [
     AppComponent,
+    LoginComponent,
     RecentPostsComponent,
     PageNotFoundComponent
   ],

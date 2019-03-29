@@ -11,7 +11,7 @@
         <a [routerLink]="['']" routerLinkActive="-actived">Home</a>
       </li>
       <li>
-        <a [routerLink]="['/login']" routerLinkActive="-actived">Login / Register</a>
+        <a (click)="authService.login()">Login / Register</a>
       </li>
     </ul>
   </nav>
@@ -25,4 +25,6 @@
   <app-button style="margin-left:auto" [icon]="faSearch" [noText]="true"></app-button>
 </div>
 
-<!-- <router-outlet></router-outlet> -->
+<div>
+  <router-outlet></router-outlet>
+</div>

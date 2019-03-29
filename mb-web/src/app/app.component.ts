@@ -13,19 +13,18 @@ import {
   IconDefinition
 } from "@fortawesome/pro-light-svg-icons";
 
-import { AuthService } from './auth/auth.service';
+import { AuthService } from "./auth/auth.service";
 
 @Component({
   animations: [
     trigger("slideInOut", [
       state("true", style({ transform: "translateX(0)" })),
-      state("false", style({ transform: "translateX(-25.6rem)" })),
-      transition("false => true", [
-        style({ transform: "translateX(-25.6rem)" }),
+      transition("* => true", [
         animate(".4s ease-in-out", style({ transform: "translateX(0)" }))
       ]),
       transition("true => false", [
-        animate(".4s ease-in-out", style({ transform: "translateX(-25.6rem)" }))
+        style({ transform: "translateX(0)" }),
+        animate(".4s ease-in-out")
       ])
     ])
   ],
@@ -55,7 +54,7 @@ export class AppComponent {
   @HostBinding("@slideInOut")
   sidebarExpanded: boolean = false;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
 
   /**
    * Toggles sidebar expansion state.
