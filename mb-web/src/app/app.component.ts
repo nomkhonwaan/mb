@@ -1,27 +1,38 @@
-import { Component, HostBinding } from '@angular/core';
-import { faBars, faSearch, faTimes, IconDefinition } from '@fortawesome/pro-light-svg-icons';
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from "@angular/animations";
+import { Component, HostBinding, OnInit } from "@angular/core";
+import {
+  faBars,
+  faSearch,
+  faTimes,
+  IconDefinition
+} from "@fortawesome/pro-light-svg-icons";
+
+import { AuthService } from "./auth/auth.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
   animations: [
-    trigger('slideInOut', [
-      state('true', style({ transform: 'translateX(0)' })),
-      state('false', style({ transform: 'translateX(-25.6rem)' })),
-      transition('false => true', [
-        style({ transform: 'translateX(-25.6rem)' }),
-        animate('.4s ease-in-out', style({ transform: 'translateX(0)' }))
+    trigger("slideInOut", [
+      state("true", style({ transform: "translateX(0)" })),
+      transition("* => true", [
+        animate(".4s ease-in-out", style({ transform: "translateX(0)" }))
       ]),
-      transition('true => false', [
-        animate('.4s ease-in-out', style({ transform: 'translateX(-25.6rem)' }))
+      transition("true => false", [
+        style({ transform: "translateX(0)" }),
+        animate(".4s ease-in-out")
       ])
     ])
-  ]
+  ],
+  selector: "app-root",
+  styleUrls: ["./app.component.scss"],
+  templateUrl: "./app.component.html"
 })
-export class AppComponent {
-
+export class AppComponent implements OnInit {
   /**
    * A FontAwesome icon for displaying at .navbar as a sidebar toggle button.
    */
@@ -40,8 +51,16 @@ export class AppComponent {
   /**
    * A .sidebar expansion state.
    */
-  @HostBinding('@slideInOut')
+  @HostBinding("@slideInOut")
   sidebarExpanded: boolean = false;
+
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.authService.renewTokens();
+    }
+  }
 
   /**
    * Toggles sidebar expansion state.
@@ -49,5 +68,4 @@ export class AppComponent {
   toggleSidebar() {
     this.sidebarExpanded = !this.sidebarExpanded;
   }
-
 }

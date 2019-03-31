@@ -1,41 +1,88 @@
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { WebAuth } from "auth0-js";
 
-@Injectable()
+import { LocalStorageService } from '../local-storage/local-storage.service';
+
+@Injectable({
+  providedIn: "root"
+})
 export class AuthService {
+  private accessToken?: string;
+  private idToken?: string;
+  private expiresAt?: number;
 
-  private idToken: string;
-  private accessToken: string;
-  private expiresAt: number;
-
-  constructor(public router: Router) {
-
+  constructor(
+    private localStorageService: LocalStorageService,
+    private router: Router,
+    private webAuth: WebAuth,
+  ) {
+    this.accessToken = this.localStorageService.get('accessToken');
+    this.idToken = this.localStorageService.get('idToken');
+    this.expiresAt = this.localStorageService.getNumber('expiresAt');
   }
 
-  // static get Builder() {
-  //   class Builder {
-  //     domain: string = 'nomkhonwaan.auth0.com';
-  //     clientId = '';
-  //     responseType = 'token id_token';
-  //     redirectUri = '';
-  //     scope = 'openid email profile';
+  /**
+   * Redirects to the Auth0 login page.
+   */
+  login(): void {
+    this.webAuth.authorize();
+  }
 
-  //     withClientId(clientId) {
-  //       this.clientId = clientId;
-  //       return this;
-  //     }
+  /**
+   * Parses the authentication result from URL hash.
+   */
+  handleAuthentication(): void {
+    this.webAuth.parseHash((_, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.localLogin(authResult);
+      }
+    });
+  }
 
-  //     withRedirectUri(redirectUri) {
-  //       this.redirectUri = redirectUri;
-  //       return this;
-  //     }
+  /**
+   * Stores the authentication result in class properties.
+   *
+   * @param authResult object An authentication result which contains "accessToken", "idToken" and "expiresAt"
+   */
+  localLogin(authResult): void {
+    this.accessToken = authResult.accessToken;
+    this.idToken = authResult.idToken;
+    this.expiresAt = authResult.expiresIn * 1000 + Date.now();
 
-  //     build() {
-  //       return new AuthService()
-  //     }
-  //   }
+    this.localStorageService.setAll({
+      'accessToken': this.accessToken,
+      'idToken': this.idToken,
+      'expiresAt': this.expiresAt.toString()
+    });
+  }
 
-  //   return new Builder();
-  // }
+  /**
+   * Performs silent authentication to renew the session.
+   */
+  renewTokens(): void {
+    this.webAuth.checkSession({}, (_, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.localLogin(authResult);
+      }
+    });
+  }
 
+  /**
+   * Removes the user's tokens and expiry time from class properties.
+   */
+  logout(): void {
+    this.accessToken = null;
+    this.idToken = null;
+    this.expiresAt = null;
+
+    this.localStorageService.clear();
+  }
+
+  /**
+   * Checks whether the user's Access Token is set and its expiry time has passed.
+   */
+  isAuthenticated(): boolean {
+    return this.accessToken && Date.now() < this.expiresAt;
+  }
 }
