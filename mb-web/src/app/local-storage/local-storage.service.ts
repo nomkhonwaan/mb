@@ -5,6 +5,13 @@ import { Injectable } from '@angular/core';
 })
 export class LocalStorageService {
   /**
+   * Empties the localStorage.
+   */
+  clear(): void {
+    localStorage.clear();
+  }
+
+  /**
    * Retrieves value by its key from the localStorage API.
    *
    * @param key string

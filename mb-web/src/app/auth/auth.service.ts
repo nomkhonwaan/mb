@@ -8,9 +8,9 @@ import { LocalStorageService } from '../local-storage/local-storage.service';
   providedIn: "root"
 })
 export class AuthService {
-  private accessToken: string;
-  private idToken: string;
-  private expiresAt: number;
+  private accessToken?: string;
+  private idToken?: string;
+  private expiresAt?: number;
 
   constructor(
     private localStorageService: LocalStorageService,
@@ -21,10 +21,6 @@ export class AuthService {
     this.idToken = this.localStorageService.get('idToken');
     this.expiresAt = this.localStorageService.getNumber('expiresAt');
   }
-
-  // get accessToken(): string {
-  //   return this.accessToken;
-  // }
 
   /**
    * Redirects to the Auth0 login page.
@@ -61,23 +57,26 @@ export class AuthService {
     });
   }
 
+  /**
+   * Performs silent authentication to renew the session.
+   */
   renewTokens(): void {
-  //   this.webAuth.checkSession({}, (err, auth))
-  // //   this.auth0.checkSession({}, (err, authResult) => {
-  // //     if (authResult && authResult.accessToken && authResult.idToken) {
-  // //       this.localLogin(authResult);
-  // //     } else if (err) {
-  // //       alert(`Could not get a new token (${err.error}: ${err.error_description}).`);
-  // //       this.logout();
-  // //     }
-  // //  });
+    this.webAuth.checkSession({}, (_, authResult) => {
+      if (authResult && authResult.accessToken && authResult.idToken) {
+        this.localLogin(authResult);
+      }
+    });
   }
 
   /**
    * Removes the user's tokens and expiry time from class properties.
    */
   logout(): void {
+    this.accessToken = null;
+    this.idToken = null;
+    this.expiresAt = null;
 
+    this.localStorageService.clear();
   }
 
   /**

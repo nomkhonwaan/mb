@@ -5,7 +5,7 @@ import {
   transition,
   trigger
 } from "@angular/animations";
-import { Component, HostBinding } from "@angular/core";
+import { Component, HostBinding, OnInit } from "@angular/core";
 import {
   faBars,
   faSearch,
@@ -32,7 +32,7 @@ import { AuthService } from "./auth/auth.service";
   styleUrls: ["./app.component.scss"],
   templateUrl: "./app.component.html"
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   /**
    * A FontAwesome icon for displaying at .navbar as a sidebar toggle button.
    */
@@ -55,6 +55,12 @@ export class AppComponent {
   sidebarExpanded: boolean = false;
 
   constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    if (this.authService.isAuthenticated()) {
+      this.authService.renewTokens();
+    }
+  }
 
   /**
    * Toggles sidebar expansion state.
