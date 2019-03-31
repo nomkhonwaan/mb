@@ -48,7 +48,7 @@ jobs:
             - node-{{ checksum "./mb-web/package.json" }}
       - run: |
           cd ./mb-web
-          npm run build
+          npm run build --prod
       - persist_to_workspace:
           root: ./mb-web
           paths: 
