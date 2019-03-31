@@ -10,7 +10,7 @@
       <li>
         <a [routerLink]="['']" routerLinkActive="-actived">Home</a>
       </li>
-      <li>
+      <li *ngIf="!authService.isAuthenticated()">
         <a (click)="authService.login()">Login / Register</a>
       </li>
     </ul>
