@@ -13,7 +13,6 @@ jobs:
       - run: |
           cd ./mb-web
           npm install
-          npm run build-css
       - save_cache:
           paths:
             - ./mb-web/node_modules
@@ -49,11 +48,11 @@ jobs:
             - node-{{ checksum "./mb-web/package.json" }}
       - run: |
           cd ./mb-web
-          npm run build-js
+          npm run build
       - persist_to_workspace:
           root: ./mb-web
           paths: 
-            - build
+            - dist
   mb-web_deploy_to_firebase:
     docker:
       - image: circleci/node:8
