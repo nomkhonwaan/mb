@@ -2,6 +2,8 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { WebAuth } from "auth0-js";
 
+import { LocalStorageService } from '../local-storage/local-storage.service';
+
 @Injectable({
   providedIn: "root"
 })
@@ -10,7 +12,15 @@ export class AuthService {
   private idToken: string;
   private expiresAt: number;
 
-  constructor(private webAuth: WebAuth, private router: Router) {}
+  constructor(
+    private localStorageService: LocalStorageService,
+    private router: Router,
+    private webAuth: WebAuth,
+  ) {
+    this.accessToken = this.localStorageService.get('accessToken');
+    this.idToken = this.localStorageService.get('idToken');
+    this.expiresAt = this.localStorageService.getNumber('expiresAt');
+  }
 
   // get accessToken(): string {
   //   return this.accessToken;
@@ -27,22 +37,28 @@ export class AuthService {
    * Parses the authentication result from URL hash.
    */
   handleAuthentication(): void {
-    this.webAuth.parseHash((err, authResult) => {
+    this.webAuth.parseHash((_, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.localLogin(authResult);
       }
-
-      console.error(`unexpected error occurred: ${err}`);
     });
   }
 
   /**
    * Stores the authentication result in class properties.
+   *
+   * @param authResult object An authentication result which contains "accessToken", "idToken" and "expiresAt"
    */
   localLogin(authResult): void {
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
-    this.expiresAt = (authResult.expiresAt * 1000) + Date.now();
+    this.expiresAt = authResult.expiresIn * 1000 + Date.now();
+
+    this.localStorageService.setAll({
+      'accessToken': this.accessToken,
+      'idToken': this.idToken,
+      'expiresAt': this.expiresAt.toString()
+    });
   }
 
   renewTokens(): void {
