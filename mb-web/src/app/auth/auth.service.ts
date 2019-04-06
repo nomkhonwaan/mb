@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { WebAuth } from "auth0-js";
@@ -13,6 +14,7 @@ export class AuthService {
   private expiresAt?: number;
 
   constructor(
+    private location: Location,
     private localStorageService: LocalStorageService,
     private router: Router,
     private webAuth: WebAuth,
@@ -24,8 +26,14 @@ export class AuthService {
 
   /**
    * Redirects to the Auth0 login page.
+   *
+   * @param redirectPath string
    */
-  login(): void {
+  login(redirectPath?: string): void {
+    if (redirectPath !== null) {
+      this.localStorageService.set('redirectPath', redirectPath);
+    }
+
     this.webAuth.authorize();
   }
 
@@ -36,6 +44,14 @@ export class AuthService {
     this.webAuth.parseHash((_, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.localLogin(authResult);
+
+        // Redirect back to the previous path (that was saved in the login step) or home path
+        const redirectPath: string = this.localStorageService.get('redirectPath');
+        if (redirectPath !== null) {
+          this.localStorageService.remove('redirectPath');
+        }
+
+        this.router.navigate([redirectPath || '/' ]);
       }
     });
   }
