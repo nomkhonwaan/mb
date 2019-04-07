@@ -119,13 +119,13 @@ enum Status {
     PUBLISHED
 }
 
-# An input type for add an Attachment to the Post
-input AddPostAttachmentInput {
-    id: ID!
-
-    # An identifier of the Attachment
-    attachmentId!
-}
+## An input type for add an Attachment to the Post
+#input AddPostAttachmentInput {
+#    id: ID!
+#
+#    # An identifier of the Attachment
+#    attachmentId!
+#}
 
 # An input type for updating Post title
 input UpdatePostTitleInput {
