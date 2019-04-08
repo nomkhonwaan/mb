@@ -2,32 +2,21 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { ApolloModule, Apollo } from 'apollo-angular';
 import { HttpLinkModule, HttpLink } from 'apollo-angular-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
+import { setContext } from 'apollo-link-context';
 import { WebAuth } from 'auth0-js';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthService } from './auth/auth.service';
 import { LoginComponent } from './login/login.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { RecentPostsComponent } from './recent-posts/recent-posts.component';
 import { SharedModule } from './shared/shared.module';
 
 import { environment } from '../environments/environment';
-
-
-// @Bean
-const apolloOptions = {
-  provide: APOLLO_OPTIONS,
-  useFactory: (httpLink: HttpLink) => ({
-    cache: new InMemoryCache(),
-    link: httpLink.create({
-      uri: environment.graphql.endpoint
-    })
-  }),
-  deps: [ HttpLink ]
-};
 
 // @Bean
 const auth0WebAuth = {
@@ -58,9 +47,34 @@ const auth0WebAuth = {
     SharedModule
   ],
   providers: [
-    apolloOptions,
     auth0WebAuth,
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+  constructor(
+    private apollo: Apollo,
+    private authService: AuthService,
+    private httpLink: HttpLink
+  ) {
+    const http = httpLink.create({ uri: environment.graphql.endpoint });
+    const auth = setContext(() => {
+      if (authService.isAuthenticated()) {
+        const token: string = authService.accessToken;
+
+        return {
+          headers: { Authorization: `Bearer ${token}` }
+        };
+      }
+
+      return {};
+    });
+
+    apollo.create({
+      cache: new InMemoryCache(),
+      link: auth.concat(http)
+    });
+  }
+
+}

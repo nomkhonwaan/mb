@@ -7,6 +7,7 @@ import {
   trigger
 } from "@angular/animations";
 import { Component, HostBinding, OnInit } from "@angular/core";
+import { Router } from '@angular/router';
 import {
   faBars,
   faSearch,
@@ -64,7 +65,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private apollo: Apollo,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {

@@ -3,13 +3,15 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { WebAuth } from "auth0-js";
 
+import AuthResult from './auth-result';
+
 import { LocalStorageService } from '../local-storage/local-storage.service';
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
-  private accessToken?: string;
+  accessToken?: string;
   private idToken?: string;
   private expiresAt?: number;
 
@@ -51,7 +53,7 @@ export class AuthService {
           this.localStorageService.remove('redirectPath');
         }
 
-        this.router.navigate([redirectPath || '/' ]);
+        this.router.navigate([redirectPath || '/']);
       }
     });
   }
@@ -61,7 +63,7 @@ export class AuthService {
    *
    * @param authResult object An authentication result which contains "accessToken", "idToken" and "expiresAt"
    */
-  localLogin(authResult): void {
+  localLogin(authResult: AuthResult): void {
     this.accessToken = authResult.accessToken;
     this.idToken = authResult.idToken;
     this.expiresAt = authResult.expiresIn * 1000 + Date.now();
@@ -77,7 +79,7 @@ export class AuthService {
    * Performs silent authentication to renew the session.
    */
   renewTokens(): void {
-    this.webAuth.checkSession({}, (_, authResult) => {
+    this.webAuth.checkSession({}, (_, authResult: AuthResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
         this.localLogin(authResult);
       }
