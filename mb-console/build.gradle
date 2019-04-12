@@ -1,9 +1,0 @@
-repositories {
-    maven { 
-        url("https://jitpack.io")
-    }
-}
-
-dependencies {
-    implementation('com.github.kenglxn.QRGen:javase:2.5.0')
-}
