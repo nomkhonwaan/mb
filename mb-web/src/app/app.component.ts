@@ -5,18 +5,18 @@ import {
   style,
   transition,
   trigger
-} from "@angular/animations";
-import { Component, HostBinding, OnInit } from "@angular/core";
+} from '@angular/animations';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   faBars,
   faSearch,
   faTimes,
   IconDefinition
-} from "@fortawesome/pro-light-svg-icons";
+} from '@fortawesome/pro-light-svg-icons';
 import gql from 'graphql-tag';
 
-import { AuthService } from "./auth/auth.service";
+import { AuthService } from './auth/auth.service';
 import Category from './category';
 
 @Component({
@@ -38,7 +38,7 @@ import Category from './category';
 })
 export class AppComponent implements OnInit {
   /**
-   * A group of Posts regarded as having particular shared characteristics.
+   * A list of Categories.
    */
   categories: Category[];
 
@@ -67,7 +67,7 @@ export class AppComponent implements OnInit {
     private apollo: Apollo,
     public router: Router,
     public authService: AuthService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit {
   /**
    * Performs GraphQL query to the backend API for retrieving user information.
    */
-  fetchUserInfo(): void {}
+  fetchUserInfo(): void { }
 
   /**
    * Toggles sidebar expansion state.

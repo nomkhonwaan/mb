@@ -1,3 +1,7 @@
-<p>
-  recent-posts works!
-</p>
+<section id="latest-published-posts">
+  <li *ngFor="let post of latestPublishedPosts">
+    <h2>
+      <a [routerLink]="['/' + post.publishedAt | date:"shortDate" + '/' + post.slug]">{{post.title}}</a>
+    </h2>
+  </li>
+</section>
