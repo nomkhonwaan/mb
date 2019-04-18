@@ -1,6 +1,5 @@
-import { Location } from '@angular/common';
-import { Injectable } from "@angular/core";
-import { Router } from "@angular/router";
+import { Inject, Injectable } from "@angular/core";
+import { DOCUMENT } from '@angular/platform-browser';
 import { WebAuth } from "auth0-js";
 
 import AuthResult from './auth-result';
@@ -16,9 +15,8 @@ export class AuthService {
   private expiresAt?: number;
 
   constructor(
-    private location: Location,
+    @Inject(DOCUMENT) private document: Document,
     private localStorageService: LocalStorageService,
-    private router: Router,
     private webAuth: WebAuth,
   ) {
     this.accessToken = this.localStorageService.get('accessToken');
@@ -53,7 +51,7 @@ export class AuthService {
           this.localStorageService.remove('redirectPath');
         }
 
-        this.router.navigate([redirectPath || '/']);
+        this.document.location.href = redirectPath;
       }
     });
   }
