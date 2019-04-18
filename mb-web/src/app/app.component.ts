@@ -65,8 +65,8 @@ export class AppComponent implements OnInit {
 
   constructor(
     private apollo: Apollo,
-    private authService: AuthService,
-    private router: Router
+    public router: Router,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -75,10 +75,11 @@ export class AppComponent implements OnInit {
     }
 
     this.fetchCategories();
+    this.fetchUserInfo();
   }
 
   /**
-   * Performs a GraphQL query to the backend API for retreving list of Categories.
+   * Performs GraphQL query to the backend API for retreving list of Categories.
    */
   fetchCategories(): void {
     this.apollo.watchQuery({
@@ -97,6 +98,11 @@ export class AppComponent implements OnInit {
       }
     });
   }
+
+  /**
+   * Performs GraphQL query to the backend API for retrieving user information.
+   */
+  fetchUserInfo(): void {}
 
   /**
    * Toggles sidebar expansion state.
