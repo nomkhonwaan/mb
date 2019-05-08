@@ -3,12 +3,20 @@ package com.nomkhonwaan.mb.graphql
 import com.nomkhonwaan.mb.common.messaging.post.Status
 
 /**
+ * An Input class for adding new Attachment to the Post.
+ *
+ * @param id           An identifier of the Post
+ * @param attachmentId An identifier of the Attachment
+ */
+data class AddPostAttachmentInput(override val id: String, val attachmentId: String) : Input<String>(id)
+
+/**
  * An Input class for updating Post title.
  *
  * @param id    An identifier of the Post
  * @param title A title of the Post
  */
-data class UpdatePostTitleInput(override val id: String, val title: String): Input<String>(id)
+data class UpdatePostTitleInput(override val id: String, val title: String) : Input<String>(id)
 
 /**
  * An Input class for updating Post status.
@@ -24,7 +32,7 @@ data class UpdatePostStatusInput(override val id: String, val status: Status) : 
  * @param id       An identifier of the Post
  * @param markdown A content of the Post in markdown syntax
  */
-data class UpdatePostContentInput(override val id: String, val markdown: String): Input<String>(id)
+data class UpdatePostContentInput(override val id: String, val markdown: String) : Input<String>(id)
 
 /**
  * An Input class for updating Post Categories.
@@ -32,4 +40,4 @@ data class UpdatePostContentInput(override val id: String, val markdown: String)
  * @param id          An identifier of the Post
  * @param categoryIds A list of Category IDs
  */
-data class UpdatePostCategoriesInput(override val id: String, val categoryIds: List<String?>): Input<String>(id)
+data class UpdatePostCategoriesInput(override val id: String, val categoryIds: List<String?>) : Input<String>(id)

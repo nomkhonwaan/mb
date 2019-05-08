@@ -12,6 +12,15 @@ export class LocalStorageService {
   }
 
   /**
+   * Removes value by its key from the localStorage API.
+   *
+   * @param key string
+   */
+  remove(key: string): void {
+    localStorage.removeItem(key);
+  }
+
+  /**
    * Retrieves value by its key from the localStorage API.
    *
    * @param key string

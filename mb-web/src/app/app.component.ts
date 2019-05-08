@@ -6,6 +6,7 @@ import {
   trigger
 } from "@angular/animations";
 import { Component, HostBinding, OnInit } from "@angular/core";
+import { Router } from '@angular/router';
 import {
   faBars,
   faSearch,
@@ -54,7 +55,7 @@ export class AppComponent implements OnInit {
   @HostBinding("@slideInOut")
   sidebarExpanded: boolean = false;
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit(): void {
     if (this.authService.isAuthenticated()) {
